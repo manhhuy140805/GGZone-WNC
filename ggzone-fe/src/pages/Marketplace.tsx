@@ -12,9 +12,11 @@ export const Marketplace: React.FC = () => {
   );
 
   const filteredItems = mockMarketplaceItems.filter((item) => {
+    const itemTitle = item.title || item.name || "";
+    const itemDescription = item.description || "";
     const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase());
+      itemTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      itemDescription.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
       !selectedCategory || item.category === selectedCategory;
     return matchesSearch && matchesCategory;

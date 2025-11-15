@@ -1,59 +1,44 @@
 import React from "react";
-import { Star, Users } from "lucide-react";
-import { Badge } from "../common";
+import { Play } from "lucide-react";
 import type { Game } from "../../assets/mock/games";
 
 interface GameCardProps {
   game: Game;
-  onClick?: () => void;
+  rank?: number;
 }
 
-export const GameCard: React.FC<GameCardProps> = ({ game, onClick }) => {
-  const formatPlayers = (count: number): string => {
-    if (count >= 1000000) {
-      return `${(count / 1000000).toFixed(1)}M`;
-    }
-    if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}K`;
-    }
-    return count.toString();
+export const GameCard: React.FC<GameCardProps> = ({ game, rank }) => {
+  const getRankBadge = (index?: number) => {
+    if (index === 0) return "🥇";
+    if (index === 1) return "🥈";
+    if (index === 2) return "🥉";
+    return "⭐";
   };
 
   return (
-    <div
-      onClick={onClick}
-      className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group"
-    >
-      <div className="relative h-40 overflow-hidden bg-gray-200">
-        <img
-          src={game.image_url}
-          alt={game.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        <div className="absolute top-3 right-3">
-          <Badge label={game.category} variant="primary" size="sm" />
-        </div>
+    <div className="group relative h-48 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow">
+      <img
+        src={game.coverImageUrl}
+        alt={game.name}
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+        <button className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg">
+          <Play size={16} fill="currentColor" />
+          Play
+        </button>
       </div>
 
-      <div className="p-4">
-        <h3 className="text-lg font-bold text-gray-900 mb-1 line-clamp-1">
-          {game.name}
-        </h3>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-          {game.description}
-        </p>
-
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center gap-1 text-yellow-500">
-            <Star size={16} fill="currentColor" />
-            <span className="font-semibold">{game.rating}</span>
+      <div className="absolute bottom-0 left-0 right-0 p-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="font-bold text-white text-lg">{game.name}</h3>
+            <p className="text-sm text-gray-200">{game.genre}</p>
           </div>
-          <div className="flex items-center gap-1 text-gray-600">
-            <Users size={16} />
-            <span className="font-medium">
-              {formatPlayers(game.players_count)}
-            </span>
-          </div>
+          <div className="text-2xl">{getRankBadge(rank)}</div>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 export const APP_NAME = "GameHub";
 
 export const ROUTES = {
+  LOGIN: "/login",
   HOME: "/",
   BROWSE: "/browse",
   GROUPS: "/groups",

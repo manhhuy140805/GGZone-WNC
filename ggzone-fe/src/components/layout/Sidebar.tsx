@@ -13,12 +13,13 @@ interface SidebarProps {
   isOpen?: boolean;
   onClose?: () => void;
   onNavigate?: (page: string) => void;
+  currentPage?: string;
 }
 
 interface NavItem {
   icon: React.ReactNode;
   label: string;
-  href: string;
+  key: string;
   badge?: number;
 }
 
@@ -26,26 +27,27 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpen = true,
   onClose,
   onNavigate,
+  currentPage = "HOME",
 }) => {
   const navItems: NavItem[] = [
-    { icon: <Home size={20} />, label: "Home", href: "/" },
-    { icon: <Gamepad2 size={20} />, label: "Browse Games", href: "/browse" },
-    { icon: <Users size={20} />, label: "Groups", href: "/groups" },
+    { icon: <Home size={20} />, label: "Home", key: "HOME" },
+    { icon: <Gamepad2 size={20} />, label: "Browse Games", key: "BROWSE" },
+    { icon: <Users size={20} />, label: "Groups", key: "GROUPS" },
     {
       icon: <Trophy size={20} />,
       label: "Achievements",
-      href: "/achievements",
+      key: "ACHIEVEMENTS",
     },
     {
       icon: <ShoppingCart size={20} />,
       label: "Marketplace",
-      href: "/marketplace",
+      key: "MARKETPLACE",
     },
-    { icon: <TrendingUp size={20} />, label: "Trending", href: "/trending" },
+    { icon: <TrendingUp size={20} />, label: "Trending", key: "TRENDING" },
   ];
 
-  const handleNavClick = (href: string) => {
-    onNavigate?.(href);
+  const handleNavClick = (key: string) => {
+    onNavigate?.(key);
     onClose?.();
   };
 
@@ -74,35 +76,43 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </button>
 
         <nav className="p-4 space-y-2">
-          {navItems.map((item) => (
-            <button
-              key={item.href}
-              onClick={() => handleNavClick(item.href)}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition text-left"
-            >
-              {item.icon}
-              <span className="font-medium">{item.label}</span>
-              {item.badge && (
-                <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {item.badge}
-                </span>
-              )}
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const isActive = currentPage === item.key;
+            return (
+              <button
+                key={item.key}
+                onClick={() => handleNavClick(item.key)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition text-left font-medium ${
+                  isActive
+                    ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-md"
+                    : "text-gray-700 hover:bg-gray-100 hover:text-orange-600"
+                }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+                {item.badge && (
+                  <span className="ml-auto bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {item.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
+        {/* Following Section */}
         <div className="px-4 py-6 border-t border-gray-200 m-4">
           <h3 className="text-xs font-bold text-gray-500 uppercase mb-3">
             Following
           </h3>
           <div className="space-y-2">
-            <div className="text-sm text-gray-600 hover:text-blue-600 cursor-pointer">
+            <div className="text-sm text-gray-600 hover:text-orange-600 cursor-pointer transition">
               ShadowNinja92
             </div>
-            <div className="text-sm text-gray-600 hover:text-blue-600 cursor-pointer">
+            <div className="text-sm text-gray-600 hover:text-orange-600 cursor-pointer transition">
               LunaStorm
             </div>
-            <div className="text-sm text-gray-600 hover:text-blue-600 cursor-pointer">
+            <div className="text-sm text-gray-600 hover:text-orange-600 cursor-pointer transition">
               BlazeFury
             </div>
           </div>

@@ -2,67 +2,144 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  avatar_url: string;
-  bio: string;
-  level: number;
-  experience: number;
-  total_playtime: number;
+  fullName: string;
+  avatarUrl?: string;
+  bio?: string;
+  location?: string;
+  status: "online" | "offline" | "in-game";
+  role: "user" | "admin" | "moderator";
+  isVerified: boolean;
+  createdAt: string;
+  stats?: UserStats;
+}
+
+export interface UserStats {
+  friendsCount: number;
+  winningCount: number;
+  tournamentsCount: number;
+  postsCount: number;
+  photosCount: number;
 }
 
 export const mockUsers: User[] = [
   {
-    id: "1",
-    username: "ShadowNinja92",
-    email: "shadow@example.com",
-    avatar_url:
-      "https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=100",
-    bio: "Pro gamer | Streaming daily 🎮",
-    level: 45,
-    experience: 125000,
-    total_playtime: 3600,
+    id: "550e8400-e29b-41d4-a716-446655440000",
+    username: "alice",
+    email: "alice@example.com",
+    fullName: "Alice Nguyen",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice",
+    bio: "Gaming enthusiast | Valorant player | Community leader",
+    location: "Ho Chi Minh City, VN",
+    status: "online",
+    role: "user",
+    isVerified: true,
+    createdAt: "2024-01-15T10:30:00Z",
+    stats: {
+      friendsCount: 2,
+      winningCount: 5,
+      tournamentsCount: 1,
+      postsCount: 3,
+      photosCount: 1,
+    },
   },
   {
-    id: "2",
-    username: "LunaStorm",
-    email: "luna@example.com",
-    avatar_url:
-      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100",
-    bio: "Fantasy RPG enthusiast | Always exploring",
-    level: 38,
-    experience: 98000,
-    total_playtime: 2800,
+    id: "550e8400-e29b-41d4-a716-446655440001",
+    username: "bob",
+    email: "bob@example.com",
+    fullName: "Bob Tran",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
+    bio: "CS2 competitive player | Esports caster",
+    location: "Hanoi, VN",
+    status: "offline",
+    role: "moderator",
+    isVerified: true,
+    createdAt: "2024-02-10T14:45:00Z",
+    stats: {
+      friendsCount: 1,
+      winningCount: 1,
+      tournamentsCount: 0,
+      postsCount: 1,
+      photosCount: 0,
+    },
   },
   {
-    id: "3",
-    username: "BlazeFury",
-    email: "blaze@example.com",
-    avatar_url:
-      "https://images.pexels.com/photos/1065084/pexels-photo-1065084.jpeg?auto=compress&cs=tinysrgb&w=100",
-    bio: "Competitive racer | Speed is life",
-    level: 42,
-    experience: 110000,
-    total_playtime: 3200,
+    id: "550e8400-e29b-41d4-a716-446655440002",
+    username: "charlie",
+    email: "charlie@example.com",
+    fullName: "Charlie Pham",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie",
+    bio: "League of Legends addict",
+    location: "Da Nang, VN",
+    status: "offline",
+    role: "user",
+    isVerified: false,
+    createdAt: "2024-03-05T09:15:00Z",
+    stats: {
+      friendsCount: 1,
+      winningCount: 8,
+      tournamentsCount: 2,
+      postsCount: 2,
+      photosCount: 2,
+    },
   },
   {
-    id: "4",
-    username: "CrimsonPhoenix",
-    email: "crimson@example.com",
-    avatar_url:
-      "https://images.pexels.com/photos/1661432/pexels-photo-1661432.jpeg?auto=compress&cs=tinysrgb&w=100",
-    bio: "Strategy master | Building empires",
-    level: 50,
-    experience: 145000,
-    total_playtime: 4100,
+    id: "550e8400-e29b-41d4-a716-446655440003",
+    username: "david",
+    email: "david@example.com",
+    fullName: "David Le",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+    bio: "FPS lover | Always learning",
+    location: "Bangkok, Thailand",
+    status: "in-game",
+    role: "user",
+    isVerified: true,
+    createdAt: "2024-01-20T11:20:00Z",
+    stats: {
+      friendsCount: 5,
+      winningCount: 12,
+      tournamentsCount: 3,
+      postsCount: 8,
+      photosCount: 4,
+    },
   },
   {
-    id: "5",
-    username: "VortexGamer",
-    email: "vortex@example.com",
-    avatar_url:
-      "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=100",
-    bio: "Casual player | Just having fun",
-    level: 22,
-    experience: 45000,
-    total_playtime: 1200,
+    id: "550e8400-e29b-41d4-a716-446655440004",
+    username: "emma",
+    email: "emma@example.com",
+    fullName: "Emma Vo",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma",
+    bio: "Streaming occasionally | Casual gamer",
+    location: "Can Tho, VN",
+    status: "online",
+    role: "user",
+    isVerified: true,
+    createdAt: "2024-02-25T15:00:00Z",
+    stats: {
+      friendsCount: 3,
+      winningCount: 6,
+      tournamentsCount: 1,
+      postsCount: 5,
+      photosCount: 3,
+    },
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655440005",
+    username: "frank",
+    email: "frank@example.com",
+    fullName: "Frank Duong",
+    avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Frank",
+    bio: "Admin moderator | Community manager",
+    location: "Ho Chi Minh City, VN",
+    status: "online",
+    role: "admin",
+    isVerified: true,
+    createdAt: "2024-01-01T00:00:00Z",
+    stats: {
+      friendsCount: 8,
+      winningCount: 20,
+      tournamentsCount: 5,
+      postsCount: 15,
+      photosCount: 8,
+    },
   },
 ];
