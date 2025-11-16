@@ -55,7 +55,7 @@ export const Groups: React.FC = () => {
   };
 
   // Featured groups (first 3)
-  const featuredGroups = mockGroups.slice(0, 3);
+  const featuredGroups = mockGroups.slice(0, 2);
   const myGroups = mockGroups.filter((g) => joinedGroups.includes(g.id));
 
   return (
@@ -127,7 +127,7 @@ export const Groups: React.FC = () => {
             View All <ChevronRight size={18} />
           </a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {featuredGroups.map((group) => (
             <CommunityCard
               key={group.id}
