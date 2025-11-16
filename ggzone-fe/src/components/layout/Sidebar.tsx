@@ -3,9 +3,9 @@ import {
   Home,
   Users,
   Gamepad2,
-  Trophy,
   ShoppingCart,
   TrendingUp,
+  UserCircle,
   X,
 } from "lucide-react";
 
@@ -34,16 +34,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { icon: <Gamepad2 size={20} />, label: "Browse Games", key: "BROWSE" },
     { icon: <Users size={20} />, label: "Groups", key: "GROUPS" },
     {
-      icon: <Trophy size={20} />,
-      label: "Achievements",
-      key: "ACHIEVEMENTS",
-    },
-    {
       icon: <ShoppingCart size={20} />,
       label: "Marketplace",
       key: "MARKETPLACE",
     },
     { icon: <TrendingUp size={20} />, label: "Trending", key: "TRENDING" },
+    {
+      icon: <UserCircle size={20} />,
+      label: "Profile",
+      key: "PROFILE",
+    },
   ];
 
   const handleNavClick = (key: string) => {

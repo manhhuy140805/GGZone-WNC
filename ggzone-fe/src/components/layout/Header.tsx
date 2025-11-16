@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
                   <img
                     src={user.avatarUrl}
                     alt={user.fullName}
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 rounded-full object-cover"
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-semibold">

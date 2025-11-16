@@ -276,15 +276,43 @@ const { user, isAuthenticated, login, logout } = useAuth();
 
 ## 📚 Mock Data
 
-Mock data is provided for development:
-- 6 users with different roles
-- 6 games with various genres
-- 5 gaming communities
-- 4 live streaming channels
-- 5 marketplace items
-- 8 achievements
+Comprehensive mock data is provided for development and testing:
 
-See `ggzone-fe/DEMO_ACCOUNTS.txt` for quick reference.
+### Data Overview
+- **11 Users** with complete profiles and stats
+- **11 Games** across multiple genres
+- **5 Gaming Communities** with 19+ members
+- **10 Posts** with comments and engagement
+- **10 Photos** in user galleries
+- **13 Achievements** with progress tracking
+- **7 Tournaments** with participants
+- **4 Live Channels** with streaming data
+- **5 Marketplace Items** with reviews
+- **8 Store Products** with orders
+- **12 Messages** between users
+- **12 Notifications** of various types
+- **11 Trending Items** with analytics
+
+### Documentation
+- **Quick Start**: See `ggzone-fe/MOCK_DATA_QUICK_START.md` for common usage examples
+- **Full Guide**: See `MOCK_DATA_GUIDE.md` for comprehensive documentation
+- **API Reference**: See `ggzone-fe/src/assets/mock/README.md` for detailed API docs
+- **Demo Accounts**: See `ggzone-fe/DEMO_ACCOUNTS.txt` for login credentials
+
+### Helper Functions
+The mock data includes helper functions for common operations:
+```typescript
+import { 
+  getUserById, 
+  getUserFriends, 
+  getUserFeed,
+  getGroupMembers,
+  getUserAchievementsWithDetails 
+} from '@/assets/mock';
+```
+
+### Database Integration
+SQL sample data is available in `DB/SQLQuery2_SampleData.sql` for backend testing.
 
 ## 🔐 Security Notes
 

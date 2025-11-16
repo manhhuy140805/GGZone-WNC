@@ -159,3 +159,117 @@ export const mockComments: Comment[] = [
     },
   },
 ];
+
+
+// Additional posts for more content
+export const additionalMockPosts: Post[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655441005",
+    userId: "550e8400-e29b-41d4-a716-446655440005",
+    groupId: "550e8400-e29b-41d4-a716-446655660000",
+    content:
+      "Reminder: Tournament registration closes tomorrow! Don't miss your chance to compete.",
+    postType: "text",
+    likesCount: 56,
+    commentsCount: 18,
+    sharesCount: 12,
+    isPinned: true,
+    createdAt: "2024-11-15T07:00:00Z",
+    updatedAt: "2024-11-15T07:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441006",
+    userId: "550e8400-e29b-41d4-a716-446655440003",
+    content: "Just hit Diamond rank in Valorant! The grind was worth it 💎",
+    postType: "image",
+    likesCount: 89,
+    commentsCount: 24,
+    sharesCount: 6,
+    isPinned: false,
+    createdAt: "2024-11-14T19:30:00Z",
+    updatedAt: "2024-11-14T19:30:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441007",
+    userId: "550e8400-e29b-41d4-a716-446655440004",
+    groupId: "550e8400-e29b-41d4-a716-446655660004",
+    content:
+      "Anyone want to join our Minecraft server? We're building a massive city!",
+    postType: "text",
+    likesCount: 67,
+    commentsCount: 31,
+    sharesCount: 15,
+    isPinned: false,
+    createdAt: "2024-11-13T15:45:00Z",
+    updatedAt: "2024-11-13T15:45:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441008",
+    userId: "550e8400-e29b-41d4-a716-446655440002",
+    groupId: "550e8400-e29b-41d4-a716-446655660003",
+    content:
+      "New League of Legends patch is out! Let's discuss the meta changes.",
+    postType: "text",
+    likesCount: 45,
+    commentsCount: 52,
+    sharesCount: 8,
+    isPinned: false,
+    createdAt: "2024-11-12T10:00:00Z",
+    updatedAt: "2024-11-12T10:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441009",
+    userId: "550e8400-e29b-41d4-a716-446655440001",
+    content:
+      "Hosting a CS2 workshop tonight at 8 PM. Free coaching for beginners!",
+    postType: "text",
+    likesCount: 78,
+    commentsCount: 19,
+    sharesCount: 22,
+    isPinned: false,
+    createdAt: "2024-11-11T14:20:00Z",
+    updatedAt: "2024-11-11T14:20:00Z",
+  },
+];
+
+export const additionalMockComments: Comment[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655441203",
+    postId: "550e8400-e29b-41d4-a716-446655441005",
+    userId: "550e8400-e29b-41d4-a716-446655440003",
+    content: "Already registered! Can't wait to compete!",
+    likesCount: 5,
+    createdAt: "2024-11-15T07:30:00Z",
+    updatedAt: "2024-11-15T07:30:00Z",
+    user: {
+      username: "david",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+    },
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441204",
+    postId: "550e8400-e29b-41d4-a716-446655441006",
+    userId: "550e8400-e29b-41d4-a716-446655440000",
+    content: "Congrats David! That's amazing progress!",
+    likesCount: 8,
+    createdAt: "2024-11-14T20:00:00Z",
+    updatedAt: "2024-11-14T20:00:00Z",
+    user: {
+      username: "alice",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice",
+    },
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655441205",
+    postId: "550e8400-e29b-41d4-a716-446655441007",
+    userId: "550e8400-e29b-41d4-a716-446655440002",
+    content: "I'd love to join! Send me the server IP",
+    likesCount: 4,
+    createdAt: "2024-11-13T16:15:00Z",
+    updatedAt: "2024-11-13T16:15:00Z",
+    user: {
+      username: "charlie",
+      avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie",
+    },
+  },
+];

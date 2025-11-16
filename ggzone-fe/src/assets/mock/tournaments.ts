@@ -198,3 +198,56 @@ export const mockLiveChannels: LiveChannel[] = [
     createdAt: "2024-11-10T10:00:00Z",
   },
 ];
+
+
+// Additional tournaments
+export const additionalMockTournaments: Tournament[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655771004",
+    gameId: "550e8400-e29b-41d4-a716-446655550004",
+    name: "Overwatch 2 Community Cup",
+    description: "Friendly community tournament for all skill levels",
+    coverImageUrl:
+      "https://images.pexels.com/photos/3945683/pexels-photo-3945683.jpeg?auto=compress&cs=tinysrgb&w=600",
+    startDate: "2024-11-25T18:00:00Z",
+    endDate: "2024-11-26T22:00:00Z",
+    maxParticipants: 12,
+    currentParticipants: 8,
+    prizePool: 20000000,
+    status: "upcoming",
+    createdBy: "550e8400-e29b-41d4-a716-446655440005",
+    createdAt: "2024-11-05T10:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655771005",
+    gameId: "550e8400-e29b-41d4-a716-446655550003",
+    name: "DOTA 2 International Qualifiers",
+    description: "Regional qualifiers for The International",
+    coverImageUrl:
+      "https://images.pexels.com/photos/3977908/pexels-photo-3977908.jpeg?auto=compress&cs=tinysrgb&w=600",
+    startDate: "2024-12-10T16:00:00Z",
+    endDate: "2024-12-15T23:00:00Z",
+    maxParticipants: 16,
+    currentParticipants: 14,
+    prizePool: 150000000,
+    status: "upcoming",
+    createdBy: "550e8400-e29b-41d4-a716-446655440005",
+    createdAt: "2024-10-20T12:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655771006",
+    gameId: "550e8400-e29b-41d4-a716-446655550005",
+    name: "Minecraft Building Contest",
+    description: "Show off your creative building skills",
+    coverImageUrl:
+      "https://images.pexels.com/photos/3945657/pexels-photo-3945657.jpeg?auto=compress&cs=tinysrgb&w=600",
+    startDate: "2024-11-18T10:00:00Z",
+    endDate: "2024-11-30T23:59:00Z",
+    maxParticipants: 50,
+    currentParticipants: 32,
+    prizePool: 5000000,
+    status: "ongoing",
+    createdBy: "550e8400-e29b-41d4-a716-446655440003",
+    createdAt: "2024-11-01T08:00:00Z",
+  },
+];

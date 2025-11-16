@@ -51,6 +51,20 @@ export const Browse: React.FC = () => {
 
   return (
     <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
+      {/* Hero Banner */}
+      <div className="relative h-48 rounded-xl overflow-hidden mb-8 shadow-lg">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('https://wallpapercat.com/w/full/4/d/7/1868806-3840x2160-desktop-4k-valorant-wallpaper-image.jpg')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+        <div className="relative z-10 h-full flex flex-col justify-center px-8">
+          <h1 className="text-4xl font-bold text-white mb-2">Browse Games</h1>
+          <p className="text-gray-200">Home &gt; Games</p>
+        </div>
+      </div>
       {/* Header */}
       <div>
         <div className="flex items-center gap-3 mb-2">

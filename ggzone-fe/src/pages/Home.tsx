@@ -27,7 +27,21 @@ import {
   StatCard,
 } from "../components/cards";
 
-export const Home: React.FC = () => {
+interface HomeProps {
+  onNavigate?: (page: string) => void;
+  onViewProduct?: (productId: string) => void;
+}
+
+export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
+  const handleMarketplaceClick = () => {
+    onNavigate?.("MARKETPLACE");
+  };
+
+  const handleProductClick = (productId: string) => {
+    onNavigate?.("MARKETPLACE");
+    onViewProduct?.(productId);
+  };
+
   return (
     <div className="space-y-12 bg-white min-h-screen pb-12">
       {/* Hero Banner */}
@@ -150,17 +164,21 @@ export const Home: React.FC = () => {
             <Zap size={28} className="text-yellow-600" />
             <h2 className="text-3xl font-bold text-gray-900">Featured Gear</h2>
           </div>
-          <a
-            href="#"
+          <button
+            onClick={handleMarketplaceClick}
             className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
           >
             View All <ChevronRight size={18} />
-          </a>
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {mockMarketplaceItems.slice(0, 4).map((item) => (
-            <MarketplaceCard key={item.id} item={item} />
+            <MarketplaceCard 
+              key={item.id} 
+              item={item}
+              onViewDetails={() => handleProductClick(item.id)}
+            />
           ))}
         </div>
       </section>

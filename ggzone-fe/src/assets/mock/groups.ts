@@ -31,7 +31,7 @@ export const mockGroups: Group[] = [
     id: "550e8400-e29b-41d4-a716-446655660001",
     name: "FPS Lovers",
     description:
-      "Dedicated community for FPS game enthusiasts - Valorant, CS2, Overwatch",
+      "Dedicated community for FPS game enthusiasts - Valorant, CS2,...",
     coverImageUrl:
       "https://4kwallpapers.com/images/walls/thumbs/3950.png",
     iconUrl: "https://cdn-icons-png.flaticon.com/512/854/854894.png",

@@ -21,6 +21,7 @@ CREATE TABLE Users (
     PasswordHash NVARCHAR(255) NOT NULL,
     FullName NVARCHAR(100),
     AvatarUrl NVARCHAR(500),
+    CoverImageUrl NVARCHAR(500),
     Bio NVARCHAR(MAX),
     Location NVARCHAR(100),
     Status NVARCHAR(20) DEFAULT 'offline' CHECK (Status IN ('online', 'offline', 'in-game')),

@@ -1,22 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Header, Sidebar } from "./components/layout";
 import {
   Home,
   Browse,
   Groups,
-  Achievements,
   Marketplace,
+  ProductDetail,
   Profile,
   Trending,
   Login,
+  Register,
 } from "./pages";
-import { ROUTES } from "./utils";
 import { useAuth } from "./context/AuthContext";
 
+const ROUTES = {
+  HOME: "HOME",
+  BROWSE: "BROWSE",
+  GROUPS: "GROUPS",
+  MARKETPLACE: "MARKETPLACE",
+  PROFILE: "PROFILE",
+  TRENDING: "TRENDING",
+  LOGIN: "LOGIN",
+  REGISTER: "REGISTER",
+} as const;
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<keyof typeof ROUTES>("HOME");
+  const [currentPage, setCurrentPage] = useState<keyof typeof ROUTES>("LOGIN");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const { isAuthenticated, logout } = useAuth();
+  const mainRef = useRef<HTMLElement>(null);
+
+  // Scroll to top when page or product changes
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo({ top: 0 });
+    }
+  }, [currentPage, selectedProductId]);
 
   const handleLogin = () => {
     setCurrentPage("HOME");
@@ -27,24 +47,54 @@ function App() {
     setCurrentPage("LOGIN");
   };
 
+  const handleViewProduct = (productId: string) => {
+    setSelectedProductId(productId);
+  };
+
+  const handleBackToMarketplace = () => {
+    setSelectedProductId(null);
+  };
+
   const renderPage = () => {
     if (!isAuthenticated) {
-      return <Login onLogin={handleLogin} />;
+      if (currentPage === "REGISTER") {
+        return <Register onRegister={handleLogin} onSwitchToLogin={() => setCurrentPage("LOGIN")} />;
+      }
+      return <Login onLogin={handleLogin} onSwitchToRegister={() => setCurrentPage("REGISTER")} />;
+    }
+
+    // Show product detail if a product is selected
+    if (selectedProductId && currentPage === "MARKETPLACE") {
+      return (
+        <ProductDetail
+          productId={selectedProductId}
+          onBack={handleBackToMarketplace}
+          onViewProduct={handleViewProduct}
+        />
+      );
     }
 
     switch (currentPage) {
       case "LOGIN":
-        return <Home />;
+        return (
+          <Home 
+            onNavigate={(page) => setCurrentPage(page as keyof typeof ROUTES)} 
+            onViewProduct={handleViewProduct}
+          />
+        );
       case "HOME":
-        return <Home />;
+        return (
+          <Home 
+            onNavigate={(page) => setCurrentPage(page as keyof typeof ROUTES)} 
+            onViewProduct={handleViewProduct}
+          />
+        );
       case "BROWSE":
         return <Browse />;
       case "GROUPS":
         return <Groups />;
-      case "ACHIEVEMENTS":
-        return <Achievements />;
       case "MARKETPLACE":
-        return <Marketplace />;
+        return <Marketplace onViewProduct={handleViewProduct} />;
       case "PROFILE":
         return <Profile />;
       case "TRENDING":
@@ -79,11 +129,14 @@ function App() {
         <Sidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          onNavigate={(page) => setCurrentPage(page as keyof typeof ROUTES)}
+          onNavigate={(page) => {
+            setCurrentPage(page as keyof typeof ROUTES);
+            setSelectedProductId(null); // Reset product selection when navigating
+          }}
           currentPage={currentPage}
         />
 
-        <main className="flex-1 overflow-auto">
+        <main ref={mainRef} className="flex-1 overflow-auto">
           <div className="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 py-8 rounded-xs">
             {renderPage()}
           </div>

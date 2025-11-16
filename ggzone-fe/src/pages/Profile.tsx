@@ -1,72 +1,116 @@
-import React from "react";
-import { Avatar, Badge, Button } from "../components/common";
-import { UserCard } from "../components/cards";
-import { Zap, Award, Users } from "lucide-react";
-import { mockUsers } from "../assets/mock/users";
+import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { 
+  mockAchievements, 
+  mockUserAchievements 
+} from "../assets/mock/achievements";
+import { mockGames } from "../assets/mock/games";
+import { 
+  mockPosts, 
+  mockComments 
+} from "../assets/mock/posts";
+import { mockPhotos } from "../assets/mock/photos";
+import { 
+  getUserGroups, 
+  getUserFriends,
+  getUserPosts 
+} from "../assets/mock/helpers";
+import {
+  ProfileHeader,
+  ProfileTabs,
+  ProfileTab,
+  PostsTab,
+  StatsTab,
+  AboutTab,
+  TeamsTab,
+  GroupsTab,
+  ForumsTab,
+  VideoTab,
+  AchievementsTab,
+  NewsletterCTA,
+} from "../components/profile";
 
 export const Profile: React.FC = () => {
-  const currentUser = mockUsers[0];
-  const followingUsers = mockUsers.slice(1, 4);
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<ProfileTab>("achievements");
+
+  // Get user data
+  const userPosts = user ? getUserPosts(user.id) : [];
+  const userPhotos = user ? mockPhotos.filter(p => p.userId === user.id) : [];
+  const userGroups = user ? getUserGroups(user.id) : [];
+  const userFriends = user ? getUserFriends(user.id) : [];
+  
+  // Get user achievements
+  const userAchievementRecords = user 
+    ? mockUserAchievements.filter(ua => ua.userId === user.id)
+    : [];
+  
+  const earnedAchievementIds = userAchievementRecords
+    .filter(ua => ua.completed)
+    .map(ua => ua.achievementId);
+
+  const earnedCount = mockAchievements.filter((a) =>
+    earnedAchievementIds.includes(a.id)
+  ).length;
+
+  // Calculate total points
+  const totalPoints = userAchievementRecords
+    .filter(ua => ua.completed)
+    .reduce((sum, ua) => {
+      const achievement = mockAchievements.find(a => a.id === ua.achievementId);
+      return sum + (achievement?.points || 0);
+    }, 0);
 
   return (
-    <div className="space-y-8">
-      <div className="bg-white rounded-lg shadow-md p-8">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          <Avatar
-            src={currentUser.avatar_url}
-            alt={currentUser.username}
-            size="xl"
-          />
+    <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
+      {/* Profile Header */}
+      <ProfileHeader user={user} />
 
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-gray-900">
-                {currentUser.username}
-              </h1>
-              <Badge label={`Level ${currentUser.level}`} variant="primary" />
-            </div>
-            <p className="text-gray-600 mb-4">{currentUser.bio}</p>
+      {/* Tabs Navigation */}
+      <ProfileTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <div className="bg-blue-50 rounded-lg p-4 text-center">
-                <Award size={24} className="mx-auto mb-2 text-blue-600" />
-                <div className="text-2xl font-bold text-blue-600">8</div>
-                <div className="text-sm text-gray-600">Achievements</div>
-              </div>
-              <div className="bg-purple-50 rounded-lg p-4 text-center">
-                <Users size={24} className="mx-auto mb-2 text-purple-600" />
-                <div className="text-2xl font-bold text-purple-600">342</div>
-                <div className="text-sm text-gray-600">Followers</div>
-              </div>
-              <div className="bg-yellow-50 rounded-lg p-4 text-center flex flex-col items-center justify-center">
-                <Zap size={24} className="mb-2 text-yellow-600" />
-                <div className="text-2xl font-bold text-yellow-600">
-                  {currentUser.total_playtime}h
-                </div>
-                <div className="text-sm text-gray-600">Playtime</div>
-              </div>
-            </div>
+      {/* Tab Content */}
+      {activeTab === "posts" && (
+        <PostsTab user={user} userPosts={userPosts} userPhotos={userPhotos} />
+      )}
 
-            <div className="flex gap-2">
-              <Button variant="primary" size="md">
-                Edit Profile
-              </Button>
-              <Button variant="outline" size="md">
-                Share
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      {activeTab === "stats" && (
+        <StatsTab user={user} totalPoints={totalPoints} games={mockGames} />
+      )}
 
-      <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Following</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {followingUsers.map((user) => (
-            <UserCard key={user.id} user={user} actionLabel="Unfollow" />
-          ))}
-        </div>
-      </div>
+      {activeTab === "about" && (
+        <AboutTab 
+          user={user} 
+          userFriends={userFriends} 
+          userGroups={userGroups}
+          earnedCount={earnedCount}
+        />
+      )}
+
+      {activeTab === "teams" && <TeamsTab />}
+
+      {activeTab === "groups" && <GroupsTab userGroups={userGroups} />}
+
+      {activeTab === "forums" && (
+        <ForumsTab user={user} userPosts={userPosts} comments={mockComments} />
+      )}
+
+      {activeTab === "video" && <VideoTab userPosts={userPosts} />}
+
+      {activeTab === "achievements" && (
+        <AchievementsTab
+          achievements={mockAchievements}
+          games={mockGames}
+          earnedAchievementIds={earnedAchievementIds}
+          earnedCount={earnedCount}
+          totalPoints={totalPoints}
+          winningCount={user?.stats?.winningCount || 0}
+          friendsCount={userFriends.length}
+        />
+      )}
+
+      {/* Newsletter CTA */}
+      <NewsletterCTA />
     </div>
   );
 };

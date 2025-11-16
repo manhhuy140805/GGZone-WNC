@@ -1,8 +1,9 @@
 export { Home } from "./Home";
 export { Browse } from "./Browse";
 export { Groups } from "./Groups";
-export { Achievements } from "./Achievements";
 export { Marketplace } from "./Marketplace";
+export { ProductDetail } from "./ProductDetail";
 export { Profile } from "./Profile";
 export { Trending } from "./Trending";
 export { Login } from "./Login";
+export { Register } from "./Register";

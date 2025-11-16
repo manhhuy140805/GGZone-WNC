@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { Button } from "../components/common/Button";
-import { Input } from "../components/common/Input";
 import { useAuth } from "../context/AuthContext";
 import { authService } from "../services/authService";
 
 interface LoginProps {
   onLogin?: () => void;
+  onSwitchToRegister?: () => void;
 }
 
-export const Login: React.FC<LoginProps> = ({ onLogin }) => {
+export const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -66,197 +65,280 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const demoAccounts = authService.getDemoAccounts();
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden relative">
-      {/* Background with gradient overlay */}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Full Screen Background Image - Fixed */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-40"
+        className="fixed inset-0 bg-cover bg-center bg-fixed"
         style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1538481143235-5d630a6a4b1b?w=1200&h=800&fit=crop')",
+          backgroundImage: "url('https://wallpapercat.com/w/full/4/d/7/1868806-3840x2160-desktop-4k-valorant-wallpaper-image.jpg')",
         }}
       />
+      
+      {/* Gradient Overlay - Fixed */}
+      <div className="fixed inset-0 bg-gradient-to-br from-white/55 via-gray-50/75 to-white/75" />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4 lg:p-8">
+        <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-12">
+          
+          {/* Left Side - Branding & Info */}
+          <div className="flex-1 space-y-8 text-center lg:text-left">
+             {/* Logo */}
+            <div className="flex items-center justify-center lg:justify-start gap-3">
+              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-3xl font-black shadow-2xl text-white">
+                GZ
+              </div>
+              <span className="text-4xl font-black tracking-tight text-orange-600">GGZone</span>
+            </div>
 
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-900/40 to-black" />
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <h1 className="text-5xl lg:text-6xl font-black leading-tight text-gray-900">
+                Welcome Back to Your Gaming Universe
+              </h1>
+              <p className="text-xl text-gray-700">
+                Connect with millions of gamers worldwide and dominate the competition.
+              </p>
+            </div>
 
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse" />
-
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
-        {/* Logo/Header */}
-        <div className="mb-12 text-center">
-          <div className="inline-block mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-purple-600 rounded-lg flex items-center justify-center text-2xl font-bold">
-              GZ
+            {/* Features */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+              <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border-2 border-orange-200 shadow-lg hover:shadow-orange-300 transition-all">
+                <div className="text-4xl font-black text-orange-600 mb-2">10K+</div>
+                <div className="text-sm font-medium uppercase tracking-wide text-gray-700">Active Players</div>
+              </div>
+              <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border-2 border-purple-200 shadow-lg hover:shadow-purple-300 transition-all">
+                <div className="text-4xl font-black text-purple-600 mb-2">500+</div>
+                <div className="text-sm font-medium uppercase tracking-wide text-gray-700">Tournaments</div>
+              </div>
+              <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border-2 border-blue-200 shadow-lg hover:shadow-blue-300 transition-all">
+                <div className="text-4xl font-black text-blue-600 mb-2">50+</div>
+                <div className="text-sm font-medium uppercase tracking-wide text-gray-700">Games</div>
+              </div>
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
-            GGZone
-          </h1>
-          <p className="text-gray-400 text-sm">Gaming Community Platform</p>
-        </div>
 
-        {/* Login Card */}
-        <div className="w-full max-w-md">
-          <div className="bg-gray-900/80 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-center mb-2">Welcome Back</h2>
-            <p className="text-gray-400 text-center text-sm mb-8">
-              Sign in to your account to continue
-            </p>
-
-            {/* Social Login Buttons */}
-            <div className="space-y-3 mb-6">
-              <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
-                <span>🎮</span> Discord
-              </button>
-              <button className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
-                <span>📺</span> Twitch
-              </button>
-              <button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2">
-                <span>f</span> Facebook
-              </button>
-            </div>
-
-            {/* Divider */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className="flex-1 h-px bg-gray-700" />
-              <span className="text-gray-500 text-sm">Or</span>
-              <div className="flex-1 h-px bg-gray-700" />
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="mb-4 p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm flex items-start gap-2">
-                <span className="text-lg">⚠️</span>
-                <span>{error}</span>
-              </div>
-            )}
-
-            {/* Login Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
-                />
+          {/* Right Side - Login Form */}
+          <div className="w-full lg:w-auto lg:min-w-[480px] lg:max-w-[480px]">
+            <div className="bg-white/95 backdrop-blur-xl border border-gray-200 rounded-3xl p-8 lg:p-10 shadow-2xl overflow-hidden">
+              {/* Header */}
+              <div className="mb-8 text-center">
+                <h2 className="text-3xl font-black text-gray-900 mb-2">Sign In</h2>
+                <p className="text-gray-600">Enter your credentials to continue</p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={remember}
-                    onChange={(e) => setRemember(e.target.checked)}
-                    className="w-4 h-4 rounded bg-gray-800 border-gray-700 cursor-pointer accent-orange-500"
-                  />
-                  Remember me
-                </label>
-                <a
-                  href="#"
-                  className="text-sm text-orange-400 hover:text-orange-300 transition-colors"
-                >
-                  Forgot password?
-                </a>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin">⏳</span> Signing in...
-                  </>
-                ) : (
-                  <>
-                    <span>🚀</span> Sign In
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Demo Accounts Toggle */}
-            <div className="mt-6 pt-6 border-t border-gray-700">
-              <button
-                onClick={() => setShowDemoAccounts(!showDemoAccounts)}
-                className="w-full text-sm text-gray-400 hover:text-orange-400 transition-colors flex items-center justify-center gap-2 py-2"
-              >
-                <span>🔑</span>
-                <span>
-                  {showDemoAccounts
-                    ? "Hide Demo Accounts"
-                    : "Show Demo Accounts"}
-                </span>
-              </button>
-
-              {/* Demo Accounts List */}
-              {showDemoAccounts && (
-                <div className="mt-4 space-y-2 max-h-64 overflow-y-auto">
-                  <p className="text-xs text-gray-500 text-center mb-3">
-                    Click any account to sign in instantly
-                  </p>
-                  {demoAccounts.map((account) => (
-                    <button
-                      key={account.email}
-                      onClick={() =>
-                        handleDemoLogin(account.email, account.password)
-                      }
-                      disabled={isLoading}
-                      className="w-full p-3 bg-gray-800/50 hover:bg-gray-800 border border-gray-700 hover:border-orange-500/50 rounded-lg text-left transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-medium text-sm text-white group-hover:text-orange-400 transition-colors">
-                            {account.fullName}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {account.email}
-                          </div>
-                        </div>
-                        <div className="text-xs px-2 py-1 bg-orange-500/20 text-orange-400 rounded border border-orange-500/30">
-                          {account.role}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
+              {/* Error Message */}
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 rounded-xl text-red-600 text-sm flex items-start gap-3">
+                  <svg className="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                  <span>{error}</span>
                 </div>
               )}
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:bg-white transition-all text-base"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3 uppercase tracking-wide">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-orange-500 focus:bg-white transition-all text-base"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-3 text-sm text-gray-700 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={remember}
+                      onChange={(e) => setRemember(e.target.checked)}
+                      className="w-5 h-5 rounded-lg bg-white border-2 border-gray-300 cursor-pointer accent-orange-500"
+                    />
+                    <span className="font-medium group-hover:text-gray-900 transition-colors">Remember me</span>
+                  </label>
+                  <a href="#" className="text-sm text-orange-600 hover:text-orange-700 font-semibold transition-colors">
+                    Forgot password?
+                  </a>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] text-base uppercase tracking-wide"
+                >
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Signing in...
+                    </span>
+                  ) : (
+                    "Sign In"
+                  )}
+                </button>
+              </form>
+
+              {/* Divider */}
+              <div className="flex items-center gap-4 my-6">
+                <div className="flex-1 h-px bg-gray-300" />
+                <span className="text-gray-500 text-sm font-medium uppercase tracking-wider">Or</span>
+                <div className="flex-1 h-px bg-gray-300" />
+              </div>
+
+              {/* Social Login Buttons */}
+              <div className="grid grid-cols-3 gap-3">
+                <button 
+                  className="p-3 bg-white hover:bg-gray-50 border-2 border-gray-300 hover:border-blue-400 rounded-xl transition-all duration-200 flex items-center justify-center group shadow-sm"
+                  title="Continue with Discord"
+                >
+                  <svg className="w-6 h-6 text-blue-500 group-hover:text-blue-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                  </svg>
+                </button>
+                <button 
+                  className="p-3 bg-white hover:bg-gray-50 border-2 border-gray-300 hover:border-purple-400 rounded-xl transition-all duration-200 flex items-center justify-center group shadow-sm"
+                  title="Continue with Twitch"
+                >
+                  <svg className="w-6 h-6 text-purple-500 group-hover:text-purple-600 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                  </svg>
+                </button>
+                <button 
+                  className="p-3 bg-white hover:bg-gray-50 border-2 border-gray-300 hover:border-blue-400 rounded-xl transition-all duration-200 flex items-center justify-center group shadow-sm"
+                  title="Continue with Facebook"
+                >
+                  <svg className="w-6 h-6 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </button>
+              </div>
+
+              {/* Demo Accounts Button */}
+              <div className="mt-6 pt-6 border-t border-gray-300">
+                <button
+                  onClick={() => setShowDemoAccounts(true)}
+                  className="w-full text-sm text-gray-600 hover:text-orange-600 transition-colors flex items-center justify-center gap-3 py-2 group"
+                >
+                  <svg className="w-5 h-5 text-gray-600 group-hover:text-orange-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                  </svg>
+                  <span className="font-semibold uppercase tracking-wide">Try Demo Accounts</span>
+                </button>
+              </div>
+
+              {/* Footer */}
+              <p className="text-center text-gray-700 text-sm mt-6">
+                Don't have an account?{" "}
+                <button 
+                  onClick={onSwitchToRegister}
+                  className="text-orange-600 hover:text-orange-700 font-bold transition-colors"
+                >
+                  Create Account
+                </button>
+              </p>
             </div>
           </div>
-
-          {/* Footer */}
-          <p className="text-center text-gray-500 text-sm mt-6">
-            Don't have an account?{" "}
-            <a href="#" className="text-orange-400 hover:text-orange-300 font-semibold transition-colors">
-              Sign up
-            </a>
-          </p>
         </div>
       </div>
+
+      {/* Demo Accounts Popup Modal */}
+      {showDemoAccounts && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden border border-gray-200 animate-slideUp">
+            {/* Modal Header */}
+            <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                </svg>
+                <h3 className="text-xl font-black text-white uppercase tracking-wide">Demo Accounts</h3>
+              </div>
+              <button
+                onClick={() => setShowDemoAccounts(false)}
+                className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-lg"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 bg-gray-50">
+              <p className="text-sm text-gray-600 mb-6 text-center">
+                Select a demo account to quickly explore the platform
+              </p>
+              
+              <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
+                {demoAccounts.map((account) => (
+                  <button
+                    key={account.email}
+                    onClick={() => {
+                      handleDemoLogin(account.email, account.password);
+                      setShowDemoAccounts(false);
+                    }}
+                    disabled={isLoading}
+                    className="w-full p-4 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-orange-500 rounded-xl text-left transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group shadow-sm"
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Avatar */}
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-md">
+                        {account.fullName.charAt(0)}
+                      </div>
+                      
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-base text-gray-900 group-hover:text-orange-600 transition-colors">
+                          {account.fullName}
+                        </div>
+                        <div className="text-sm text-gray-600 mt-0.5">{account.email}</div>
+                      </div>
+                      
+                      {/* Role Badge */}
+                      <div className="text-xs px-3 py-1.5 bg-orange-100 text-orange-700 rounded-lg border border-orange-300 font-bold uppercase tracking-wide flex-shrink-0">
+                        {account.role}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="bg-white px-6 py-4 border-t border-gray-200">
+              <button
+                onClick={() => setShowDemoAccounts(false)}
+                className="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-all duration-200"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

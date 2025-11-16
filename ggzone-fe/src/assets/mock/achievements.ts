@@ -144,3 +144,79 @@ export const mockUserAchievements: UserAchievement[] = [
     createdAt: "2024-01-25T11:20:00Z",
   },
 ];
+
+
+// Additional achievements
+export const additionalMockAchievements: Achievement[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655770008",
+    name: "Social Butterfly",
+    description: "Make 50 friends in the community",
+    iconUrl: "🦋",
+    badgeType: "silver",
+    points: 30,
+    maxProgress: 20,
+    createdAt: "2024-03-10T00:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655770009",
+    name: "Content Creator",
+    description: "Post 100 times in the community",
+    iconUrl: "📝",
+    badgeType: "gold",
+    points: 40,
+    maxProgress: 20,
+    createdAt: "2024-03-15T00:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655770010",
+    name: "Marketplace Seller",
+    description: "Sell 10 items on the marketplace",
+    iconUrl: "💰",
+    badgeType: "bronze",
+    points: 15,
+    maxProgress: 20,
+    createdAt: "2024-04-01T00:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655770011",
+    name: "Stream Master",
+    description: "Stream for 100 hours total",
+    iconUrl: "🎥",
+    gameId: "550e8400-e29b-41d4-a716-446655550000",
+    badgeType: "gold",
+    points: 60,
+    maxProgress: 20,
+    createdAt: "2024-04-10T00:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655770012",
+    name: "Group Leader",
+    description: "Create and manage a group with 100+ members",
+    iconUrl: "👑",
+    badgeType: "gold",
+    points: 80,
+    maxProgress: 20,
+    createdAt: "2024-04-20T00:00:00Z",
+  },
+];
+
+export const additionalMockUserAchievements: UserAchievement[] = [
+  {
+    id: "550e8400-e29b-41d4-a716-446655880004",
+    userId: "550e8400-e29b-41d4-a716-446655440004",
+    achievementId: "550e8400-e29b-41d4-a716-446655770002",
+    progress: 12,
+    completed: false,
+    createdAt: "2024-03-01T10:00:00Z",
+  },
+  {
+    id: "550e8400-e29b-41d4-a716-446655880005",
+    userId: "550e8400-e29b-41d4-a716-446655440005",
+    achievementId: "550e8400-e29b-41d4-a716-446655770012",
+    progress: 20,
+    completed: true,
+    completedAt: "2024-05-15T14:30:00Z",
+    createdAt: "2024-04-25T09:00:00Z",
+  },
+];
