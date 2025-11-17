@@ -47,6 +47,17 @@ namespace ggzone_be.Data
         public DbSet<Game> Games { get; set; }
         public DbSet<TrendingItem> TrendingItems { get; set; }
 
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<VideoComment> VideoComments { get; set; }
+        public DbSet<VideoLike> VideoLikes { get; set; }
+
+        public DbSet<ForumCategory> ForumCategories { get; set; }
+        public DbSet<ForumTopic> ForumTopics { get; set; }
+        public DbSet<ForumReply> ForumReplies { get; set; }
+
+        public DbSet<StreamChatMessage> StreamChatMessages { get; set; }
+        public DbSet<StreamFollower> StreamFollowers { get; set; }
+
         // ==========================
         //   MODEL RELATIONSHIPS
         // ==========================
@@ -94,6 +105,19 @@ namespace ggzone_be.Data
                 .HasOne(u => u.UserStats)
                 .WithOne(us => us.User)
                 .HasForeignKey<UserStats>(us => us.UserId);
+
+            // ForumTopic relationships
+            modelBuilder.Entity<ForumTopic>()
+                .HasOne(ft => ft.User)
+                .WithMany()
+                .HasForeignKey(ft => ft.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ForumTopic>()
+                .HasOne(ft => ft.LastReplyUser)
+                .WithMany()
+                .HasForeignKey(ft => ft.LastReplyBy)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

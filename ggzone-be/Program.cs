@@ -15,6 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register Services
 builder.Services.AddScoped<IUserService, UserService>();
 
+// Register Repositories
+builder.Services.AddScoped<IPostRepository, ggzone_be.Repositorys.PostRepository>();
+
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -32,6 +35,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             )
         };
     });
+
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 // Add services
 builder.Services.AddControllers();
@@ -82,6 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFrontend"); // 👈 Enable CORS
 
 app.UseAuthentication(); // 👈 THIẾU DÒNG NÀY SẼ KHÔNG TỰ XÁC THỰC
 app.UseAuthorization();
