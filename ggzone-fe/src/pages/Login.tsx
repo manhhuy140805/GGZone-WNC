@@ -77,11 +77,12 @@ export const Login: React.FC = () => {
           {/* Left Side - Branding & Info */}
           <div className="flex-1 space-y-8 text-center lg:text-left">
              {/* Logo */}
-            <div className="flex items-center justify-center lg:justify-start gap-3">
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-3xl font-black shadow-2xl text-white">
-                GZ
-              </div>
-              <span className="text-4xl font-black tracking-tight text-orange-600">GGZone</span>
+            <div className="flex items-center justify-center lg:justify-start">
+              <img 
+                src="/logo.png" 
+                alt="GGZone" 
+                className="h-25 w-40 object-cover"
+              />
             </div>
 
             {/* Main Heading */}

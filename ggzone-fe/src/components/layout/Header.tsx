@@ -65,9 +65,11 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
             >
               <Menu size={24} className="text-gray-700" />
             </button>
-            <div className="font-bold text-2xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              GGZone
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="GGZone" 
+              className="h-13 w-20 object-cover"
+            />
           </div>
 
           <div className="flex-1 max-w-md mx-4">
