@@ -5,9 +5,10 @@ import type { Game } from "../../assets/mock/games";
 interface GameCardProps {
   game: Game;
   rank?: number;
+  onViewGame?: (gameId: string) => void;
 }
 
-export const GameCard: React.FC<GameCardProps> = ({ game, rank }) => {
+export const GameCard: React.FC<GameCardProps> = ({ game, rank, onViewGame }) => {
   const getRankBadge = (index?: number) => {
     if (index === 0) return "🥇";
     if (index === 1) return "🥈";
@@ -16,7 +17,10 @@ export const GameCard: React.FC<GameCardProps> = ({ game, rank }) => {
   };
 
   return (
-    <div className="group relative h-48 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow">
+    <div 
+      onClick={() => onViewGame?.(game.id)}
+      className="group relative h-48 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow"
+    >
       <img
         src={game.coverImageUrl}
         alt={game.name}
@@ -26,9 +30,15 @@ export const GameCard: React.FC<GameCardProps> = ({ game, rank }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-        <button className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            onViewGame?.(game.id);
+          }}
+          className="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors flex items-center gap-2 shadow-lg"
+        >
           <Play size={16} fill="currentColor" />
-          Play
+          View Details
         </button>
       </div>
 

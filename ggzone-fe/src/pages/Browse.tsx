@@ -12,7 +12,11 @@ import {
 } from "lucide-react";
 import { mockGames } from "../assets/mock/games";
 
-export const Browse: React.FC = () => {
+interface BrowseProps {
+  onViewGame?: (gameId: string) => void;
+}
+
+export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
@@ -92,7 +96,7 @@ export const Browse: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {featuredGames.map((game, idx) => (
-            <GameCard key={game.id} game={game} rank={idx} />
+            <GameCard key={game.id} game={game} rank={idx} onViewGame={onViewGame} />
           ))}
         </div>
       </section>
@@ -256,9 +260,12 @@ export const Browse: React.FC = () => {
           {sortedGames.map((game, idx) => (
             <div key={game.id}>
               {viewMode === "grid" ? (
-                <GameCard game={game} rank={idx} />
+                <GameCard game={game} rank={idx} onViewGame={onViewGame} />
               ) : (
-                <div className="bg-white rounded-lg p-4 border border-gray-200 hover:border-orange-400 hover:shadow-md transition-all flex gap-4">
+                <div 
+                  onClick={() => onViewGame?.(game.id)}
+                  className="bg-white rounded-lg p-4 border border-gray-200 hover:border-orange-400 hover:shadow-md transition-all flex gap-4 cursor-pointer"
+                >
                   <img
                     src={game.coverImageUrl}
                     alt={game.name}
@@ -284,9 +291,15 @@ export const Browse: React.FC = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors flex items-center gap-1 h-fit">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onViewGame?.(game.id);
+                    }}
+                    className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors flex items-center gap-1 h-fit"
+                  >
                     <Zap size={14} />
-                    Play
+                    View
                   </button>
                 </div>
               )}

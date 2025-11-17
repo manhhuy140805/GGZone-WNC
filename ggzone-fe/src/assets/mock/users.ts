@@ -37,7 +37,7 @@ export const mockUsers: User[] = [
     isVerified: true,
     createdAt: "2024-01-15T10:30:00Z",
     stats: {
-      friendsCount: 2,
+      friendsCount: 3,
       winningCount: 5,
       tournamentsCount: 1,
       postsCount: 3,

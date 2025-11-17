@@ -6,7 +6,11 @@ import {
   ShoppingCart,
   TrendingUp,
   UserCircle,
+  UserPlus,
+  MessageCircle,
   X,
+  Rss,
+  Radio,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -32,13 +36,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems: NavItem[] = [
     { icon: <Home size={20} />, label: "Home", key: "HOME" },
     { icon: <Gamepad2 size={20} />, label: "Browse Games", key: "BROWSE" },
+    { icon: <Rss size={20} />, label: "Feed", key: "FEED" },
+    { icon: <Radio size={20} />, label: "Livestream", key: "LIVESTREAM" },
     { icon: <Users size={20} />, label: "Groups", key: "GROUPS" },
     {
       icon: <ShoppingCart size={20} />,
       label: "Marketplace",
       key: "MARKETPLACE",
     },
-    { icon: <TrendingUp size={20} />, label: "Trending", key: "TRENDING" },
+    { icon: <UserPlus size={20} />, label: "Friends", key: "FRIENDS" },
+    { icon: <MessageCircle size={20} />, label: "Messages", key: "MESSAGES", badge: 3 },
     {
       icon: <UserCircle size={20} />,
       label: "Profile",

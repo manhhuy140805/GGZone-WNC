@@ -185,3 +185,31 @@ export const getUserStatsSummary = (userId: string) => {
     tournamentsCount: tournaments.length,
   };
 };
+
+/**
+ * Get user's conversations
+ */
+export const getUserConversations = (userId: string) => {
+  const { mockConversations } = require("./messages");
+  return mockConversations.filter((conv: any) =>
+    conv.participants.includes(userId)
+  );
+};
+
+/**
+ * Get conversation between two users
+ */
+export const getConversationBetweenUsers = (userId1: string, userId2: string) => {
+  const { mockConversations } = require("./messages");
+  return mockConversations.find(
+    (conv: any) =>
+      conv.participants.includes(userId1) && conv.participants.includes(userId2)
+  );
+};
+
+/**
+ * Get messages for a conversation
+ */
+export const getConversationMessages = (conversationId: string) => {
+  return mockMessages.filter((m) => m.conversationId === conversationId);
+};

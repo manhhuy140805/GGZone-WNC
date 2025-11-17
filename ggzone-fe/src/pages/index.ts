@@ -1,9 +1,14 @@
 export { Home } from "./Home";
 export { Browse } from "./Browse";
+export { GameDetail } from "./GameDetail";
+export { Feed } from "./Feed";
+export { Livestream } from "./Livestream";
 export { Groups } from "./Groups";
+export { GroupDetail } from "./GroupDetail";
 export { Marketplace } from "./Marketplace";
 export { ProductDetail } from "./ProductDetail";
 export { Profile } from "./Profile";
-export { Trending } from "./Trending";
 export { Login } from "./Login";
 export { Register } from "./Register";
+export { Friends } from "./Friends";
+export { Messages } from "./Messages";

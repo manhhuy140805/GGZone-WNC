@@ -30,9 +30,10 @@ import {
 interface HomeProps {
   onNavigate?: (page: string) => void;
   onViewProduct?: (productId: string) => void;
+  onViewGame?: (gameId: string) => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
+export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct, onViewGame }) => {
   const handleMarketplaceClick = () => {
     onNavigate?.("MARKETPLACE");
   };
@@ -40,6 +41,19 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
   const handleProductClick = (productId: string) => {
     onNavigate?.("MARKETPLACE");
     onViewProduct?.(productId);
+  };
+
+  const handleLiveChannelClick = () => {
+    onNavigate?.("LIVESTREAM");
+  };
+
+  const handleGameClick = (gameId: string) => {
+    onNavigate?.("BROWSE");
+    onViewGame?.(gameId);
+  };
+
+  const handleGroupClick = () => {
+    onNavigate?.("GROUPS");
   };
 
   return (
@@ -108,7 +122,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {mockLiveChannels.slice(0, 4).map((channel) => (
-            <LiveChannelCard key={channel.id} channel={channel} />
+            <div key={channel.id} onClick={handleLiveChannelClick} className="cursor-pointer">
+              <LiveChannelCard channel={channel} />
+            </div>
           ))}
         </div>
       </section>
@@ -130,7 +146,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {mockGames.slice(0, 6).map((game, idx) => (
-            <GameCard key={game.id} game={game} rank={idx} />
+            <GameCard key={game.id} game={game} rank={idx} onViewGame={handleGameClick} />
           ))}
         </div>
       </section>
@@ -152,7 +168,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {mockGroups.slice(0, 4).map((group) => (
-            <CommunityCard key={group.id} group={group} />
+            <div key={group.id} onClick={handleGroupClick} className="cursor-pointer">
+              <CommunityCard group={group} />
+            </div>
           ))}
         </div>
       </section>

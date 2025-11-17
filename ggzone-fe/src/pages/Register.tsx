@@ -1,11 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface RegisterProps {
-  onRegister?: () => void;
-  onSwitchToLogin?: () => void;
-}
-
-export const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
+export const Register: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -51,10 +48,9 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin 
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
       
-      // Success
-      if (onRegister) {
-        onRegister();
-      }
+      // Success - navigate to login
+      alert("Account created successfully! Please login.");
+      navigate("/login");
     } catch (err) {
       setError("Registration failed. Please try again.");
     } finally {
@@ -294,7 +290,7 @@ export const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin 
               <p className="text-center text-gray-700 text-sm mt-6">
                 Already have an account?{" "}
                 <button 
-                  onClick={onSwitchToLogin}
+                  onClick={() => navigate("/login")}
                   className="text-orange-600 hover:text-orange-700 font-bold transition-colors"
                 >
                   Sign In

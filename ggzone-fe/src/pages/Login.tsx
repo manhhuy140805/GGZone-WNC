@@ -1,13 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { authService } from "../services/authService";
 
-interface LoginProps {
-  onLogin?: () => void;
-  onSwitchToRegister?: () => void;
-}
-
-export const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
+export const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
@@ -26,9 +23,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => 
       const result = await login({ email, password });
 
       if (result.success) {
-        if (onLogin) {
-          onLogin();
-        }
+        navigate("/");
       } else {
         setError(result.message || "Đăng nhập thất bại");
       }
@@ -49,9 +44,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => 
       const result = await login({ email: demoEmail, password: demoPassword });
 
       if (result.success) {
-        if (onLogin) {
-          onLogin();
-        }
+        navigate("/");
       } else {
         setError(result.message || "Đăng nhập thất bại");
       }
@@ -253,7 +246,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => 
               <p className="text-center text-gray-700 text-sm mt-6">
                 Don't have an account?{" "}
                 <button 
-                  onClick={onSwitchToRegister}
+                  onClick={() => navigate("/register")}
                   className="text-orange-600 hover:text-orange-700 font-bold transition-colors"
                 >
                   Create Account

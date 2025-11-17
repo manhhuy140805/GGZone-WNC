@@ -10,7 +10,11 @@ import {
 } from "lucide-react";
 import { mockGroups } from "../assets/mock/groups";
 
-export const Groups: React.FC = () => {
+interface GroupsProps {
+  onViewGroup?: (groupId: string) => void;
+}
+
+export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [joinedGroups, setJoinedGroups] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<"members" | "newest" | "trending">(
@@ -218,11 +222,12 @@ export const Groups: React.FC = () => {
       {sortedGroups.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {sortedGroups.map((group) => (
-            <CommunityCard
-              key={group.id}
-              group={group}
-              onJoin={() => handleJoinGroup(group.id)}
-            />
+            <div key={group.id} onClick={() => onViewGroup?.(group.id)} className="cursor-pointer">
+              <CommunityCard
+                group={group}
+                onJoin={() => handleJoinGroup(group.id)}
+              />
+            </div>
           ))}
         </div>
       ) : (
