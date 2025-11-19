@@ -2,11 +2,9 @@
 export * from "./users";
 export * from "./games";
 export * from "./groups";
-export * from "./achievements";
 export * from "./marketplace";
 export * from "./posts";
 export * from "./photos";
-export * from "./liveChannels";
 export * from "./friendships";
 export * from "./messages";
 

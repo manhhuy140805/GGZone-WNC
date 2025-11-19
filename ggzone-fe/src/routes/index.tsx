@@ -5,7 +5,6 @@ import {
   Browse,
   GameDetail as GameDetailPage,
   Feed,
-  Livestream,
   Groups,
   GroupDetail as GroupDetailPage,
   Marketplace,
@@ -15,6 +14,7 @@ import {
   Register,
   Friends,
   Messages,
+  Cart,
 } from "../pages";
 import { useAuth } from "../context/AuthContext";
 
@@ -82,12 +82,23 @@ const HomeWrapper: React.FC = () => {
           MARKETPLACE: "/marketplace",
           BROWSE: "/browse",
           GROUPS: "/groups",
-          LIVESTREAM: "/livestream",
         };
         navigate(routes[page] || "/");
       }}
       onViewProduct={(id) => navigate(`/marketplace/${id}`)}
       onViewGame={(id) => navigate(`/browse/${id}`)}
+      onViewGroup={(id) => navigate(`/groups/${id}`)}
+    />
+  );
+};
+
+const CartWrapper: React.FC = () => {
+  const navigate = useNavigate();
+  return (
+    <Cart
+      onBack={() => navigate("/marketplace")}
+      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
+      onCheckout={() => alert("Checkout functionality coming soon!")}
     />
   );
 };
@@ -129,14 +140,6 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <Feed />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/livestream"
-        element={
-          <ProtectedRoute>
-            <Livestream />
           </ProtectedRoute>
         }
       />
@@ -193,6 +196,14 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <Messages />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <ProtectedRoute>
+            <CartWrapper />
           </ProtectedRoute>
         }
       />

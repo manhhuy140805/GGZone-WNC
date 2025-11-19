@@ -7,7 +7,6 @@ import {
 } from "../assets/mock/posts";
 import { mockPhotos } from "../assets/mock/photos";
 import { mockUsers } from "../assets/mock/users";
-import { mockLiveChannels } from "../assets/mock/liveChannels";
 import {
   Image,
   Video,
@@ -149,7 +148,8 @@ export const Feed: React.FC = () => {
     }
   };
 
-  const liveStreams = mockLiveChannels.slice(0, 3);
+  // Removed livestream feature
+  const liveStreams: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -548,47 +548,6 @@ export const Feed: React.FC = () => {
           ref={sidebarRef}
           className={`space-y-4 ${isSticky ? 'lg:sticky lg:top-4' : ''}`}
         >
-          {/* Live Streams */}
-          <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4">
-            <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Play size={20} className="text-red-600" />
-              Live Now
-            </h3>
-            <div className="space-y-3">
-              {liveStreams.map((stream) => (
-                <div key={stream.id} className="group cursor-pointer">
-                  <div className="relative aspect-video rounded-lg overflow-hidden mb-2">
-                    <img
-                      src={stream.thumbnailUrl}
-                      alt={stream.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
-                      <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                      LIVE
-                    </div>
-                    <div className="absolute bottom-2 right-2 bg-black/80 text-white px-2 py-1 rounded text-xs">
-                      {stream.viewers.toLocaleString()}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-xs">
-                      {stream.streamerName.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm text-gray-900 truncate">
-                        {stream.streamerName}
-                      </p>
-                      <p className="text-xs text-gray-500 truncate">
-                        {stream.game}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Gaming Events */}
           <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4">
             <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">

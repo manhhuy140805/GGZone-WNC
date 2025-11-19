@@ -38,15 +38,40 @@ namespace ggzone_be.Models
 
         public bool IsActive { get; set; } = true;
 
+        // Play Now Feature Fields
+        [MaxLength(20)]
+        public string GameType { get; set; } = "desktop"; // desktop, web, mobile, browser
+
+        [MaxLength(500)]
+        public string? LaunchUrl { get; set; } // steam://, epic://, custom protocol
+
+        [MaxLength(500)]
+        public string? DownloadUrl { get; set; }
+
+        [MaxLength(500)]
+        public string? WebPlayUrl { get; set; }
+
+        public long? InstallSize { get; set; } // Size in MB
+
+        public string? MinimumRequirements { get; set; } // JSON format
+
+        public string? RecommendedRequirements { get; set; } // JSON format
+
+        [MaxLength(50)]
+        public string? LauncherType { get; set; } // steam, epic, origin, custom, web
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // Navigation Properties
         public virtual ICollection<Photo> Photos { get; set; } = new List<Photo>();
-        public virtual ICollection<LiveChannel> LiveChannels { get; set; } = new List<LiveChannel>();
         public virtual ICollection<MarketplaceItem> MarketplaceItems { get; set; } = new List<MarketplaceItem>();
         public virtual ICollection<StoreProduct> StoreProducts { get; set; } = new List<StoreProduct>();
-        public virtual ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();
         public virtual ICollection<Tournament> Tournaments { get; set; } = new List<Tournament>();
         public virtual ICollection<TrendingItem> TrendingItems { get; set; } = new List<TrendingItem>();
+        public virtual ICollection<UserGameLibrary> UserGameLibraries { get; set; } = new List<UserGameLibrary>();
+        public virtual ICollection<GameLaunchLog> GameLaunchLogs { get; set; } = new List<GameLaunchLog>();
+        public virtual ICollection<GameScreenshot> GameScreenshots { get; set; } = new List<GameScreenshot>();
+        public virtual ICollection<GameVideo> GameVideos { get; set; } = new List<GameVideo>();
+        public virtual ICollection<GameReview> GameReviews { get; set; } = new List<GameReview>();
     }
 }

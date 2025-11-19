@@ -11,7 +11,6 @@ export { TeamsTab } from "./tabs/TeamsTab";
 export { GroupsTab } from "./tabs/GroupsTab";
 export { ForumsTab } from "./tabs/ForumsTab";
 export { VideoTab } from "./tabs/VideoTab";
-export { AchievementsTab } from "./tabs/AchievementsTab";
 
 // Sections
 export { StatsCards } from "./sections/StatsCards";

@@ -7,9 +7,8 @@ import { mockFriendships } from "./friendships";
 import { mockPosts } from "./posts";
 import { mockGroups } from "./groups";
 import { mockGroupMembers } from "./groupMembers";
-import { mockUserAchievements } from "./achievements";
 import { mockTournamentParticipants } from "./tournaments";
-import { mockMessages } from "./messages";
+import { mockMessages, mockConversations } from "./messages";
 import { mockNotifications } from "./notifications";
 
 /**
@@ -77,24 +76,7 @@ export const getGroupMembers = (groupId: string) => {
   }));
 };
 
-/**
- * Get user's achievements with progress
- */
-export const getUserAchievementsWithDetails = (userId: string) => {
-  return mockUserAchievements
-    .filter((ua) => ua.userId === userId)
-    .map((ua) => {
-      const achievement = mockUserAchievements.find(
-        (a) => a.achievementId === ua.achievementId
-      );
-      return {
-        ...achievement,
-        progress: ua.progress,
-        completed: ua.completed,
-        completedAt: ua.completedAt,
-      };
-    });
-};
+
 
 /**
  * Get user's tournament participations
@@ -107,8 +89,9 @@ export const getUserTournaments = (userId: string) => {
  * Get unread messages count for user
  */
 export const getUnreadMessagesCount = (userId: string) => {
-  return mockMessages.filter((m) => m.receiverId === userId && !m.isRead)
-    .length;
+  // Get conversations where user is participant
+  const userConversations = getUserConversations(userId);
+  return userConversations.reduce((total, conv) => total + conv.unreadCount, 0);
 };
 
 /**
@@ -173,7 +156,6 @@ export const getUserStatsSummary = (userId: string) => {
   const friends = getUserFriends(userId);
   const posts = getUserPosts(userId);
   const groups = getUserGroups(userId);
-  const achievements = getUserAchievementsWithDetails(userId);
   const tournaments = getUserTournaments(userId);
 
   return {
@@ -181,7 +163,6 @@ export const getUserStatsSummary = (userId: string) => {
     friendsCount: friends.length,
     postsCount: posts.length,
     groupsCount: groups.length,
-    achievementsCount: achievements.filter((a) => a.completed).length,
     tournamentsCount: tournaments.length,
   };
 };
@@ -190,8 +171,7 @@ export const getUserStatsSummary = (userId: string) => {
  * Get user's conversations
  */
 export const getUserConversations = (userId: string) => {
-  const { mockConversations } = require("./messages");
-  return mockConversations.filter((conv: any) =>
+  return mockConversations.filter((conv) =>
     conv.participants.includes(userId)
   );
 };
@@ -200,9 +180,8 @@ export const getUserConversations = (userId: string) => {
  * Get conversation between two users
  */
 export const getConversationBetweenUsers = (userId1: string, userId2: string) => {
-  const { mockConversations } = require("./messages");
   return mockConversations.find(
-    (conv: any) =>
+    (conv) =>
       conv.participants.includes(userId1) && conv.participants.includes(userId2)
   );
 };

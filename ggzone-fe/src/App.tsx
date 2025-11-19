@@ -20,17 +20,21 @@ function AppContent() {
       HOME: "/",
       BROWSE: "/browse",
       FEED: "/feed",
-      LIVESTREAM: "/livestream",
       GROUPS: "/groups",
       MARKETPLACE: "/marketplace",
       PROFILE: "/profile",
       FRIENDS: "/friends",
       MESSAGES: "/messages",
+      CART: "/cart",
     };
     
     const path = routeMap[route] || "/";
     navigate(path);
     setSidebarOpen(false);
+  };
+
+  const handleViewCart = () => {
+    navigate("/cart");
   };
 
   // Get current page from pathname
@@ -39,12 +43,12 @@ function AppContent() {
     if (path === "/" || path === "/login") return "HOME";
     if (path.startsWith("/browse")) return "BROWSE";
     if (path.startsWith("/feed")) return "FEED";
-    if (path.startsWith("/livestream")) return "LIVESTREAM";
     if (path.startsWith("/groups")) return "GROUPS";
     if (path.startsWith("/marketplace")) return "MARKETPLACE";
     if (path.startsWith("/profile")) return "PROFILE";
     if (path.startsWith("/friends")) return "FRIENDS";
     if (path.startsWith("/messages")) return "MESSAGES";
+    if (path.startsWith("/cart")) return "CART";
     return "HOME";
   };
 
@@ -57,7 +61,11 @@ function AppContent() {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      <Header onMenuToggle={() => setSidebarOpen(!sidebarOpen)} onLogout={handleLogout} />
+      <Header 
+        onMenuToggle={() => setSidebarOpen(!sidebarOpen)} 
+        onLogout={handleLogout}
+        onViewCart={handleViewCart}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar

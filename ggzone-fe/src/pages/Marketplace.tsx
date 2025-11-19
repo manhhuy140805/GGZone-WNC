@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { MarketplaceCard } from "../components/cards";
-import { Search, Grid3x3, List, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { Search, Grid3x3, List, SlidersHorizontal } from "lucide-react";
 import { mockMarketplaceItems, MarketplaceItem } from "../assets/mock/marketplace";
+import { useCart } from "../context/CartContext";
 
 interface MarketplaceProps {
   onViewProduct: (productId: string) => void;
 }
 
 export const Marketplace: React.FC<MarketplaceProps> = ({ onViewProduct }) => {
+  const { addToCart } = useCart();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"price-low" | "price-high" | "newest">("newest");
@@ -34,11 +36,13 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onViewProduct }) => {
   const categories = Array.from(new Set(mockMarketplaceItems.map((i) => i.category)));
 
   const handleAddToCart = (item: MarketplaceItem) => {
+    addToCart(item, 1);
     alert(`Added "${item.title}" to cart!`);
   };
 
   const handleBuy = (item: MarketplaceItem) => {
-    alert(`Purchasing "${item.title}"!`);
+    addToCart(item, 1);
+    alert(`Added "${item.title}" to cart! Redirecting to checkout...`);
   };
 
   return (

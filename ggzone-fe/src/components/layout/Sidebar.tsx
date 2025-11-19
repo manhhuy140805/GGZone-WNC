@@ -10,7 +10,6 @@ import {
   MessageCircle,
   X,
   Rss,
-  Radio,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -37,7 +36,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { icon: <Home size={20} />, label: "Home", key: "HOME" },
     { icon: <Gamepad2 size={20} />, label: "Browse Games", key: "BROWSE" },
     { icon: <Rss size={20} />, label: "Feed", key: "FEED" },
-    { icon: <Radio size={20} />, label: "Livestream", key: "LIVESTREAM" },
     { icon: <Users size={20} />, label: "Groups", key: "GROUPS" },
     {
       icon: <ShoppingCart size={20} />,

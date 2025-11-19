@@ -1,9 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { 
-  mockAchievements, 
-  mockUserAchievements 
-} from "../assets/mock/achievements";
 import { mockGames } from "../assets/mock/games";
 import { 
   mockPosts, 
@@ -26,13 +22,12 @@ import {
   GroupsTab,
   ForumsTab,
   VideoTab,
-  AchievementsTab,
   NewsletterCTA,
 } from "../components/profile";
 
 export const Profile: React.FC = () => {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<ProfileTab>("achievements");
+  const [activeTab, setActiveTab] = useState<ProfileTab>("posts");
 
   // Get user data
   const userPosts = user ? getUserPosts(user.id) : [];
@@ -40,26 +35,9 @@ export const Profile: React.FC = () => {
   const userGroups = user ? getUserGroups(user.id) : [];
   const userFriends = user ? getUserFriends(user.id) : [];
   
-  // Get user achievements
-  const userAchievementRecords = user 
-    ? mockUserAchievements.filter(ua => ua.userId === user.id)
-    : [];
-  
-  const earnedAchievementIds = userAchievementRecords
-    .filter(ua => ua.completed)
-    .map(ua => ua.achievementId);
-
-  const earnedCount = mockAchievements.filter((a) =>
-    earnedAchievementIds.includes(a.id)
-  ).length;
-
-  // Calculate total points
-  const totalPoints = userAchievementRecords
-    .filter(ua => ua.completed)
-    .reduce((sum, ua) => {
-      const achievement = mockAchievements.find(a => a.id === ua.achievementId);
-      return sum + (achievement?.points || 0);
-    }, 0);
+  // Removed achievements feature
+  const earnedCount = 0;
+  const totalPoints = 0;
 
   return (
     <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
@@ -96,18 +74,6 @@ export const Profile: React.FC = () => {
       )}
 
       {activeTab === "video" && <VideoTab userPosts={userPosts} />}
-
-      {activeTab === "achievements" && (
-        <AchievementsTab
-          achievements={mockAchievements}
-          games={mockGames}
-          earnedAchievementIds={earnedAchievementIds}
-          earnedCount={earnedCount}
-          totalPoints={totalPoints}
-          winningCount={user?.stats?.winningCount || 0}
-          friendsCount={userFriends.length}
-        />
-      )}
 
       {/* Newsletter CTA */}
       <NewsletterCTA />

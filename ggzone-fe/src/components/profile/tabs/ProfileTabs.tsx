@@ -7,8 +7,7 @@ export type ProfileTab =
   | "teams" 
   | "groups" 
   | "forums" 
-  | "video" 
-  | "achievements";
+  | "video";
 
 interface ProfileTabsProps {
   activeTab: ProfileTab;
@@ -23,7 +22,6 @@ const tabs: { key: ProfileTab; label: string }[] = [
   { key: "groups", label: "Groups" },
   { key: "forums", label: "Forums" },
   { key: "video", label: "Video" },
-  { key: "achievements", label: "Achievements" },
 ];
 
 export const ProfileTabs: React.FC<ProfileTabsProps> = ({ 

@@ -4,56 +4,48 @@ import {
   Users,
   TrendingUp,
   ChevronRight,
-  Users2,
-  Gamepad2,
-  Trophy,
-  DollarSign,
   Zap,
-  Eye,
-  Play,
-  Heart,
-  Tag,
-  ShoppingCart,
 } from "lucide-react";
-import { mockLiveChannels } from "../assets/mock/liveChannels";
 import { mockGroups } from "../assets/mock/groups";
 import { mockMarketplaceItems } from "../assets/mock/marketplace";
 import { mockGames } from "../assets/mock/games";
 import {
-  LiveChannelCard,
   GameCard,
   CommunityCard,
   MarketplaceCard,
-  StatCard,
 } from "../components/cards";
 
 interface HomeProps {
   onNavigate?: (page: string) => void;
   onViewProduct?: (productId: string) => void;
   onViewGame?: (gameId: string) => void;
+  onViewGroup?: (groupId: string) => void;
 }
 
-export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct, onViewGame }) => {
+export const Home: React.FC<HomeProps> = ({ 
+  onNavigate, 
+  onViewProduct, 
+  onViewGame,
+  onViewGroup
+}) => {
   const handleMarketplaceClick = () => {
     onNavigate?.("MARKETPLACE");
   };
 
   const handleProductClick = (productId: string) => {
-    onNavigate?.("MARKETPLACE");
     onViewProduct?.(productId);
   };
 
-  const handleLiveChannelClick = () => {
-    onNavigate?.("LIVESTREAM");
-  };
-
   const handleGameClick = (gameId: string) => {
-    onNavigate?.("BROWSE");
     onViewGame?.(gameId);
   };
 
-  const handleGroupClick = () => {
-    onNavigate?.("GROUPS");
+  const handleGroupClick = (groupId: string) => {
+    if (onViewGroup) {
+      onViewGroup(groupId);
+    } else {
+      onNavigate?.("GROUPS");
+    }
   };
 
   return (
@@ -102,33 +94,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct, onViewGam
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </section>
 
-      {/* Live Channels */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-            <h2 className="text-3xl font-bold text-gray-900">Live Now</h2>
-            <span className="text-sm text-gray-600">
-              {mockLiveChannels.length} streaming
-            </span>
-          </div>
-          <a
-            href="#"
-            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
-          >
-            View All <ChevronRight size={18} />
-          </a>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {mockLiveChannels.slice(0, 4).map((channel) => (
-            <div key={channel.id} onClick={handleLiveChannelClick} className="cursor-pointer">
-              <LiveChannelCard channel={channel} />
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Trending Games */}
       <section>
         <div className="flex items-center justify-between mb-6">
@@ -168,7 +133,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onViewProduct, onViewGam
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {mockGroups.slice(0, 4).map((group) => (
-            <div key={group.id} onClick={handleGroupClick} className="cursor-pointer">
+            <div key={group.id} onClick={() => handleGroupClick(group.id)} className="cursor-pointer">
               <CommunityCard group={group} />
             </div>
           ))}

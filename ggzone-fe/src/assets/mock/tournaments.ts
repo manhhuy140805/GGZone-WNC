@@ -23,21 +23,6 @@ export interface TournamentParticipant {
   joinedAt: string;
 }
 
-export interface LiveChannel {
-  id: string;
-  userId: string;
-  gameId?: string;
-  title: string;
-  description?: string;
-  thumbnailUrl?: string;
-  streamUrl?: string;
-  viewersCount: number;
-  status: "live" | "offline" | "scheduled";
-  startedAt?: string;
-  endedAt?: string;
-  createdAt: string;
-}
-
 export const mockTournaments: Tournament[] = [
   {
     id: "550e8400-e29b-41d4-a716-446655771000",
@@ -137,65 +122,6 @@ export const mockTournamentParticipants: TournamentParticipant[] = [
     rank: 1,
     score: 35,
     joinedAt: "2024-09-15T15:00:00Z",
-  },
-];
-
-export const mockLiveChannels: LiveChannel[] = [
-  {
-    id: "550e8400-e29b-41d4-a716-446655791000",
-    userId: "550e8400-e29b-41d4-a716-446655440000",
-    gameId: "550e8400-e29b-41d4-a716-446655550000",
-    title: "Alice streaming Valorant - Ranked grind to Radiant",
-    description: "Let's climb the ranks together! Come chat and hang out.",
-    thumbnailUrl:
-      "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=300",
-    streamUrl: "https://www.twitch.tv/alice_gaming",
-    viewersCount: 234,
-    status: "live",
-    startedAt: "2024-11-15T08:00:00Z",
-    createdAt: "2024-11-15T08:00:00Z",
-  },
-  {
-    id: "550e8400-e29b-41d4-a716-446655791001",
-    userId: "550e8400-e29b-41d4-a716-446655440001",
-    gameId: "550e8400-e29b-41d4-a716-446655550002",
-    title: "Bob playing CS2 - Pro aim training session",
-    description: "Watch and learn professional CS2 techniques!",
-    thumbnailUrl:
-      "https://images.pexels.com/photos/3550652/pexels-photo-3550652.jpeg?auto=compress&cs=tinysrgb&w=300",
-    streamUrl: "https://www.twitch.tv/bob_gaming",
-    viewersCount: 456,
-    status: "live",
-    startedAt: "2024-11-15T09:30:00Z",
-    createdAt: "2024-11-15T09:30:00Z",
-  },
-  {
-    id: "550e8400-e29b-41d4-a716-446655791002",
-    userId: "550e8400-e29b-41d4-a716-446655440003",
-    gameId: "550e8400-e29b-41d4-a716-446655550001",
-    title: "David - League of Legends coaching session",
-    description: "Free coaching for new players. Learn the basics!",
-    thumbnailUrl:
-      "https://images.pexels.com/photos/3634539/pexels-photo-3634539.jpeg?auto=compress&cs=tinysrgb&w=300",
-    streamUrl: "https://www.twitch.tv/david_coaching",
-    viewersCount: 0,
-    status: "offline",
-    endedAt: "2024-11-15T06:00:00Z",
-    createdAt: "2024-11-14T12:00:00Z",
-  },
-  {
-    id: "550e8400-e29b-41d4-a716-446655791003",
-    userId: "550e8400-e29b-41d4-a716-446655440004",
-    gameId: "550e8400-e29b-41d4-a716-446655550000",
-    title: "Emma - Valorant tournament watch party",
-    description: "Watching Vietnam Cup finals with chat!",
-    thumbnailUrl:
-      "https://images.pexels.com/photos/3808517/pexels-photo-3808517.jpeg?auto=compress&cs=tinysrgb&w=300",
-    streamUrl: "https://www.twitch.tv/emma_watchparty",
-    viewersCount: 0,
-    status: "scheduled",
-    startedAt: "2024-11-20T17:00:00Z",
-    createdAt: "2024-11-10T10:00:00Z",
   },
 ];
 

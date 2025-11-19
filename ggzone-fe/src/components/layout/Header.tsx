@@ -1,51 +1,22 @@
 import React, { useState } from "react";
-import { Menu, X, Search, Bell, LogOut, ShoppingCart, Trash2 } from "lucide-react";
-import { Input } from "../common";
+import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
   onLogout?: () => void;
+  onViewCart?: () => void;
 }
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  quantity: number;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
+export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCart }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const { user, logout } = useAuth();
+  const { cartItems, removeFromCart, getTotalPrice, getTotalItems } = useCart();
 
-  // Mock cart items - In real app, this would come from context/state management
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "1",
-      name: "Gaming Headset Pro",
-      price: 89.99,
-      image: "https://images.unsplash.com/photo-1599669454699-248893623440?w=100&h=100&fit=crop",
-      quantity: 1,
-    },
-    {
-      id: "2",
-      name: "Mechanical Keyboard RGB",
-      price: 129.99,
-      image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=100&h=100&fit=crop",
-      quantity: 2,
-    },
-  ]);
-
-  const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const removeFromCart = (id: string) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
-  };
+  const cartTotal = getTotalPrice();
+  const cartCount = getTotalItems();
 
   const handleLogout = () => {
     logout();
@@ -66,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
               <Menu size={24} className="text-gray-700" />
             </button>
             <img 
-              src="/logo.png" 
+              src="/Logo-B.png" 
               alt="GGZone" 
               className="h-13 w-20 object-cover"
             />
@@ -81,8 +52,6 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
               <input
                 type="text"
                 placeholder="Search games, users..."
-                onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setIsSearchFocused(false)}
                 className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition"
               />
             </div>
@@ -141,27 +110,27 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
                         <div className="p-4 space-y-3">
                           {cartItems.map((item) => (
                             <div
-                              key={item.id}
+                              key={item.product.id}
                               className="flex gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                             >
                               <img
-                                src={item.image}
-                                alt={item.name}
+                                src={item.product.coverImageUrl}
+                                alt={item.product.title}
                                 className="w-16 h-16 rounded-lg object-cover"
                               />
                               <div className="flex-1 min-w-0">
                                 <h4 className="font-semibold text-sm text-gray-900 truncate">
-                                  {item.name}
+                                  {item.product.title}
                                 </h4>
                                 <p className="text-xs text-gray-600 mt-1">
                                   Qty: {item.quantity}
                                 </p>
                                 <p className="text-sm font-bold text-orange-600 mt-1">
-                                  ${(item.price * item.quantity).toFixed(2)}
+                                  ${(item.product.price * item.quantity).toLocaleString()}
                                 </p>
                               </div>
                               <button
-                                onClick={() => removeFromCart(item.id)}
+                                onClick={() => removeFromCart(item.product.id)}
                                 className="p-2 hover:bg-red-100 rounded-lg transition-colors self-start"
                               >
                                 <Trash2 size={16} className="text-red-600" />
@@ -178,11 +147,17 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout }) => {
                         <div className="flex items-center justify-between mb-3">
                           <span className="font-semibold text-gray-700">Total:</span>
                           <span className="text-2xl font-bold text-orange-600">
-                            ${cartTotal.toFixed(2)}
+                            ${cartTotal.toLocaleString()}
                           </span>
                         </div>
-                        <button className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold py-3 rounded-lg transition-all shadow-md hover:shadow-lg">
-                          Checkout
+                        <button 
+                          onClick={() => {
+                            setShowCart(false);
+                            onViewCart?.();
+                          }}
+                          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold py-3 rounded-lg transition-all shadow-md hover:shadow-lg"
+                        >
+                          View Cart
                         </button>
                       </div>
                     )}

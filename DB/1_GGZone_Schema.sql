@@ -1,35 +1,42 @@
-﻿-- ================================================
--- Drop & Create Database GGZone
+-- ================================================
+-- GGZONE DATABASE - COMPLETE SCHEMA
+-- Version: 4.0 Final
+-- Date: 2024
+-- ================================================
+-- Features:
+-- - Core Social Platform (Users, Posts, Groups, Forums)
+-- - Gaming Features (Games, Tournaments, Videos)
+-- - Marketplace & Store (Shopping, Orders)
+-- - Play Now Feature (Game Launching & Tracking)
+-- - Admin Panel (Moderation, Reports, Analytics)
+-- ================================================
+-- Total: 40 Tables, 50+ Indexes, 10 Procedures, 14 Triggers
 -- ================================================
 
--- Kiểm tra database tồn tại
 USE MASTER
-IF EXISTS (
-    SELECT name 
-    FROM sys.databases 
-    WHERE name = N'GGZone'
-)
+GO
+
+-- Drop existing database
+IF EXISTS (SELECT name FROM sys.databases WHERE name = N'GGZone')
 BEGIN
-    -- Đóng tất cả kết nối tới DB (tránh lỗi khi DROP)
     ALTER DATABASE GGZone SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-    
-    -- Xóa database
     DROP DATABASE GGZone;
+    PRINT '✓ Existing database dropped';
 END
 GO
 
--- Tạo lại database
+-- Create new database
 CREATE DATABASE GGZone;
 GO
 
 USE GGZone;
 GO
 
+
 -- ================================================
--- USERS & AUTHENTICATION
+-- SECTION 1: USERS & AUTHENTICATION
 -- ================================================
 
--- Users Table
 CREATE TABLE Users (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Username NVARCHAR(50) UNIQUE NOT NULL,
@@ -47,7 +54,6 @@ CREATE TABLE Users (
     UpdatedAt DATETIME2 DEFAULT GETDATE()
 );
 
--- User Stats Table
 CREATE TABLE UserStats (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER UNIQUE NOT NULL,
@@ -59,13 +65,11 @@ CREATE TABLE UserStats (
     VideosCount INT DEFAULT 0,
     ForumsCount INT DEFAULT 0,
     GroupsCount INT DEFAULT 0,
-    AchievementsCount INT DEFAULT 0,
     TotalPoints INT DEFAULT 0,
     Level INT DEFAULT 1,
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
 
--- Friendships Table (Many-to-Many)
 CREATE TABLE Friendships (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -77,11 +81,46 @@ CREATE TABLE Friendships (
     CONSTRAINT UQ_Friendship UNIQUE (UserId, FriendId)
 );
 
+CREATE TABLE UserPreferences (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER UNIQUE NOT NULL,
+    Theme NVARCHAR(20) DEFAULT 'light' CHECK (Theme IN ('light', 'dark', 'auto')),
+    Language NVARCHAR(10) DEFAULT 'en',
+    EmailNotifications BIT DEFAULT 1,
+    PushNotifications BIT DEFAULT 1,
+    PrivacyLevel NVARCHAR(20) DEFAULT 'public' CHECK (PrivacyLevel IN ('public', 'friends', 'private')),
+    ShowOnlineStatus BIT DEFAULT 1,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    UpdatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE UserBadges (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    BadgeName NVARCHAR(50) NOT NULL,
+    BadgeType NVARCHAR(20) CHECK (BadgeType IN ('verified', 'premium', 'moderator', 'developer', 'partner')),
+    IconUrl NVARCHAR(500),
+    AwardedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE FriendSuggestions (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    SuggestedUserId UNIQUEIDENTIFIER NOT NULL,
+    Reason NVARCHAR(100),
+    Score DECIMAL(5, 2) DEFAULT 0.0,
+    IsShown BIT DEFAULT 0,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+    FOREIGN KEY (SuggestedUserId) REFERENCES Users(Id) ON DELETE NO ACTION
+);
+
 -- ================================================
--- GROUPS
+-- SECTION 2: GROUPS & COMMUNITIES
 -- ================================================
 
--- Groups Table
 CREATE TABLE Groups (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Name NVARCHAR(100) NOT NULL,
@@ -96,7 +135,6 @@ CREATE TABLE Groups (
     FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
 );
 
--- Group Members Table
 CREATE TABLE GroupMembers (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     GroupId UNIQUEIDENTIFIER NOT NULL,
@@ -109,10 +147,9 @@ CREATE TABLE GroupMembers (
 );
 
 -- ================================================
--- GAMES
+-- SECTION 3: GAMES & GAMING
 -- ================================================
 
--- Games/Categories Table
 CREATE TABLE Games (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Name NVARCHAR(100) NOT NULL,
@@ -125,14 +162,70 @@ CREATE TABLE Games (
     ReleaseDate DATE,
     Publisher NVARCHAR(100),
     IsActive BIT DEFAULT 1,
+    -- Play Now Feature Fields
+    GameType NVARCHAR(20) DEFAULT 'desktop' CHECK (GameType IN ('desktop', 'web', 'mobile', 'browser')),
+    LaunchUrl NVARCHAR(500),
+    DownloadUrl NVARCHAR(500),
+    WebPlayUrl NVARCHAR(500),
+    InstallSize BIGINT,
+    MinimumRequirements NVARCHAR(MAX),
+    RecommendedRequirements NVARCHAR(MAX),
+    LauncherType NVARCHAR(50),
     CreatedAt DATETIME2 DEFAULT GETDATE()
 );
 
+CREATE TABLE GameReviews (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    GameId UNIQUEIDENTIFIER NOT NULL,
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    Rating INT NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
+    Title NVARCHAR(200),
+    Content NVARCHAR(MAX),
+    HoursPlayed INT DEFAULT 0,
+    IsRecommended BIT DEFAULT 1,
+    HelpfulCount INT DEFAULT 0,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    UpdatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE CASCADE,
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
+    CONSTRAINT UQ_GameReview UNIQUE (GameId, UserId)
+);
+
 -- ================================================
--- POSTS & SOCIAL FEED
+-- SECTION 4: PLAY NOW FEATURE
 -- ================================================
 
--- Posts/Feed Table
+CREATE TABLE UserGameLibrary (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    GameId UNIQUEIDENTIFIER NOT NULL,
+    IsInstalled BIT DEFAULT 0,
+    InstallPath NVARCHAR(500),
+    LastPlayed DATETIME2,
+    TotalPlayTime INT DEFAULT 0,
+    IsFavorite BIT DEFAULT 0,
+    AddedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE CASCADE,
+    CONSTRAINT UQ_UserGameLibrary UNIQUE (UserId, GameId)
+);
+
+CREATE TABLE GameLaunchLogs (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    GameId UNIQUEIDENTIFIER NOT NULL,
+    LaunchMethod NVARCHAR(50),
+    LaunchedAt DATETIME2 DEFAULT GETDATE(),
+    SessionDuration INT,
+    EndedAt DATETIME2,
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE NO ACTION
+);
+
+-- ================================================
+-- SECTION 5: POSTS & SOCIAL FEED
+-- ================================================
+
 CREATE TABLE Posts (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -150,7 +243,6 @@ CREATE TABLE Posts (
     FOREIGN KEY (GroupId) REFERENCES Groups(Id) ON DELETE SET NULL
 );
 
--- Post Media Table (for galleries)
 CREATE TABLE PostMedia (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     PostId UNIQUEIDENTIFIER NOT NULL,
@@ -161,7 +253,6 @@ CREATE TABLE PostMedia (
     FOREIGN KEY (PostId) REFERENCES Posts(Id) ON DELETE CASCADE
 );
 
--- Post Likes Table
 CREATE TABLE PostLikes (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     PostId UNIQUEIDENTIFIER NOT NULL,
@@ -172,7 +263,6 @@ CREATE TABLE PostLikes (
     CONSTRAINT UQ_PostLike UNIQUE (PostId, UserId)
 );
 
--- Comments Table
 CREATE TABLE Comments (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     PostId UNIQUEIDENTIFIER NOT NULL,
@@ -187,7 +277,6 @@ CREATE TABLE Comments (
     FOREIGN KEY (ParentCommentId) REFERENCES Comments(Id) ON DELETE NO ACTION
 );
 
--- Photos/Gallery Table
 CREATE TABLE Photos (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -201,32 +290,9 @@ CREATE TABLE Photos (
 );
 
 -- ================================================
--- LIVE STREAMING
+-- SECTION 6: MARKETPLACE & STORE
 -- ================================================
 
--- Live Channels/Streams Table
-CREATE TABLE LiveChannels (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    GameId UNIQUEIDENTIFIER,
-    Title NVARCHAR(200) NOT NULL,
-    Description NVARCHAR(MAX),
-    ThumbnailUrl NVARCHAR(500),
-    StreamUrl NVARCHAR(500),
-    ViewersCount INT DEFAULT 0,
-    Status NVARCHAR(20) DEFAULT 'live' CHECK (Status IN ('live', 'offline', 'scheduled')),
-    StartedAt DATETIME2,
-    EndedAt DATETIME2,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
-);
-
--- ================================================
--- MARKETPLACE
--- ================================================
-
--- Marketplace Items Table
 CREATE TABLE MarketplaceItems (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     SellerId UNIQUEIDENTIFIER NOT NULL,
@@ -245,7 +311,6 @@ CREATE TABLE MarketplaceItems (
     FOREIGN KEY (GameId) REFERENCES Games(Id)
 );
 
--- Marketplace Reviews Table
 CREATE TABLE MarketplaceReviews (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     ItemId UNIQUEIDENTIFIER NOT NULL,
@@ -258,11 +323,6 @@ CREATE TABLE MarketplaceReviews (
     CONSTRAINT UQ_MarketplaceReview UNIQUE (ItemId, UserId)
 );
 
--- ================================================
--- STORE
--- ================================================
-
--- Store Products Table
 CREATE TABLE StoreProducts (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Name NVARCHAR(200) NOT NULL,
@@ -278,7 +338,6 @@ CREATE TABLE StoreProducts (
     FOREIGN KEY (GameId) REFERENCES Games(Id)
 );
 
--- Store Orders Table
 CREATE TABLE StoreOrders (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -291,43 +350,34 @@ CREATE TABLE StoreOrders (
     FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id)
 );
 
--- ================================================
--- ACHIEVEMENTS
--- ================================================
-
--- Achievements Table
-CREATE TABLE Achievements (
+CREATE TABLE OrderItems (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Name NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(MAX),
-    IconUrl NVARCHAR(500),
-    GameId UNIQUEIDENTIFIER,
-    BadgeType NVARCHAR(20) CHECK (BadgeType IN ('bronze', 'silver', 'gold')),
-    Points INT DEFAULT 0,
-    MaxProgress INT DEFAULT 20,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
+    OrderId UNIQUEIDENTIFIER NOT NULL,
+    ProductId UNIQUEIDENTIFIER,
+    ProductName NVARCHAR(200),
+    Quantity INT DEFAULT 1,
+    UnitPrice DECIMAL(10, 2) NOT NULL,
+    TotalPrice DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (OrderId) REFERENCES StoreOrders(Id) ON DELETE CASCADE,
+    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id)
 );
 
--- User Achievements Table
-CREATE TABLE UserAchievements (
+CREATE TABLE ShoppingCart (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
-    AchievementId UNIQUEIDENTIFIER NOT NULL,
-    Progress INT DEFAULT 0,
-    Completed BIT DEFAULT 0,
-    CompletedAt DATETIME2,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    ProductId UNIQUEIDENTIFIER,
+    MarketplaceItemId UNIQUEIDENTIFIER,
+    Quantity INT DEFAULT 1,
+    AddedAt DATETIME2 DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (AchievementId) REFERENCES Achievements(Id) ON DELETE CASCADE,
-    CONSTRAINT UQ_UserAchievement UNIQUE (UserId, AchievementId)
+    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id),
+    FOREIGN KEY (MarketplaceItemId) REFERENCES MarketplaceItems(Id)
 );
 
 -- ================================================
--- TOURNAMENTS
+-- SECTION 7: TOURNAMENTS
 -- ================================================
 
--- Tournaments Table
 CREATE TABLE Tournaments (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     GameId UNIQUEIDENTIFIER,
@@ -346,7 +396,6 @@ CREATE TABLE Tournaments (
     FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
 );
 
--- Tournament Participants Table
 CREATE TABLE TournamentParticipants (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     TournamentId UNIQUEIDENTIFIER NOT NULL,
@@ -360,10 +409,9 @@ CREATE TABLE TournamentParticipants (
 );
 
 -- ================================================
--- NOTIFICATIONS & MESSAGES
+-- SECTION 8: NOTIFICATIONS & MESSAGES
 -- ================================================
 
--- Notifications Table
 CREATE TABLE Notifications (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -377,7 +425,6 @@ CREATE TABLE Notifications (
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
 
--- Messages Table
 CREATE TABLE Messages (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     SenderId UNIQUEIDENTIFIER NOT NULL,
@@ -390,13 +437,12 @@ CREATE TABLE Messages (
 );
 
 -- ================================================
--- TRENDING
+-- SECTION 9: TRENDING
 -- ================================================
 
--- Trending Content Table
 CREATE TABLE TrendingItems (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    ContentType NVARCHAR(50) NOT NULL CHECK (ContentType IN ('game', 'post', 'video', 'stream', 'player')),
+    ContentType NVARCHAR(50) NOT NULL CHECK (ContentType IN ('game', 'post', 'video', 'player')),
     ContentId UNIQUEIDENTIFIER NOT NULL,
     GameId UNIQUEIDENTIFIER,
     ViewsCount INT DEFAULT 0,
@@ -407,7 +453,6 @@ CREATE TABLE TrendingItems (
     FOREIGN KEY (GameId) REFERENCES Games(Id)
 );
 
--- Trending Players/Users (for leaderboards)
 CREATE TABLE TrendingPlayers (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -423,40 +468,9 @@ CREATE TABLE TrendingPlayers (
 );
 
 -- ================================================
--- SHOPPING CART & ORDERS
+-- SECTION 10: FORUMS & DISCUSSIONS
 -- ================================================
 
--- Shopping Cart Table
-CREATE TABLE ShoppingCart (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    ProductId UNIQUEIDENTIFIER,
-    MarketplaceItemId UNIQUEIDENTIFIER,
-    Quantity INT DEFAULT 1,
-    AddedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id),
-    FOREIGN KEY (MarketplaceItemId) REFERENCES MarketplaceItems(Id)
-);
-
--- Order Items Table (for detailed order tracking)
-CREATE TABLE OrderItems (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    OrderId UNIQUEIDENTIFIER NOT NULL,
-    ProductId UNIQUEIDENTIFIER,
-    ProductName NVARCHAR(200),
-    Quantity INT DEFAULT 1,
-    UnitPrice DECIMAL(10, 2) NOT NULL,
-    TotalPrice DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (OrderId) REFERENCES StoreOrders(Id) ON DELETE CASCADE,
-    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id)
-);
-
--- ================================================
--- FORUMS & DISCUSSIONS
--- ================================================
-
--- Forum Categories Table
 CREATE TABLE ForumCategories (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     Name NVARCHAR(100) NOT NULL,
@@ -469,7 +483,6 @@ CREATE TABLE ForumCategories (
     FOREIGN KEY (GameId) REFERENCES Games(Id)
 );
 
--- Forum Topics Table
 CREATE TABLE ForumTopics (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     CategoryId UNIQUEIDENTIFIER NOT NULL,
@@ -489,7 +502,6 @@ CREATE TABLE ForumTopics (
     FOREIGN KEY (LastReplyBy) REFERENCES Users(Id) ON DELETE NO ACTION
 );
 
--- Forum Replies Table
 CREATE TABLE ForumReplies (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     TopicId UNIQUEIDENTIFIER NOT NULL,
@@ -503,10 +515,9 @@ CREATE TABLE ForumReplies (
 );
 
 -- ================================================
--- VIDEOS & MEDIA
+-- SECTION 11: VIDEOS & MEDIA
 -- ================================================
 
--- Videos Table (user uploaded videos, highlights, etc.)
 CREATE TABLE Videos (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
@@ -515,11 +526,11 @@ CREATE TABLE Videos (
     Description NVARCHAR(MAX),
     VideoUrl NVARCHAR(500) NOT NULL,
     ThumbnailUrl NVARCHAR(500),
-    Duration INT, -- in seconds
+    Duration INT,
     ViewsCount INT DEFAULT 0,
     LikesCount INT DEFAULT 0,
     CommentsCount INT DEFAULT 0,
-    Category NVARCHAR(50), -- 'gameplay', 'tutorial', 'highlight', 'review'
+    Category NVARCHAR(50),
     IsPublic BIT DEFAULT 1,
     CreatedAt DATETIME2 DEFAULT GETDATE(),
     UpdatedAt DATETIME2 DEFAULT GETDATE(),
@@ -527,7 +538,6 @@ CREATE TABLE Videos (
     FOREIGN KEY (GameId) REFERENCES Games(Id)
 );
 
--- Video Comments Table
 CREATE TABLE VideoComments (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     VideoId UNIQUEIDENTIFIER NOT NULL,
@@ -539,7 +549,6 @@ CREATE TABLE VideoComments (
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
 );
 
--- Video Likes Table
 CREATE TABLE VideoLikes (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     VideoId UNIQUEIDENTIFIER NOT NULL,
@@ -551,140 +560,133 @@ CREATE TABLE VideoLikes (
 );
 
 -- ================================================
--- LIVE STREAM CHAT & INTERACTIONS
+-- SECTION 12: USER ACTIVITY
 -- ================================================
 
--- Stream Chat Messages Table
-CREATE TABLE StreamChatMessages (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    ChannelId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Message NVARCHAR(500) NOT NULL,
-    MessageType NVARCHAR(20) DEFAULT 'text' CHECK (MessageType IN ('text', 'emote', 'system')),
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (ChannelId) REFERENCES LiveChannels(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
-);
-
--- Stream Followers Table
-CREATE TABLE StreamFollowers (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    ChannelId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    FollowedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (ChannelId) REFERENCES LiveChannels(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
-    CONSTRAINT UQ_StreamFollower UNIQUE (ChannelId, UserId)
-);
-
--- ================================================
--- USER ACTIVITY & ENGAGEMENT
--- ================================================
-
--- User Activity Log Table
 CREATE TABLE UserActivityLog (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
-    ActivityType NVARCHAR(50) NOT NULL, -- 'login', 'post_created', 'game_played', 'achievement_unlocked'
+    ActivityType NVARCHAR(50) NOT NULL,
     RelatedId UNIQUEIDENTIFIER,
     RelatedType NVARCHAR(50),
-    Metadata NVARCHAR(MAX), -- JSON data for additional info
+    Metadata NVARCHAR(MAX),
     CreatedAt DATETIME2 DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
 );
 
--- User Preferences Table
-CREATE TABLE UserPreferences (
+-- ================================================
+-- SECTION 13: ADMIN PANEL
+-- ================================================
+
+CREATE TABLE AdminAuditLogs (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER UNIQUE NOT NULL,
-    Theme NVARCHAR(20) DEFAULT 'light' CHECK (Theme IN ('light', 'dark', 'auto')),
-    Language NVARCHAR(10) DEFAULT 'en',
-    EmailNotifications BIT DEFAULT 1,
-    PushNotifications BIT DEFAULT 1,
-    PrivacyLevel NVARCHAR(20) DEFAULT 'public' CHECK (PrivacyLevel IN ('public', 'friends', 'private')),
-    ShowOnlineStatus BIT DEFAULT 1,
+    AdminUserId UNIQUEIDENTIFIER NOT NULL,
+    Action NVARCHAR(100) NOT NULL,
+    TargetType NVARCHAR(50),
+    TargetId UNIQUEIDENTIFIER,
+    OldValue NVARCHAR(MAX),
+    NewValue NVARCHAR(MAX),
+    IpAddress NVARCHAR(50),
+    UserAgent NVARCHAR(500),
+    Reason NVARCHAR(MAX),
     CreatedAt DATETIME2 DEFAULT GETDATE(),
-    UpdatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
+    FOREIGN KEY (AdminUserId) REFERENCES Users(Id) ON DELETE NO ACTION
 );
 
--- User Badges Table (special achievements, verified, premium, etc.)
-CREATE TABLE UserBadges (
+CREATE TABLE UserBans (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
-    BadgeName NVARCHAR(50) NOT NULL,
-    BadgeType NVARCHAR(20) CHECK (BadgeType IN ('verified', 'premium', 'moderator', 'developer', 'partner')),
-    IconUrl NVARCHAR(500),
-    AwardedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
-);
-
--- ================================================
--- GAME DETAILS & METADATA
--- ================================================
-
--- Game Screenshots Table
-CREATE TABLE GameScreenshots (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    GameId UNIQUEIDENTIFIER NOT NULL,
-    ImageUrl NVARCHAR(500) NOT NULL,
-    Caption NVARCHAR(200),
-    OrderIndex INT DEFAULT 0,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE CASCADE
-);
-
--- Game Videos/Trailers Table
-CREATE TABLE GameVideos (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    GameId UNIQUEIDENTIFIER NOT NULL,
-    Title NVARCHAR(200),
-    VideoUrl NVARCHAR(500) NOT NULL,
-    ThumbnailUrl NVARCHAR(500),
-    VideoType NVARCHAR(20) CHECK (VideoType IN ('trailer', 'gameplay', 'review')),
-    OrderIndex INT DEFAULT 0,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE CASCADE
-);
-
--- Game Reviews Table
-CREATE TABLE GameReviews (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    GameId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Rating INT NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
-    Title NVARCHAR(200),
-    Content NVARCHAR(MAX),
-    HoursPlayed INT DEFAULT 0,
-    IsRecommended BIT DEFAULT 1,
-    HelpfulCount INT DEFAULT 0,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    UpdatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
-    CONSTRAINT UQ_GameReview UNIQUE (GameId, UserId)
-);
-
--- ================================================
--- FRIEND REQUESTS & SUGGESTIONS
--- ================================================
-
--- Friend Suggestions Table (algorithm-based friend recommendations)
-CREATE TABLE FriendSuggestions (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    SuggestedUserId UNIQUEIDENTIFIER NOT NULL,
-    Reason NVARCHAR(100), -- 'mutual_friends', 'same_game', 'same_group'
-    Score DECIMAL(5, 2) DEFAULT 0.0,
-    IsShown BIT DEFAULT 0,
+    BannedBy UNIQUEIDENTIFIER NOT NULL,
+    BanType NVARCHAR(20) CHECK (BanType IN ('temporary', 'permanent')),
+    Reason NVARCHAR(MAX) NOT NULL,
+    StartDate DATETIME2 DEFAULT GETDATE(),
+    EndDate DATETIME2,
+    IsActive BIT DEFAULT 1,
     CreatedAt DATETIME2 DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (SuggestedUserId) REFERENCES Users(Id) ON DELETE NO ACTION
+    FOREIGN KEY (BannedBy) REFERENCES Users(Id) ON DELETE NO ACTION
 );
 
--- ================================================
--- INDEXES FOR PERFORMANCE
--- ================================================
+CREATE TABLE ModerationQueue (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ContentType NVARCHAR(50) NOT NULL,
+    ContentId UNIQUEIDENTIFIER NOT NULL,
+    UserId UNIQUEIDENTIFIER NOT NULL,
+    Status NVARCHAR(20) DEFAULT 'pending' CHECK (Status IN ('pending', 'approved', 'rejected')),
+    Priority NVARCHAR(20) DEFAULT 'normal' CHECK (Priority IN ('low', 'normal', 'high', 'urgent')),
+    AutoFlagged BIT DEFAULT 0,
+    FlagReason NVARCHAR(MAX),
+    ReviewedBy UNIQUEIDENTIFIER,
+    ReviewedAt DATETIME2,
+    ReviewNotes NVARCHAR(MAX),
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
+    FOREIGN KEY (ReviewedBy) REFERENCES Users(Id) ON DELETE NO ACTION
+);
+
+CREATE TABLE DailyStatistics (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    StatDate DATE NOT NULL UNIQUE,
+    NewUsers INT DEFAULT 0,
+    ActiveUsers INT DEFAULT 0,
+    TotalPosts INT DEFAULT 0,
+    TotalComments INT DEFAULT 0,
+    TotalVideos INT DEFAULT 0,
+    TotalGameLaunches INT DEFAULT 0,
+    TotalRevenue DECIMAL(10, 2) DEFAULT 0,
+    TotalOrders INT DEFAULT 0,
+    CreatedAt DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE TABLE FeaturedContent (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    ContentType NVARCHAR(50) NOT NULL,
+    ContentId UNIQUEIDENTIFIER NOT NULL,
+    Title NVARCHAR(200),
+    Description NVARCHAR(MAX),
+    ImageUrl NVARCHAR(500),
+    DisplayOrder INT DEFAULT 0,
+    StartDate DATETIME2,
+    EndDate DATETIME2,
+    IsActive BIT DEFAULT 1,
+    CreatedBy UNIQUEIDENTIFIER,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE Announcements (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    Title NVARCHAR(200) NOT NULL,
+    Content NVARCHAR(MAX) NOT NULL,
+    Type NVARCHAR(20) CHECK (Type IN ('info', 'warning', 'maintenance', 'update', 'event')),
+    Priority NVARCHAR(20) DEFAULT 'normal' CHECK (Priority IN ('low', 'normal', 'high')),
+    TargetAudience NVARCHAR(20) DEFAULT 'all' CHECK (TargetAudience IN ('all', 'users', 'premium', 'moderators')),
+    IsActive BIT DEFAULT 1,
+    StartDate DATETIME2,
+    EndDate DATETIME2,
+    CreatedBy UNIQUEIDENTIFIER,
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
+);
+
+CREATE TABLE EmailTemplates (
+    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
+    TemplateName NVARCHAR(100) UNIQUE NOT NULL,
+    Subject NVARCHAR(200) NOT NULL,
+    HtmlBody NVARCHAR(MAX) NOT NULL,
+    TextBody NVARCHAR(MAX),
+    Category NVARCHAR(50),
+    Variables NVARCHAR(MAX),
+    IsActive BIT DEFAULT 1,
+    UpdatedBy UNIQUEIDENTIFIER,
+    UpdatedAt DATETIME2 DEFAULT GETDATE(),
+    CreatedAt DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (UpdatedBy) REFERENCES Users(Id)
+);
+
+
+GO
+
 
 -- Users Indexes
 CREATE NONCLUSTERED INDEX IX_Users_Username ON Users(Username);
@@ -724,11 +726,6 @@ CREATE NONCLUSTERED INDEX IX_Notifications_CreatedAt ON Notifications(CreatedAt 
 CREATE NONCLUSTERED INDEX IX_Messages_SenderId ON Messages(SenderId);
 CREATE NONCLUSTERED INDEX IX_Messages_ReceiverId_IsRead ON Messages(ReceiverId, IsRead);
 
--- Live Channels Indexes
-CREATE NONCLUSTERED INDEX IX_LiveChannels_Status ON LiveChannels(Status);
-CREATE NONCLUSTERED INDEX IX_LiveChannels_UserId ON LiveChannels(UserId);
-CREATE NONCLUSTERED INDEX IX_LiveChannels_GameId ON LiveChannels(GameId);
-
 -- Trending Indexes
 CREATE NONCLUSTERED INDEX IX_TrendingItems_TrendingDate ON TrendingItems(TrendingDate DESC);
 CREATE NONCLUSTERED INDEX IX_TrendingItems_ContentType ON TrendingItems(ContentType);
@@ -736,10 +733,6 @@ CREATE NONCLUSTERED INDEX IX_TrendingItems_ContentType ON TrendingItems(ContentT
 -- Tournaments Indexes
 CREATE NONCLUSTERED INDEX IX_Tournaments_Status ON Tournaments(Status);
 CREATE NONCLUSTERED INDEX IX_Tournaments_StartDate ON Tournaments(StartDate);
-
--- Achievement Indexes
-CREATE NONCLUSTERED INDEX IX_UserAchievements_UserId ON UserAchievements(UserId);
-CREATE NONCLUSTERED INDEX IX_UserAchievements_Completed ON UserAchievements(Completed);
 
 -- Shopping Cart Indexes
 CREATE NONCLUSTERED INDEX IX_ShoppingCart_UserId ON ShoppingCart(UserId);
@@ -759,20 +752,12 @@ CREATE NONCLUSTERED INDEX IX_Videos_Category ON Videos(Category);
 CREATE NONCLUSTERED INDEX IX_Videos_CreatedAt ON Videos(CreatedAt DESC);
 CREATE NONCLUSTERED INDEX IX_VideoComments_VideoId ON VideoComments(VideoId);
 
--- Stream Chat Indexes
-CREATE NONCLUSTERED INDEX IX_StreamChatMessages_ChannelId ON StreamChatMessages(ChannelId);
-CREATE NONCLUSTERED INDEX IX_StreamChatMessages_CreatedAt ON StreamChatMessages(CreatedAt DESC);
-CREATE NONCLUSTERED INDEX IX_StreamFollowers_ChannelId ON StreamFollowers(ChannelId);
-CREATE NONCLUSTERED INDEX IX_StreamFollowers_UserId ON StreamFollowers(UserId);
-
 -- Activity Log Indexes
 CREATE NONCLUSTERED INDEX IX_UserActivityLog_UserId ON UserActivityLog(UserId);
 CREATE NONCLUSTERED INDEX IX_UserActivityLog_ActivityType ON UserActivityLog(ActivityType);
 CREATE NONCLUSTERED INDEX IX_UserActivityLog_CreatedAt ON UserActivityLog(CreatedAt DESC);
 
--- Game Content Indexes
-CREATE NONCLUSTERED INDEX IX_GameScreenshots_GameId ON GameScreenshots(GameId);
-CREATE NONCLUSTERED INDEX IX_GameVideos_GameId ON GameVideos(GameId);
+-- Game Reviews Indexes
 CREATE NONCLUSTERED INDEX IX_GameReviews_GameId ON GameReviews(GameId);
 CREATE NONCLUSTERED INDEX IX_GameReviews_UserId ON GameReviews(UserId);
 
@@ -785,13 +770,40 @@ CREATE NONCLUSTERED INDEX IX_TrendingPlayers_Rank ON TrendingPlayers(Rank);
 CREATE NONCLUSTERED INDEX IX_FriendSuggestions_UserId ON FriendSuggestions(UserId);
 CREATE NONCLUSTERED INDEX IX_FriendSuggestions_Score ON FriendSuggestions(Score DESC);
 
+-- Play Now Indexes
+CREATE NONCLUSTERED INDEX IX_UserGameLibrary_UserId ON UserGameLibrary(UserId);
+CREATE NONCLUSTERED INDEX IX_UserGameLibrary_GameId ON UserGameLibrary(GameId);
+CREATE NONCLUSTERED INDEX IX_UserGameLibrary_LastPlayed ON UserGameLibrary(LastPlayed DESC);
+CREATE NONCLUSTERED INDEX IX_GameLaunchLogs_UserId ON GameLaunchLogs(UserId);
+CREATE NONCLUSTERED INDEX IX_GameLaunchLogs_GameId ON GameLaunchLogs(GameId);
+CREATE NONCLUSTERED INDEX IX_GameLaunchLogs_LaunchedAt ON GameLaunchLogs(LaunchedAt DESC);
+
+-- Admin Panel Indexes
+CREATE NONCLUSTERED INDEX IX_AdminAuditLogs_AdminUserId ON AdminAuditLogs(AdminUserId);
+CREATE NONCLUSTERED INDEX IX_AdminAuditLogs_Action ON AdminAuditLogs(Action);
+CREATE NONCLUSTERED INDEX IX_AdminAuditLogs_CreatedAt ON AdminAuditLogs(CreatedAt DESC);
+CREATE NONCLUSTERED INDEX IX_AdminAuditLogs_TargetType ON AdminAuditLogs(TargetType);
+CREATE NONCLUSTERED INDEX IX_UserBans_UserId ON UserBans(UserId);
+CREATE NONCLUSTERED INDEX IX_UserBans_IsActive ON UserBans(IsActive);
+CREATE NONCLUSTERED INDEX IX_UserBans_EndDate ON UserBans(EndDate);
+CREATE NONCLUSTERED INDEX IX_ModerationQueue_Status ON ModerationQueue(Status);
+CREATE NONCLUSTERED INDEX IX_ModerationQueue_Priority ON ModerationQueue(Priority);
+CREATE NONCLUSTERED INDEX IX_ModerationQueue_CreatedAt ON ModerationQueue(CreatedAt DESC);
+CREATE NONCLUSTERED INDEX IX_DailyStatistics_StatDate ON DailyStatistics(StatDate DESC);
+CREATE NONCLUSTERED INDEX IX_FeaturedContent_IsActive ON FeaturedContent(IsActive);
+CREATE NONCLUSTERED INDEX IX_FeaturedContent_DisplayOrder ON FeaturedContent(DisplayOrder);
+CREATE NONCLUSTERED INDEX IX_FeaturedContent_ContentType ON FeaturedContent(ContentType);
+CREATE NONCLUSTERED INDEX IX_Announcements_IsActive ON Announcements(IsActive);
+CREATE NONCLUSTERED INDEX IX_Announcements_Type ON Announcements(Type);
+CREATE NONCLUSTERED INDEX IX_Announcements_StartDate ON Announcements(StartDate DESC);
+CREATE NONCLUSTERED INDEX IX_EmailTemplates_Category ON EmailTemplates(Category);
+CREATE NONCLUSTERED INDEX IX_EmailTemplates_IsActive ON EmailTemplates(IsActive);
+
+
 GO
 
--- ================================================
--- STORED PROCEDURES
--- ================================================
 
--- Procedure to update user stats after post creation
+-- User Stats Update
 CREATE PROCEDURE sp_UpdateUserStatsAfterPost
     @UserId UNIQUEIDENTIFIER
 AS
@@ -802,169 +814,99 @@ BEGIN
 END;
 GO
 
--- Procedure to handle friendship acceptance
+-- Friendship Management
 CREATE PROCEDURE sp_AcceptFriendship
     @FriendshipId UNIQUEIDENTIFIER
 AS
 BEGIN
     BEGIN TRANSACTION;
-    
-    UPDATE Friendships
-    SET Status = 'accepted'
-    WHERE Id = @FriendshipId;
-    
-    -- Update friend counts for both users
-    UPDATE us
-    SET us.FriendsCount = (
+    UPDATE Friendships SET Status = 'accepted' WHERE Id = @FriendshipId;
+    UPDATE us SET us.FriendsCount = (
         SELECT COUNT(*) FROM Friendships 
-        WHERE (UserId = us.UserId OR FriendId = us.UserId) 
-        AND Status = 'accepted'
+        WHERE (UserId = us.UserId OR FriendId = us.UserId) AND Status = 'accepted'
     )
     FROM UserStats us
     INNER JOIN Friendships f ON (f.UserId = us.UserId OR f.FriendId = us.UserId)
     WHERE f.Id = @FriendshipId;
-    
     COMMIT TRANSACTION;
 END;
 GO
 
--- Procedure to get user feed
+-- User Feed
 CREATE PROCEDURE sp_GetUserFeed
     @UserId UNIQUEIDENTIFIER,
     @PageNumber INT = 1,
     @PageSize INT = 20
 AS
 BEGIN
-    SELECT 
-        p.*,
-        u.Username,
-        u.FullName,
-        u.AvatarUrl
+    SELECT p.*, u.Username, u.FullName, u.AvatarUrl
     FROM Posts p
     INNER JOIN Users u ON p.UserId = u.Id
     WHERE p.UserId IN (
         SELECT FriendId FROM Friendships WHERE UserId = @UserId AND Status = 'accepted'
-        UNION
-        SELECT UserId FROM Friendships WHERE FriendId = @UserId AND Status = 'accepted'
-        UNION
-        SELECT @UserId
+        UNION SELECT UserId FROM Friendships WHERE FriendId = @UserId AND Status = 'accepted'
+        UNION SELECT @UserId
     )
     ORDER BY p.CreatedAt DESC
-    OFFSET (@PageNumber - 1) * @PageSize ROWS
-    FETCH NEXT @PageSize ROWS ONLY;
+    OFFSET (@PageNumber - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY;
 END;
 GO
 
--- Procedure to get trending games
-CREATE PROCEDURE sp_GetTrendingGames
-    @TopN INT = 10
+-- Play Now: Launch Game
+CREATE PROCEDURE sp_LaunchGame
+    @UserId UNIQUEIDENTIFIER,
+    @GameId UNIQUEIDENTIFIER,
+    @LaunchMethod NVARCHAR(50)
 AS
 BEGIN
-    SELECT TOP (@TopN)
-        g.*,
-        SUM(t.ViewsCount) as TotalViews,
-        AVG(t.EngagementScore) as AvgEngagement
-    FROM Games g
-    INNER JOIN TrendingItems t ON g.Id = t.GameId
-    WHERE t.TrendingDate >= DATEADD(DAY, -7, GETDATE())
-    GROUP BY g.Id, g.Name, g.Slug, g.Description, g.CoverImageUrl, 
-             g.IconUrl, g.Genre, g.Platform, g.ReleaseDate, 
-             g.Publisher, g.IsActive, g.CreatedAt
-    ORDER BY TotalViews DESC, AvgEngagement DESC;
+    DECLARE @LogId UNIQUEIDENTIFIER = NEWID();
+    INSERT INTO GameLaunchLogs (Id, UserId, GameId, LaunchMethod)
+    VALUES (@LogId, @UserId, @GameId, @LaunchMethod);
+    
+    UPDATE UserGameLibrary SET LastPlayed = GETDATE()
+    WHERE UserId = @UserId AND GameId = @GameId;
+    
+    IF NOT EXISTS (SELECT 1 FROM UserGameLibrary WHERE UserId = @UserId AND GameId = @GameId)
+    BEGIN
+        INSERT INTO UserGameLibrary (UserId, GameId, LastPlayed)
+        VALUES (@UserId, @GameId, GETDATE());
+    END
+    SELECT @LogId as LaunchLogId;
 END;
 GO
 
--- ================================================
--- TRIGGERS
--- ================================================
-
--- Trigger to update UpdatedAt timestamp
-CREATE TRIGGER tr_Users_UpdatedAt ON Users
-AFTER UPDATE
+-- Play Now: End Session
+CREATE PROCEDURE sp_EndGameSession
+    @LaunchLogId UNIQUEIDENTIFIER,
+    @SessionDuration INT
 AS
 BEGIN
-    UPDATE Users
-    SET UpdatedAt = GETDATE()
-    FROM Users u
-    INNER JOIN inserted i ON u.Id = i.Id;
+    UPDATE GameLaunchLogs
+    SET EndedAt = GETDATE(), SessionDuration = @SessionDuration
+    WHERE Id = @LaunchLogId;
+    
+    UPDATE ugl SET ugl.TotalPlayTime = ugl.TotalPlayTime + @SessionDuration
+    FROM UserGameLibrary ugl
+    INNER JOIN GameLaunchLogs gll ON ugl.UserId = gll.UserId AND ugl.GameId = gll.GameId
+    WHERE gll.Id = @LaunchLogId;
 END;
 GO
 
-CREATE TRIGGER tr_Posts_UpdatedAt ON Posts
-AFTER UPDATE
+-- Play Now: Get Library
+CREATE PROCEDURE sp_GetUserGameLibrary
+    @UserId UNIQUEIDENTIFIER
 AS
 BEGIN
-    UPDATE Posts
-    SET UpdatedAt = GETDATE()
-    FROM Posts p
-    INNER JOIN inserted i ON p.Id = i.Id;
+    SELECT ugl.*, g.Name as GameName, g.CoverImageUrl, g.GameType, 
+           g.LaunchUrl, g.DownloadUrl, g.WebPlayUrl, g.LauncherType
+    FROM UserGameLibrary ugl
+    INNER JOIN Games g ON ugl.GameId = g.Id
+    WHERE ugl.UserId = @UserId
+    ORDER BY ugl.LastPlayed DESC;
 END;
 GO
 
--- Trigger to update group member count
-CREATE TRIGGER tr_GroupMembers_Insert ON GroupMembers
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Groups
-    SET MembersCount = MembersCount + 1
-    FROM Groups g
-    INNER JOIN inserted i ON g.Id = i.GroupId;
-END;
-GO
-
-CREATE TRIGGER tr_GroupMembers_Delete ON GroupMembers
-AFTER DELETE
-AS
-BEGIN
-    UPDATE Groups
-    SET MembersCount = MembersCount - 1
-    FROM Groups g
-    INNER JOIN deleted d ON g.Id = d.GroupId;
-END;
-GO
-
--- Trigger to update post comments count
-CREATE TRIGGER tr_Comments_Insert ON Comments
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Posts
-    SET CommentsCount = CommentsCount + 1
-    FROM Posts p
-    INNER JOIN inserted i ON p.Id = i.PostId;
-END;
-GO
-
--- Trigger to update post likes count
-CREATE TRIGGER tr_PostLikes_Insert ON PostLikes
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Posts
-    SET LikesCount = LikesCount + 1
-    FROM Posts p
-    INNER JOIN inserted i ON p.Id = i.PostId;
-END;
-GO
-
-CREATE TRIGGER tr_PostLikes_Delete ON PostLikes
-AFTER DELETE
-AS
-BEGIN
-    UPDATE Posts
-    SET LikesCount = LikesCount - 1
-    FROM Posts p
-    INNER JOIN deleted d ON p.Id = d.PostId
-    WHERE p.LikesCount > 0;
-END;
-GO
-
--- ================================================
--- ADDITIONAL STORED PROCEDURES
--- ================================================
-
--- Procedure to add item to shopping cart
+-- Shopping Cart
 CREATE PROCEDURE sp_AddToCart
     @UserId UNIQUEIDENTIFIER,
     @ProductId UNIQUEIDENTIFIER = NULL,
@@ -972,294 +914,215 @@ CREATE PROCEDURE sp_AddToCart
     @Quantity INT = 1
 AS
 BEGIN
-    -- Check if item already exists in cart
-    IF EXISTS (
-        SELECT 1 FROM ShoppingCart 
-        WHERE UserId = @UserId 
-        AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId)
-    )
+    IF EXISTS (SELECT 1 FROM ShoppingCart WHERE UserId = @UserId 
+               AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId))
     BEGIN
-        -- Update quantity
-        UPDATE ShoppingCart
-        SET Quantity = Quantity + @Quantity
-        WHERE UserId = @UserId 
-        AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId);
+        UPDATE ShoppingCart SET Quantity = Quantity + @Quantity
+        WHERE UserId = @UserId AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId);
     END
     ELSE
     BEGIN
-        -- Insert new item
         INSERT INTO ShoppingCart (UserId, ProductId, MarketplaceItemId, Quantity)
         VALUES (@UserId, @ProductId, @MarketplaceItemId, @Quantity);
     END
 END;
 GO
 
--- Procedure to get user's shopping cart
-CREATE PROCEDURE sp_GetUserCart
-    @UserId UNIQUEIDENTIFIER
+-- Admin: Dashboard Stats
+CREATE PROCEDURE sp_GetAdminDashboardStats
+    @StartDate DATE = NULL,
+    @EndDate DATE = NULL
 AS
 BEGIN
-    SELECT 
-        sc.*,
-        sp.Name as ProductName,
-        sp.Price as ProductPrice,
-        sp.CoverImageUrl as ProductImage,
-        mi.Title as MarketplaceItemName,
-        mi.Price as MarketplaceItemPrice,
-        mi.CoverImageUrl as MarketplaceItemImage
-    FROM ShoppingCart sc
-    LEFT JOIN StoreProducts sp ON sc.ProductId = sp.Id
-    LEFT JOIN MarketplaceItems mi ON sc.MarketplaceItemId = mi.Id
-    WHERE sc.UserId = @UserId;
-END;
-GO
-
--- Procedure to get trending content
-CREATE PROCEDURE sp_GetTrendingContent
-    @ContentType NVARCHAR(50) = NULL,
-    @TopN INT = 10
-AS
-BEGIN
-    SELECT TOP (@TopN)
-        t.*,
-        CASE 
-            WHEN t.ContentType = 'game' THEN g.Name
-            WHEN t.ContentType = 'player' THEN u.Username
-            ELSE NULL
-        END as ContentName,
-        CASE 
-            WHEN t.ContentType = 'game' THEN g.CoverImageUrl
-            WHEN t.ContentType = 'player' THEN u.AvatarUrl
-            ELSE NULL
-        END as ContentImage
-    FROM TrendingItems t
-    LEFT JOIN Games g ON t.ContentType = 'game' AND t.ContentId = g.Id
-    LEFT JOIN Users u ON t.ContentType = 'player' AND t.ContentId = u.Id
-    WHERE (@ContentType IS NULL OR t.ContentType = @ContentType)
-    AND t.TrendingDate >= DATEADD(DAY, -7, GETDATE())
-    ORDER BY t.EngagementScore DESC, t.ViewsCount DESC;
-END;
-GO
-
--- Procedure to get user profile with stats
-CREATE PROCEDURE sp_GetUserProfile
-    @UserId UNIQUEIDENTIFIER
-AS
-BEGIN
-    SELECT 
-        u.*,
-        us.FriendsCount,
-        us.WinningCount,
-        us.TournamentsCount,
-        us.PostsCount,
-        us.PhotosCount,
-        us.VideosCount,
-        us.ForumsCount,
-        us.GroupsCount,
-        us.AchievementsCount,
-        us.TotalPoints,
-        us.Level
-    FROM Users u
-    LEFT JOIN UserStats us ON u.Id = us.UserId
-    WHERE u.Id = @UserId;
-END;
-GO
-
--- Procedure to get user's friends with status
-CREATE PROCEDURE sp_GetUserFriends
-    @UserId UNIQUEIDENTIFIER,
-    @Status NVARCHAR(20) = 'accepted'
-AS
-BEGIN
-    SELECT 
-        u.Id,
-        u.Username,
-        u.FullName,
-        u.AvatarUrl,
-        u.Status as OnlineStatus,
-        f.Status as FriendshipStatus,
-        f.CreatedAt as FriendsSince
-    FROM Friendships f
-    INNER JOIN Users u ON (
-        CASE 
-            WHEN f.UserId = @UserId THEN f.FriendId
-            ELSE f.UserId
-        END = u.Id
-    )
-    WHERE (f.UserId = @UserId OR f.FriendId = @UserId)
-    AND f.Status = @Status
-    ORDER BY u.Username;
-END;
-GO
-
--- Procedure to create forum topic
-CREATE PROCEDURE sp_CreateForumTopic
-    @CategoryId UNIQUEIDENTIFIER,
-    @UserId UNIQUEIDENTIFIER,
-    @Title NVARCHAR(200),
-    @Content NVARCHAR(MAX)
-AS
-BEGIN
-    DECLARE @TopicId UNIQUEIDENTIFIER = NEWID();
+    IF @StartDate IS NULL SET @StartDate = DATEADD(DAY, -30, GETDATE());
+    IF @EndDate IS NULL SET @EndDate = CAST(GETDATE() AS DATE);
     
+    SELECT SUM(NewUsers) as TotalNewUsers, AVG(ActiveUsers) as AvgActiveUsers,
+           SUM(TotalPosts) as TotalPosts, SUM(TotalComments) as TotalComments,
+           SUM(TotalVideos) as TotalVideos, SUM(TotalGameLaunches) as TotalGameLaunches,
+           SUM(TotalRevenue) as TotalRevenue, SUM(TotalOrders) as TotalOrders
+    FROM DailyStatistics
+    WHERE StatDate BETWEEN @StartDate AND @EndDate;
+END;
+GO
+
+-- Admin: Ban User
+CREATE PROCEDURE sp_BanUser
+    @UserId UNIQUEIDENTIFIER,
+    @BannedBy UNIQUEIDENTIFIER,
+    @BanType NVARCHAR(20),
+    @Reason NVARCHAR(MAX),
+    @EndDate DATETIME2 = NULL
+AS
+BEGIN
     BEGIN TRANSACTION;
+    INSERT INTO UserBans (UserId, BannedBy, BanType, Reason, EndDate)
+    VALUES (@UserId, @BannedBy, @BanType, @Reason, @EndDate);
     
-    INSERT INTO ForumTopics (Id, CategoryId, UserId, Title, Content)
-    VALUES (@TopicId, @CategoryId, @UserId, @Title, @Content);
+    UPDATE Users SET Status = 'offline' WHERE Id = @UserId;
     
-    UPDATE ForumCategories
-    SET TopicsCount = TopicsCount + 1
-    WHERE Id = @CategoryId;
-    
-    UPDATE UserStats
-    SET ForumsCount = ForumsCount + 1
-    WHERE UserId = @UserId;
-    
+    INSERT INTO AdminAuditLogs (AdminUserId, Action, TargetType, TargetId, Reason)
+    VALUES (@BannedBy, 'user_banned', 'user', @UserId, @Reason);
     COMMIT TRANSACTION;
-    
-    SELECT @TopicId as TopicId;
 END;
 GO
 
--- Procedure to get live streams with details
-CREATE PROCEDURE sp_GetLiveStreams
-    @GameId UNIQUEIDENTIFIER = NULL,
-    @TopN INT = 20
+-- Admin: Update Daily Stats
+CREATE PROCEDURE sp_UpdateDailyStatistics
+    @StatDate DATE
 AS
 BEGIN
-    SELECT TOP (@TopN)
-        lc.*,
-        u.Username as StreamerName,
-        u.AvatarUrl as StreamerAvatar,
-        g.Name as GameName,
-        g.CoverImageUrl as GameImage
-    FROM LiveChannels lc
-    INNER JOIN Users u ON lc.UserId = u.Id
-    LEFT JOIN Games g ON lc.GameId = g.Id
-    WHERE lc.Status = 'live'
-    AND (@GameId IS NULL OR lc.GameId = @GameId)
-    ORDER BY lc.ViewersCount DESC;
+    DECLARE @NewUsers INT, @ActiveUsers INT, @TotalPosts INT, @TotalComments INT,
+            @TotalVideos INT, @TotalGameLaunches INT, @TotalRevenue DECIMAL(10,2), 
+            @TotalOrders INT;
+    
+    SELECT @NewUsers = COUNT(*) FROM Users WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    SELECT @ActiveUsers = COUNT(DISTINCT UserId) FROM UserActivityLog WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    SELECT @TotalPosts = COUNT(*) FROM Posts WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    SELECT @TotalComments = COUNT(*) FROM Comments WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    SELECT @TotalVideos = COUNT(*) FROM Videos WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    SELECT @TotalGameLaunches = COUNT(*) FROM GameLaunchLogs WHERE CAST(LaunchedAt AS DATE) = @StatDate;
+    SELECT @TotalRevenue = ISNULL(SUM(TotalAmount), 0) FROM StoreOrders WHERE CAST(CreatedAt AS DATE) = @StatDate AND Status = 'completed';
+    SELECT @TotalOrders = COUNT(*) FROM StoreOrders WHERE CAST(CreatedAt AS DATE) = @StatDate;
+    
+    IF EXISTS (SELECT 1 FROM DailyStatistics WHERE StatDate = @StatDate)
+    BEGIN
+        UPDATE DailyStatistics SET NewUsers = @NewUsers, ActiveUsers = @ActiveUsers,
+               TotalPosts = @TotalPosts, TotalComments = @TotalComments, TotalVideos = @TotalVideos,
+               TotalGameLaunches = @TotalGameLaunches, TotalRevenue = @TotalRevenue,
+               TotalOrders = @TotalOrders
+        WHERE StatDate = @StatDate;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO DailyStatistics (StatDate, NewUsers, ActiveUsers, TotalPosts, TotalComments, 
+                                     TotalVideos, TotalGameLaunches, TotalRevenue, TotalOrders)
+        VALUES (@StatDate, @NewUsers, @ActiveUsers, @TotalPosts, @TotalComments, 
+                @TotalVideos, @TotalGameLaunches, @TotalRevenue, @TotalOrders);
+    END
 END;
 GO
 
--- ================================================
--- ADDITIONAL TRIGGERS
--- ================================================
 
--- Trigger to update forum category counts
-CREATE TRIGGER tr_ForumReplies_Insert ON ForumReplies
-AFTER INSERT
-AS
-BEGIN
-    UPDATE ForumTopics
-    SET RepliesCount = RepliesCount + 1,
-        LastReplyAt = GETDATE(),
-        LastReplyBy = i.UserId
-    FROM ForumTopics ft
-    INNER JOIN inserted i ON ft.Id = i.TopicId;
+GO
+
+
+-- Update timestamps
+CREATE TRIGGER tr_Users_UpdatedAt ON Users AFTER UPDATE
+AS BEGIN
+    UPDATE Users SET UpdatedAt = GETDATE()
+    FROM Users u INNER JOIN inserted i ON u.Id = i.Id;
+END;
+GO
+
+CREATE TRIGGER tr_Posts_UpdatedAt ON Posts AFTER UPDATE
+AS BEGIN
+    UPDATE Posts SET UpdatedAt = GETDATE()
+    FROM Posts p INNER JOIN inserted i ON p.Id = i.Id;
+END;
+GO
+
+-- Group member count
+CREATE TRIGGER tr_GroupMembers_Insert ON GroupMembers AFTER INSERT
+AS BEGIN
+    UPDATE Groups SET MembersCount = MembersCount + 1
+    FROM Groups g INNER JOIN inserted i ON g.Id = i.GroupId;
+END;
+GO
+
+CREATE TRIGGER tr_GroupMembers_Delete ON GroupMembers AFTER DELETE
+AS BEGIN
+    UPDATE Groups SET MembersCount = MembersCount - 1
+    FROM Groups g INNER JOIN deleted d ON g.Id = d.GroupId;
+END;
+GO
+
+-- Post comments count
+CREATE TRIGGER tr_Comments_Insert ON Comments AFTER INSERT
+AS BEGIN
+    UPDATE Posts SET CommentsCount = CommentsCount + 1
+    FROM Posts p INNER JOIN inserted i ON p.Id = i.PostId;
+END;
+GO
+
+-- Post likes count
+CREATE TRIGGER tr_PostLikes_Insert ON PostLikes AFTER INSERT
+AS BEGIN
+    UPDATE Posts SET LikesCount = LikesCount + 1
+    FROM Posts p INNER JOIN inserted i ON p.Id = i.PostId;
+END;
+GO
+
+CREATE TRIGGER tr_PostLikes_Delete ON PostLikes AFTER DELETE
+AS BEGIN
+    UPDATE Posts SET LikesCount = LikesCount - 1
+    FROM Posts p INNER JOIN deleted d ON p.Id = d.PostId WHERE p.LikesCount > 0;
+END;
+GO
+
+-- Forum replies
+CREATE TRIGGER tr_ForumReplies_Insert ON ForumReplies AFTER INSERT
+AS BEGIN
+    UPDATE ForumTopics SET RepliesCount = RepliesCount + 1,
+           LastReplyAt = GETDATE(), LastReplyBy = i.UserId
+    FROM ForumTopics ft INNER JOIN inserted i ON ft.Id = i.TopicId;
     
-    UPDATE ForumCategories
-    SET PostsCount = PostsCount + 1
+    UPDATE ForumCategories SET PostsCount = PostsCount + 1
     FROM ForumCategories fc
     INNER JOIN ForumTopics ft ON fc.Id = ft.CategoryId
     INNER JOIN inserted i ON ft.Id = i.TopicId;
 END;
 GO
 
--- Trigger to update video stats
-CREATE TRIGGER tr_VideoComments_Insert ON VideoComments
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Videos
-    SET CommentsCount = CommentsCount + 1
-    FROM Videos v
-    INNER JOIN inserted i ON v.Id = i.VideoId;
+-- Video stats
+CREATE TRIGGER tr_VideoComments_Insert ON VideoComments AFTER INSERT
+AS BEGIN
+    UPDATE Videos SET CommentsCount = CommentsCount + 1
+    FROM Videos v INNER JOIN inserted i ON v.Id = i.VideoId;
 END;
 GO
 
-CREATE TRIGGER tr_VideoLikes_Insert ON VideoLikes
-AFTER INSERT
-AS
-BEGIN
-    UPDATE Videos
-    SET LikesCount = LikesCount + 1
-    FROM Videos v
-    INNER JOIN inserted i ON v.Id = i.VideoId;
+CREATE TRIGGER tr_VideoLikes_Insert ON VideoLikes AFTER INSERT
+AS BEGIN
+    UPDATE Videos SET LikesCount = LikesCount + 1
+    FROM Videos v INNER JOIN inserted i ON v.Id = i.VideoId;
 END;
 GO
 
-CREATE TRIGGER tr_VideoLikes_Delete ON VideoLikes
-AFTER DELETE
-AS
-BEGIN
-    UPDATE Videos
-    SET LikesCount = LikesCount - 1
-    FROM Videos v
-    INNER JOIN deleted d ON v.Id = d.VideoId
-    WHERE v.LikesCount > 0;
+CREATE TRIGGER tr_VideoLikes_Delete ON VideoLikes AFTER DELETE
+AS BEGIN
+    UPDATE Videos SET LikesCount = LikesCount - 1
+    FROM Videos v INNER JOIN deleted d ON v.Id = d.VideoId WHERE v.LikesCount > 0;
 END;
 GO
 
--- Trigger to log user activity
-CREATE TRIGGER tr_Posts_Insert_Activity ON Posts
-AFTER INSERT
-AS
-BEGIN
+-- Activity logging
+CREATE TRIGGER tr_Posts_Insert_Activity ON Posts AFTER INSERT
+AS BEGIN
     INSERT INTO UserActivityLog (UserId, ActivityType, RelatedId, RelatedType)
-    SELECT UserId, 'post_created', Id, 'post'
-    FROM inserted;
+    SELECT UserId, 'post_created', Id, 'post' FROM inserted;
 END;
 GO
 
-CREATE TRIGGER tr_Videos_Insert_Activity ON Videos
-AFTER INSERT
-AS
-BEGIN
+CREATE TRIGGER tr_Videos_Insert_Activity ON Videos AFTER INSERT
+AS BEGIN
     INSERT INTO UserActivityLog (UserId, ActivityType, RelatedId, RelatedType)
-    SELECT UserId, 'video_uploaded', Id, 'video'
-    FROM inserted;
+    SELECT UserId, 'video_uploaded', Id, 'video' FROM inserted;
     
-    UPDATE UserStats
-    SET VideosCount = VideosCount + 1
-    FROM UserStats us
-    INNER JOIN inserted i ON us.UserId = i.UserId;
+    UPDATE UserStats SET VideosCount = VideosCount + 1
+    FROM UserStats us INNER JOIN inserted i ON us.UserId = i.UserId;
 END;
 GO
 
--- Trigger to update user stats when achievement is completed
-CREATE TRIGGER tr_UserAchievements_Update ON UserAchievements
-AFTER UPDATE
-AS
-BEGIN
-    IF UPDATE(Completed)
-    BEGIN
-        UPDATE UserStats
-        SET AchievementsCount = AchievementsCount + 1,
-            TotalPoints = TotalPoints + a.Points
-        FROM UserStats us
-        INNER JOIN inserted i ON us.UserId = i.UserId
-        INNER JOIN Achievements a ON i.AchievementId = a.Id
-        WHERE i.Completed = 1 AND NOT EXISTS (
-            SELECT 1 FROM deleted d 
-            WHERE d.Id = i.Id AND d.Completed = 1
-        );
-    END
+-- Ban expiration
+CREATE TRIGGER tr_CheckBanExpiration ON UserBans AFTER INSERT, UPDATE
+AS BEGIN
+    UPDATE UserBans SET IsActive = 0
+    WHERE EndDate IS NOT NULL AND EndDate < GETDATE() AND IsActive = 1;
 END;
 GO
 
-PRINT 'GGZone Database created successfully!';
-PRINT 'All tables, indexes, stored procedures, and triggers have been created.';
-PRINT 'Database is ready to support all frontend features including:';
-PRINT '- User Management & Authentication';
-PRINT '- Social Feed & Posts';
-PRINT '- Groups & Communities';
-PRINT '- Live Streaming & Chat';
-PRINT '- Marketplace & Shopping Cart';
-PRINT '- Forums & Discussions';
-PRINT '- Videos & Media';
-PRINT '- Achievements & Tournaments';
-PRINT '- Trending & Leaderboards';
-PRINT '- Notifications & Messages';
-PRINT '- Friend System & Suggestions';
+
+GO
+
 GO

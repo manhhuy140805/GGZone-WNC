@@ -31,11 +31,7 @@ DECLARE @Post3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post5 UNIQUEIDENTIFIER = NEWID();
 
-DECLARE @Ach1 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Ach2 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Ach3 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Ach4 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Ach5 UNIQUEIDENTIFIER = NEWID();
+-- Achievements removed (no longer needed)
 
 DECLARE @Market1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market2 UNIQUEIDENTIFIER = NEWID();
@@ -50,9 +46,7 @@ DECLARE @Tour1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Tour2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Tour3 UNIQUEIDENTIFIER = NEWID();
 
-DECLARE @Channel1 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Channel2 UNIQUEIDENTIFIER = NEWID();
-DECLARE @Channel3 UNIQUEIDENTIFIER = NEWID();
+-- LiveChannels removed (no longer needed)
 
 DECLARE @Video1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Video2 UNIQUEIDENTIFIER = NEWID();
@@ -84,13 +78,13 @@ VALUES
 -- ================================================
 -- INSERT USER STATS
 -- ================================================
-INSERT INTO UserStats (UserId, FriendsCount, WinningCount, TournamentsCount, PostsCount, PhotosCount, VideosCount, ForumsCount, GroupsCount, AchievementsCount, TotalPoints, Level)
+INSERT INTO UserStats (UserId, FriendsCount, WinningCount, TournamentsCount, PostsCount, PhotosCount, VideosCount, ForumsCount, GroupsCount, TotalPoints, Level)
 VALUES
-(@User1, 3, 145, 5, 23, 45, 12, 8, 3, 15, 2500, 25),
-(@User2, 2, 89, 3, 15, 20, 8, 5, 2, 10, 1800, 18),
-(@User3, 3, 234, 8, 45, 67, 20, 15, 4, 22, 4200, 35),
-(@User4, 4, 56, 2, 89, 120, 45, 12, 3, 12, 3100, 28),
-(@User5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1);
+(@User1, 3, 145, 5, 23, 45, 12, 8, 3, 2500, 25),
+(@User2, 2, 89, 3, 15, 20, 8, 5, 2, 1800, 18),
+(@User3, 3, 234, 8, 45, 67, 20, 15, 4, 4200, 35),
+(@User4, 4, 56, 2, 89, 120, 45, 12, 3, 3100, 28),
+(@User5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1);
 
 -- ================================================
 -- INSERT GAMES
@@ -206,33 +200,9 @@ VALUES
 (@User1, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', N'Tournament victory!', @Game1, 156);
 
 -- ================================================
--- INSERT ACHIEVEMENTS
+-- ACHIEVEMENTS MODULE REMOVED
 -- ================================================
-INSERT INTO Achievements (Id, Name, Description, IconUrl, GameId, BadgeType, Points, MaxProgress)
-VALUES
-(@Ach1, N'First Blood', N'Win your first match', 'https://i.imgur.com/ach1.png', @Game1, 'bronze', 100, 1),
-(@Ach2, N'Veteran', N'Play 100 matches', 'https://i.imgur.com/ach2.png', NULL, 'silver', 500, 100),
-(@Ach3, N'Sharpshooter', N'Get 50 headshots', 'https://i.imgur.com/ach3.png', @Game1, 'gold', 300, 50),
-(@Ach4, N'Team Player', N'Win 10 team matches', 'https://i.imgur.com/ach4.png', NULL, 'silver', 250, 10),
-(@Ach5, N'Champion', N'Win a tournament', 'https://i.imgur.com/ach5.png', NULL, 'gold', 1000, 1);
-
--- ================================================
--- INSERT USER ACHIEVEMENTS
--- ================================================
-INSERT INTO UserAchievements (UserId, AchievementId, Progress, Completed, CompletedAt)
-VALUES
-(@User1, @Ach1, 1, 1, DATEADD(DAY, -30, GETDATE())),
-(@User1, @Ach2, 100, 1, DATEADD(DAY, -10, GETDATE())),
-(@User1, @Ach3, 50, 1, DATEADD(DAY, -5, GETDATE())),
-(@User1, @Ach5, 1, 1, DATEADD(DAY, -2, GETDATE())),
-(@User2, @Ach1, 1, 1, DATEADD(DAY, -25, GETDATE())),
-(@User2, @Ach2, 75, 0, NULL),
-(@User2, @Ach4, 10, 1, DATEADD(DAY, -7, GETDATE())),
-(@User3, @Ach1, 1, 1, DATEADD(DAY, -40, GETDATE())),
-(@User3, @Ach2, 100, 1, DATEADD(DAY, -15, GETDATE())),
-(@User3, @Ach3, 50, 1, DATEADD(DAY, -8, GETDATE())),
-(@User3, @Ach4, 10, 1, DATEADD(DAY, -12, GETDATE())),
-(@User3, @Ach5, 1, 1, DATEADD(DAY, -3, GETDATE()));
+-- Achievements and UserAchievements tables have been removed from the schema
 
 -- ================================================
 -- INSERT MARKETPLACE ITEMS
@@ -289,42 +259,9 @@ VALUES
 (@Tour3, @User4, 8, 2340);
 
 -- ================================================
--- INSERT LIVE CHANNELS
+-- LIVESTREAM MODULE REMOVED
 -- ================================================
-INSERT INTO LiveChannels (Id, UserId, GameId, Title, Description, ThumbnailUrl, StreamUrl, ViewersCount, Status, StartedAt)
-VALUES
-(@Channel1, @User4, @Game1, N'Radiant Ranked Grind! 🔥', N'Pushing for top 100 leaderboard', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'https://stream.ggzone.com/channel1', 1234, 'live', DATEADD(HOUR, -2, GETDATE())),
-(@Channel2, @User1, @Game3, N'CS2 Competitive with Viewers', N'Playing with subs! Join Discord', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'https://stream.ggzone.com/channel2', 567, 'live', DATEADD(HOUR, -1, GETDATE())),
-(@Channel3, @User3, @Game2, N'Challenger Gameplay & Tips', N'Learning session for viewers', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'https://stream.ggzone.com/channel3', 890, 'live', DATEADD(MINUTE, -30, GETDATE()));
-
--- ================================================
--- INSERT STREAM FOLLOWERS
--- ================================================
-INSERT INTO StreamFollowers (ChannelId, UserId)
-VALUES
-(@Channel1, @User1),
-(@Channel1, @User2),
-(@Channel1, @User3),
-(@Channel2, @User2),
-(@Channel2, @User3),
-(@Channel2, @User4),
-(@Channel3, @User1),
-(@Channel3, @User2),
-(@Channel3, @User4);
-
--- ================================================
--- INSERT STREAM CHAT MESSAGES
--- ================================================
-INSERT INTO StreamChatMessages (ChannelId, UserId, Message, MessageType)
-VALUES
-(@Channel1, @User1, N'Nice play!', 'text'),
-(@Channel1, @User2, N'GG WP', 'text'),
-(@Channel1, @User3, N'What sensitivity do you use?', 'text'),
-(@Channel2, @User2, N'Can I join next game?', 'text'),
-(@Channel2, @User3, N'Clutch incoming!', 'text'),
-(@Channel2, @User4, N'Amazing shot!', 'text'),
-(@Channel3, @User1, N'Thanks for the tips!', 'text'),
-(@Channel3, @User2, N'Followed!', 'text');
+-- LiveChannels, StreamFollowers, and StreamChatMessages tables have been removed from the schema
 
 -- ================================================
 -- INSERT VIDEOS
@@ -406,9 +343,9 @@ VALUES
 (@User1, 'post_like', N'Someone liked your post', N'Charlie Lê liked your post', @Post1, 'post', 1),
 (@User1, 'comment', N'New Comment', N'Diana Phạm commented on your post', @Post1, 'post', 0),
 (@User2, 'tournament', N'Tournament Starting Soon', N'CS2 Winter Cup starts in 1 hour', @Tour2, 'tournament', 0),
-(@User2, 'achievement', N'Achievement Unlocked!', N'You earned "Team Player" badge', @Ach4, 'achievement', 1),
+(@User2, 'order_completed', N'Order Completed', N'Your order has been processed', @Order1, 'order', 1),
 (@User3, 'group_invite', N'Group Invitation', N'You were invited to FPS Legends', @Group2, 'group', 1),
-(@User4, 'stream_live', N'Stream Started', N'Alice Nguyễn is now live!', @Channel2, 'stream', 0);
+(@User4, 'video_uploaded', N'New Video', N'Alice Nguyễn uploaded a new video!', @Video1, 'video', 0);
 
 -- ================================================
 -- INSERT MESSAGES
@@ -431,12 +368,13 @@ VALUES
 ('game', @Game1, @Game1, 15234, 95.5, 1, CAST(GETDATE() AS DATE)),
 ('game', @Game3, @Game3, 12456, 88.3, 2, CAST(GETDATE() AS DATE)),
 ('game', @Game2, @Game2, 10234, 82.7, 3, CAST(GETDATE() AS DATE)),
-('stream', @Channel1, @Game1, 1234, 78.9, 1, CAST(GETDATE() AS DATE)),
-('stream', @Channel3, @Game2, 890, 65.4, 2, CAST(GETDATE() AS DATE)),
+('game', @Game4, @Game4, 8765, 75.2, 4, CAST(GETDATE() AS DATE)),
 ('video', @Video3, @Game2, 23456, 92.1, 1, CAST(GETDATE() AS DATE)),
 ('video', @Video1, @Game1, 15234, 85.6, 2, CAST(GETDATE() AS DATE)),
+('video', @Video2, @Game3, 8765, 78.3, 3, CAST(GETDATE() AS DATE)),
 ('player', @User3, NULL, 5678, 88.8, 1, CAST(GETDATE() AS DATE)),
-('player', @User1, NULL, 4567, 82.3, 2, CAST(GETDATE() AS DATE));
+('player', @User1, NULL, 4567, 82.3, 2, CAST(GETDATE() AS DATE)),
+('player', @User2, NULL, 3456, 75.6, 3, CAST(GETDATE() AS DATE));
 
 -- ================================================
 -- INSERT TRENDING PLAYERS
@@ -545,12 +483,12 @@ INSERT INTO UserActivityLog (UserId, ActivityType, RelatedId, RelatedType, Metad
 VALUES
 (@User1, 'login', NULL, NULL, '{"ip": "192.168.1.1", "device": "Windows PC"}'),
 (@User1, 'post_created', @Post1, 'post', '{"content_length": 45}'),
-(@User1, 'achievement_unlocked', @Ach5, 'achievement', '{"points_earned": 1000}'),
+(@User1, 'tournament_joined', @Tour1, 'tournament', '{"tournament_name": "Vietnam Valorant Championship"}'),
 (@User2, 'login', NULL, NULL, '{"ip": "192.168.1.2", "device": "Windows PC"}'),
 (@User2, 'game_played', @Game3, 'game', '{"duration": 45, "result": "win"}'),
 (@User3, 'login', NULL, NULL, '{"ip": "192.168.1.3", "device": "Mac"}'),
 (@User3, 'video_uploaded', @Video3, 'video', '{"duration": 900}'),
-(@User4, 'stream_started', @Channel1, 'stream', '{"game": "Valorant"}');
+(@User4, 'product_purchased', @Prod3, 'product', '{"product_name": "VIP Membership", "amount": 150000}');
 
 PRINT '================================================';
 PRINT 'GGZone Database - Seed Data Insertion Complete!';
@@ -562,16 +500,14 @@ PRINT '- Games: 4 popular games added';
 PRINT '- Groups: 3 communities created';
 PRINT '- Posts: 5 social posts with likes and comments';
 PRINT '- Friendships: Multiple friend connections';
-PRINT '- Achievements: 5 achievements with user progress';
 PRINT '- Marketplace: 3 items for sale';
 PRINT '- Store Products: 4 digital products';
 PRINT '- Tournaments: 3 tournaments (upcoming, ongoing, completed)';
-PRINT '- Live Channels: 3 active streams';
 PRINT '- Videos: 3 uploaded videos with engagement';
 PRINT '- Forums: 3 categories with topics and replies';
-PRINT '- Notifications: User notifications system';
+PRINT '- Notifications: 7 user notifications';
 PRINT '- Messages: Direct messaging between users';
-PRINT '- Trending: Games, players, and content rankings';
+PRINT '- Trending: Games, players, and videos rankings';
 PRINT '- Shopping Cart: User cart items';
 PRINT '- Orders: Completed and pending orders';
 PRINT '';
@@ -582,6 +518,7 @@ PRINT '- charlie_moba (LoL Diamond player, Moderator)';
 PRINT '- diana_streamer (Content creator)';
 PRINT '- admin_ggzone (Admin account)';
 PRINT '';
+PRINT 'Note: Livestream and Achievements modules have been removed';
 PRINT 'Database is ready for testing!';
 
 GO
@@ -591,6 +528,8 @@ GO
 -- ================================================
 SELECT 'Users' as TableName, COUNT(*) as RecordCount FROM Users
 UNION ALL
+SELECT 'UserStats', COUNT(*) FROM UserStats
+UNION ALL
 SELECT 'Posts', COUNT(*) FROM Posts
 UNION ALL
 SELECT 'Comments', COUNT(*) FROM Comments
@@ -599,11 +538,7 @@ SELECT 'Groups', COUNT(*) FROM Groups
 UNION ALL
 SELECT 'Games', COUNT(*) FROM Games
 UNION ALL
-SELECT 'Achievements', COUNT(*) FROM Achievements
-UNION ALL
 SELECT 'Tournaments', COUNT(*) FROM Tournaments
-UNION ALL
-SELECT 'LiveChannels', COUNT(*) FROM LiveChannels
 UNION ALL
 SELECT 'Videos', COUNT(*) FROM Videos
 UNION ALL
@@ -616,6 +551,10 @@ UNION ALL
 SELECT 'Messages', COUNT(*) FROM Messages
 UNION ALL
 SELECT 'TrendingItems', COUNT(*) FROM TrendingItems
+UNION ALL
+SELECT 'ForumTopics', COUNT(*) FROM ForumTopics
+UNION ALL
+SELECT 'ShoppingCart', COUNT(*) FROM ShoppingCart
 ORDER BY TableName;
 
 PRINT '';

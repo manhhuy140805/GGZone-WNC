@@ -22,6 +22,16 @@ namespace ggzone_be.Models
 
         public int PhotosCount { get; set; } = 0;
 
+        public int VideosCount { get; set; } = 0;
+
+        public int ForumsCount { get; set; } = 0;
+
+        public int GroupsCount { get; set; } = 0;
+
+        public int TotalPoints { get; set; } = 0;
+
+        public int Level { get; set; } = 1;
+
         // Navigation Properties
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

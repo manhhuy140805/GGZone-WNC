@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, Star, ShoppingCart, Heart, Minus, Plus } from "lucide-react";
 import type { MarketplaceItem } from "../assets/mock/marketplace";
 import { mockMarketplaceItems } from "../assets/mock/marketplace";
+import { useCart } from "../context/CartContext";
 
 interface ProductDetailProps {
   productId: string;
@@ -17,6 +18,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "reviews" | "shipping">("description");
   const [isFavorite, setIsFavorite] = useState(false);
+  const { addToCart } = useCart();
 
   const product = mockMarketplaceItems.find((item) => item.id === productId);
 
@@ -39,11 +41,13 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
     .slice(0, 4);
 
   const handleAddToCart = () => {
+    addToCart(product, quantity);
     alert(`Added ${quantity}x "${product.title}" to cart!`);
   };
 
   const handleBuyNow = () => {
-    alert(`Purchasing ${quantity}x "${product.title}"!`);
+    addToCart(product, quantity);
+    alert(`Added ${quantity}x "${product.title}" to cart! Redirecting to checkout...`);
   };
 
   return (
