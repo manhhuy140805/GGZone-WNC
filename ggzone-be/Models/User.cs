@@ -31,6 +31,9 @@ namespace ggzone_be.Models
         [MaxLength(500)]
         public string? AvatarUrl { get; set; }
 
+        [MaxLength(500)]
+        public string? CoverImageUrl { get; set; }
+
         public string? Bio { get; set; }
 
         [MaxLength(100)]
@@ -41,6 +44,8 @@ namespace ggzone_be.Models
 
         [MaxLength(20)]
         public string Role { get; set; } = "user";
+
+        public int Level { get; set; } = 1;
 
         public bool IsVerified { get; set; } = false;
 
@@ -56,11 +61,10 @@ namespace ggzone_be.Models
         public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public virtual ICollection<Photo> Photos { get; set; } = new List<Photo>();
-        public virtual ICollection<LiveChannel> LiveChannels { get; set; } = new List<LiveChannel>();
         public virtual ICollection<MarketplaceItem> MarketplaceItems { get; set; } = new List<MarketplaceItem>();
         public virtual ICollection<StoreOrder> StoreOrders { get; set; } = new List<StoreOrder>();
-        public virtual ICollection<UserAchievement> UserAchievements { get; set; } = new List<UserAchievement>();
         public virtual ICollection<TournamentParticipant> TournamentParticipants { get; set; } = new List<TournamentParticipant>();
+        public virtual ICollection<Video> Videos { get; set; } = new List<Video>();
         public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
         public virtual ICollection<Message> SentMessages { get; set; } = new List<Message>();
         public virtual ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();

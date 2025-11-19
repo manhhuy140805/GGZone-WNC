@@ -27,10 +27,6 @@ namespace ggzone_be.Data
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Photo> Photos { get; set; }
-        public DbSet<LiveChannel> LiveChannels { get; set; }
-
-        public DbSet<Achievement> Achievements { get; set; }
-        public DbSet<UserAchievement> UserAchievements { get; set; }
 
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<TournamentParticipant> TournamentParticipants { get; set; }
@@ -55,8 +51,24 @@ namespace ggzone_be.Data
         public DbSet<ForumTopic> ForumTopics { get; set; }
         public DbSet<ForumReply> ForumReplies { get; set; }
 
-        public DbSet<StreamChatMessage> StreamChatMessages { get; set; }
-        public DbSet<StreamFollower> StreamFollowers { get; set; }
+        // New models
+        public DbSet<GameReview> GameReviews { get; set; }
+        public DbSet<UserGameLibrary> UserGameLibraries { get; set; }
+        public DbSet<GameLaunchLog> GameLaunchLogs { get; set; }
+        public DbSet<TrendingPlayer> TrendingPlayers { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<UserPreference> UserPreferences { get; set; }
+        public DbSet<UserBadge> UserBadges { get; set; }
+        public DbSet<FriendSuggestion> FriendSuggestions { get; set; }
+        public DbSet<UserActivityLog> UserActivityLogs { get; set; }
+        public DbSet<AdminAuditLog> AdminAuditLogs { get; set; }
+        public DbSet<UserBan> UserBans { get; set; }
+        public DbSet<ModerationQueue> ModerationQueues { get; set; }
+        public DbSet<DailyStatistic> DailyStatistics { get; set; }
+        public DbSet<FeaturedContent> FeaturedContents { get; set; }
+        public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         // ==========================
         //   MODEL RELATIONSHIPS
@@ -118,6 +130,64 @@ namespace ggzone_be.Data
                 .WithMany()
                 .HasForeignKey(ft => ft.LastReplyBy)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // UserBan relationships
+            modelBuilder.Entity<UserBan>()
+                .HasOne(ub => ub.User)
+                .WithMany()
+                .HasForeignKey(ub => ub.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserBan>()
+                .HasOne(ub => ub.BannedByUser)
+                .WithMany()
+                .HasForeignKey(ub => ub.BannedBy)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // FriendSuggestion relationships
+            modelBuilder.Entity<FriendSuggestion>()
+                .HasOne(fs => fs.User)
+                .WithMany()
+                .HasForeignKey(fs => fs.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<FriendSuggestion>()
+                .HasOne(fs => fs.SuggestedUser)
+                .WithMany()
+                .HasForeignKey(fs => fs.SuggestedUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // ModerationQueue relationships
+            modelBuilder.Entity<ModerationQueue>()
+                .HasOne(mq => mq.User)
+                .WithMany()
+                .HasForeignKey(mq => mq.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<ModerationQueue>()
+                .HasOne(mq => mq.Reviewer)
+                .WithMany()
+                .HasForeignKey(mq => mq.ReviewedBy)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // UserPreference one-to-one
+            modelBuilder.Entity<User>()
+                .HasOne<UserPreference>()
+                .WithOne(up => up.User)
+                .HasForeignKey<UserPreference>(up => up.UserId);
+
+            // Unique constraints
+            modelBuilder.Entity<DailyStatistic>()
+                .HasIndex(ds => ds.StatDate)
+                .IsUnique();
+
+            modelBuilder.Entity<EmailTemplate>()
+                .HasIndex(et => et.TemplateName)
+                .IsUnique();
+
+            modelBuilder.Entity<UserPreference>()
+                .HasIndex(up => up.UserId)
+                .IsUnique();
         }
     }
 }

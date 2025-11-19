@@ -21,5 +21,6 @@ namespace ggzone_be.Models
         // Navigation Properties
         public virtual ForumTopic Topic { get; set; }
         public virtual User User { get; set; }
+        public virtual User Author => User;
     }
 }

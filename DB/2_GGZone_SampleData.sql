@@ -437,23 +437,33 @@ VALUES
 (@User5, N'Admin', 'developer', 'https://i.imgur.com/admin.png');
 
 -- ================================================
--- INSERT GAME SCREENSHOTS
+-- GAME SCREENSHOTS & VIDEOS REMOVED
 -- ================================================
-INSERT INTO GameScreenshots (GameId, ImageUrl, Caption, OrderIndex)
-VALUES
-(@Game1, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', N'Valorant gameplay screenshot 1', 0),
-(@Game1, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', N'Valorant gameplay screenshot 2', 1),
-(@Game2, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', N'League of Legends screenshot 1', 0),
-(@Game3, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', N'CS2 gameplay screenshot 1', 0);
+-- GameScreenshots and GameVideos tables do not exist in schema
 
 -- ================================================
--- INSERT GAME VIDEOS
+-- INSERT USER GAME LIBRARY (Play Now Feature)
 -- ================================================
-INSERT INTO GameVideos (GameId, Title, VideoUrl, ThumbnailUrl, VideoType, OrderIndex)
+INSERT INTO UserGameLibrary (UserId, GameId, IsInstalled, InstallPath, LastPlayed, TotalPlayTime, IsFavorite)
 VALUES
-(@Game1, N'Valorant Official Trailer', 'https://video.ggzone.com/valorant-trailer', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'trailer', 0),
-(@Game2, N'League of Legends Cinematic', 'https://video.ggzone.com/lol-cinematic', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'trailer', 0),
-(@Game3, N'CS2 Gameplay Showcase', 'https://video.ggzone.com/cs2-gameplay', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'gameplay', 0);
+(@User1, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -2, GETDATE()), 30000, 1),
+(@User1, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(DAY, -1, GETDATE()), 72000, 1),
+(@User2, @Game3, 1, 'C:\Games\CS2', DATEADD(HOUR, -1, GETDATE()), 27000, 1),
+(@User2, @Game1, 0, NULL, DATEADD(DAY, -5, GETDATE()), 18000, 0),
+(@User3, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(HOUR, -3, GETDATE()), 43200, 1),
+(@User3, @Game4, 1, 'C:\Games\Dota2', DATEADD(DAY, -2, GETDATE()), 28800, 0),
+(@User4, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -5, GETDATE()), 8700, 1);
+
+-- ================================================
+-- INSERT GAME LAUNCH LOGS
+-- ================================================
+INSERT INTO GameLaunchLogs (UserId, GameId, LaunchMethod, LaunchedAt, SessionDuration, EndedAt)
+VALUES
+(@User1, @Game1, 'desktop', DATEADD(HOUR, -4, GETDATE()), 120, DATEADD(HOUR, -2, GETDATE())),
+(@User1, @Game2, 'desktop', DATEADD(DAY, -1, GETDATE()), 180, DATEADD(DAY, -1, DATEADD(HOUR, 3, GETDATE()))),
+(@User2, @Game3, 'desktop', DATEADD(HOUR, -3, GETDATE()), 90, DATEADD(HOUR, -1, GETDATE())),
+(@User3, @Game2, 'desktop', DATEADD(HOUR, -5, GETDATE()), 150, DATEADD(HOUR, -3, GETDATE())),
+(@User4, @Game1, 'desktop', DATEADD(HOUR, -6, GETDATE()), 60, DATEADD(HOUR, -5, GETDATE()));
 
 -- ================================================
 -- INSERT GAME REVIEWS
@@ -490,6 +500,51 @@ VALUES
 (@User3, 'video_uploaded', @Video3, 'video', '{"duration": 900}'),
 (@User4, 'product_purchased', @Prod3, 'product', '{"product_name": "VIP Membership", "amount": 150000}');
 
+-- ================================================
+-- INSERT ADMIN AUDIT LOGS
+-- ================================================
+INSERT INTO AdminAuditLogs (AdminUserId, Action, TargetType, TargetId, OldValue, NewValue, IpAddress, UserAgent, Reason)
+VALUES
+(@User5, 'user_verified', 'user', @User1, 'IsVerified: 0', 'IsVerified: 1', '192.168.1.100', 'Mozilla/5.0', N'User verification approved'),
+(@User5, 'post_featured', 'post', @Post1, NULL, 'IsFeatured: 1', '192.168.1.100', 'Mozilla/5.0', N'Featured on homepage'),
+(@User3, 'post_moderated', 'post', @Post2, NULL, 'Status: approved', '192.168.1.101', 'Mozilla/5.0', N'Content review passed');
+
+-- ================================================
+-- INSERT DAILY STATISTICS
+-- ================================================
+INSERT INTO DailyStatistics (StatDate, NewUsers, ActiveUsers, TotalPosts, TotalComments, TotalVideos, TotalGameLaunches, TotalRevenue, TotalOrders)
+VALUES
+(CAST(DATEADD(DAY, -2, GETDATE()) AS DATE), 15, 234, 45, 123, 8, 567, 2500000, 12),
+(CAST(DATEADD(DAY, -1, GETDATE()) AS DATE), 23, 345, 67, 189, 12, 678, 3200000, 18),
+(CAST(GETDATE() AS DATE), 18, 289, 52, 145, 10, 589, 2800000, 15);
+
+-- ================================================
+-- INSERT FEATURED CONTENT
+-- ================================================
+INSERT INTO FeaturedContent (ContentType, ContentId, Title, Description, ImageUrl, DisplayOrder, StartDate, EndDate, IsActive, CreatedBy)
+VALUES
+('game', @Game1, N'Valorant - Featured Game', N'Tactical shooter of the month', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 1, DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, 25, GETDATE()), 1, @User5),
+('tournament', @Tour1, N'Vietnam Championship', N'Join the biggest tournament', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 2, GETDATE(), DATEADD(DAY, 10, GETDATE()), 1, @User5),
+('video', @Video1, N'Featured Tutorial', N'Learn from the best', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 3, DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, 5, GETDATE()), 1, @User5);
+
+-- ================================================
+-- INSERT ANNOUNCEMENTS
+-- ================================================
+INSERT INTO Announcements (Title, Content, Type, Priority, TargetAudience, IsActive, StartDate, EndDate, CreatedBy)
+VALUES
+(N'Welcome to GGZone!', N'Thank you for joining our gaming community. Explore features and connect with gamers!', 'info', 'normal', 'all', 1, DATEADD(DAY, -30, GETDATE()), NULL, @User5),
+(N'Server Maintenance', N'Scheduled maintenance on Sunday 2AM-4AM. Services will be temporarily unavailable.', 'maintenance', 'high', 'all', 1, GETDATE(), DATEADD(DAY, 7, GETDATE()), @User5),
+(N'New Tournament Starting!', N'Vietnam Valorant Championship registration is now open. Join now!', 'event', 'high', 'users', 1, GETDATE(), DATEADD(DAY, 10, GETDATE()), @User5);
+
+-- ================================================
+-- INSERT EMAIL TEMPLATES
+-- ================================================
+INSERT INTO EmailTemplates (TemplateName, Subject, HtmlBody, TextBody, Category, Variables, IsActive, UpdatedBy)
+VALUES
+('welcome_email', N'Welcome to GGZone!', N'<h1>Welcome {{username}}!</h1><p>Thank you for joining GGZone.</p>', N'Welcome {{username}}! Thank you for joining GGZone.', 'user', '["username", "email"]', 1, @User5),
+('password_reset', N'Reset Your Password', N'<h1>Password Reset</h1><p>Click here to reset: {{reset_link}}</p>', N'Password Reset. Click here: {{reset_link}}', 'security', '["username", "reset_link"]', 1, @User5),
+('order_confirmation', N'Order Confirmed', N'<h1>Order #{{order_id}}</h1><p>Total: {{total_amount}}</p>', N'Order #{{order_id}} confirmed. Total: {{total_amount}}', 'transaction', '["order_id", "total_amount", "items"]', 1, @User5);
+
 PRINT '================================================';
 PRINT 'GGZone Database - Seed Data Insertion Complete!';
 PRINT '================================================';
@@ -510,6 +565,13 @@ PRINT '- Messages: Direct messaging between users';
 PRINT '- Trending: Games, players, and videos rankings';
 PRINT '- Shopping Cart: User cart items';
 PRINT '- Orders: Completed and pending orders';
+PRINT '- User Game Library: 7 library entries';
+PRINT '- Game Launch Logs: 5 play sessions';
+PRINT '- Admin Audit Logs: 3 admin actions';
+PRINT '- Daily Statistics: 3 days of stats';
+PRINT '- Featured Content: 3 featured items';
+PRINT '- Announcements: 3 active announcements';
+PRINT '- Email Templates: 3 email templates';
 PRINT '';
 PRINT 'Test Accounts:';
 PRINT '- alice_gamer (Radiant Valorant player)';
@@ -518,7 +580,7 @@ PRINT '- charlie_moba (LoL Diamond player, Moderator)';
 PRINT '- diana_streamer (Content creator)';
 PRINT '- admin_ggzone (Admin account)';
 PRINT '';
-PRINT 'Note: Livestream and Achievements modules have been removed';
+PRINT 'Note: Livestream, Achievements, GameScreenshots, and GameVideos modules have been removed';
 PRINT 'Database is ready for testing!';
 
 GO
@@ -527,34 +589,46 @@ GO
 -- VERIFICATION QUERIES
 -- ================================================
 SELECT 'Users' as TableName, COUNT(*) as RecordCount FROM Users
-UNION ALL
-SELECT 'UserStats', COUNT(*) FROM UserStats
-UNION ALL
-SELECT 'Posts', COUNT(*) FROM Posts
-UNION ALL
-SELECT 'Comments', COUNT(*) FROM Comments
-UNION ALL
-SELECT 'Groups', COUNT(*) FROM Groups
-UNION ALL
-SELECT 'Games', COUNT(*) FROM Games
-UNION ALL
-SELECT 'Tournaments', COUNT(*) FROM Tournaments
-UNION ALL
-SELECT 'Videos', COUNT(*) FROM Videos
-UNION ALL
-SELECT 'MarketplaceItems', COUNT(*) FROM MarketplaceItems
-UNION ALL
-SELECT 'StoreProducts', COUNT(*) FROM StoreProducts
-UNION ALL
-SELECT 'Notifications', COUNT(*) FROM Notifications
-UNION ALL
-SELECT 'Messages', COUNT(*) FROM Messages
-UNION ALL
-SELECT 'TrendingItems', COUNT(*) FROM TrendingItems
-UNION ALL
-SELECT 'ForumTopics', COUNT(*) FROM ForumTopics
-UNION ALL
-SELECT 'ShoppingCart', COUNT(*) FROM ShoppingCart
+UNION ALL SELECT 'UserStats', COUNT(*) FROM UserStats
+UNION ALL SELECT 'UserPreferences', COUNT(*) FROM UserPreferences
+UNION ALL SELECT 'UserBadges', COUNT(*) FROM UserBadges
+UNION ALL SELECT 'UserGameLibrary', COUNT(*) FROM UserGameLibrary
+UNION ALL SELECT 'UserActivityLog', COUNT(*) FROM UserActivityLog
+UNION ALL SELECT 'Friendships', COUNT(*) FROM Friendships
+UNION ALL SELECT 'FriendSuggestions', COUNT(*) FROM FriendSuggestions
+UNION ALL SELECT 'Groups', COUNT(*) FROM Groups
+UNION ALL SELECT 'GroupMembers', COUNT(*) FROM GroupMembers
+UNION ALL SELECT 'Games', COUNT(*) FROM Games
+UNION ALL SELECT 'GameReviews', COUNT(*) FROM GameReviews
+UNION ALL SELECT 'GameLaunchLogs', COUNT(*) FROM GameLaunchLogs
+UNION ALL SELECT 'Posts', COUNT(*) FROM Posts
+UNION ALL SELECT 'PostMedia', COUNT(*) FROM PostMedia
+UNION ALL SELECT 'PostLikes', COUNT(*) FROM PostLikes
+UNION ALL SELECT 'Comments', COUNT(*) FROM Comments
+UNION ALL SELECT 'Photos', COUNT(*) FROM Photos
+UNION ALL SELECT 'Videos', COUNT(*) FROM Videos
+UNION ALL SELECT 'VideoComments', COUNT(*) FROM VideoComments
+UNION ALL SELECT 'VideoLikes', COUNT(*) FROM VideoLikes
+UNION ALL SELECT 'MarketplaceItems', COUNT(*) FROM MarketplaceItems
+UNION ALL SELECT 'MarketplaceReviews', COUNT(*) FROM MarketplaceReviews
+UNION ALL SELECT 'StoreProducts', COUNT(*) FROM StoreProducts
+UNION ALL SELECT 'StoreOrders', COUNT(*) FROM StoreOrders
+UNION ALL SELECT 'OrderItems', COUNT(*) FROM OrderItems
+UNION ALL SELECT 'ShoppingCart', COUNT(*) FROM ShoppingCart
+UNION ALL SELECT 'Tournaments', COUNT(*) FROM Tournaments
+UNION ALL SELECT 'TournamentParticipants', COUNT(*) FROM TournamentParticipants
+UNION ALL SELECT 'Notifications', COUNT(*) FROM Notifications
+UNION ALL SELECT 'Messages', COUNT(*) FROM Messages
+UNION ALL SELECT 'TrendingItems', COUNT(*) FROM TrendingItems
+UNION ALL SELECT 'TrendingPlayers', COUNT(*) FROM TrendingPlayers
+UNION ALL SELECT 'ForumCategories', COUNT(*) FROM ForumCategories
+UNION ALL SELECT 'ForumTopics', COUNT(*) FROM ForumTopics
+UNION ALL SELECT 'ForumReplies', COUNT(*) FROM ForumReplies
+UNION ALL SELECT 'AdminAuditLogs', COUNT(*) FROM AdminAuditLogs
+UNION ALL SELECT 'DailyStatistics', COUNT(*) FROM DailyStatistics
+UNION ALL SELECT 'FeaturedContent', COUNT(*) FROM FeaturedContent
+UNION ALL SELECT 'Announcements', COUNT(*) FROM Announcements
+UNION ALL SELECT 'EmailTemplates', COUNT(*) FROM EmailTemplates
 ORDER BY TableName;
 
 PRINT '';

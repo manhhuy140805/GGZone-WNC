@@ -17,7 +17,9 @@ namespace ggzone_be.Models
         public string? Content { get; set; }
 
         public int ViewsCount { get; set; } = 0;
+        public int ViewCount { get; set; } = 0;
         public int RepliesCount { get; set; } = 0;
+        public int ReplyCount { get; set; } = 0;
 
         public bool IsPinned { get; set; } = false;
         public bool IsLocked { get; set; } = false;
@@ -31,6 +33,7 @@ namespace ggzone_be.Models
         // Navigation Properties
         public virtual ForumCategory Category { get; set; }
         public virtual User User { get; set; }
+        public virtual User Author => User;
         public virtual User? LastReplyUser { get; set; }
         public virtual ICollection<ForumReply> ForumReplies { get; set; } = new List<ForumReply>();
     }

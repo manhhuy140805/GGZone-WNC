@@ -70,8 +70,9 @@ namespace ggzone_be.Models
         public virtual ICollection<TrendingItem> TrendingItems { get; set; } = new List<TrendingItem>();
         public virtual ICollection<UserGameLibrary> UserGameLibraries { get; set; } = new List<UserGameLibrary>();
         public virtual ICollection<GameLaunchLog> GameLaunchLogs { get; set; } = new List<GameLaunchLog>();
-        public virtual ICollection<GameScreenshot> GameScreenshots { get; set; } = new List<GameScreenshot>();
-        public virtual ICollection<GameVideo> GameVideos { get; set; } = new List<GameVideo>();
         public virtual ICollection<GameReview> GameReviews { get; set; } = new List<GameReview>();
+        public virtual ICollection<Video> Videos { get; set; } = new List<Video>();
+        public virtual ICollection<ForumCategory> ForumCategories { get; set; } = new List<ForumCategory>();
+        public virtual ICollection<TrendingPlayer> TrendingPlayers { get; set; } = new List<TrendingPlayer>();
     }
 }

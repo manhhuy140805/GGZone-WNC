@@ -27,6 +27,7 @@ namespace ggzone_be.Models
         public int LikesCount { get; set; } = 0;
 
         public int CommentsCount { get; set; } = 0;
+        public int CommentCount { get; set; } = 0;
 
         public int SharesCount { get; set; } = 0;
 

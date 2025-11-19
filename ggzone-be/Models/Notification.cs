@@ -22,9 +22,13 @@ namespace ggzone_be.Models
         public string? Content { get; set; }
 
         public Guid? RelatedId { get; set; }
+        public Guid? RelatedEntityId { get; set; }
 
         [MaxLength(50)]
         public string? RelatedType { get; set; }
+
+        [MaxLength(50)]
+        public string? RelatedEntityType { get; set; }
 
         public bool IsRead { get; set; } = false;
 
