@@ -14,9 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register Services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 // Register Repositories
 builder.Services.AddScoped<IPostRepository, ggzone_be.Repositorys.PostRepository>();
+builder.Services.AddScoped<IUserRepository, ggzone_be.Repositorys.UserRepository>();
 
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -41,10 +43,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:7009", "https://localhost:7009")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowCredentials()
+              .WithExposedHeaders("Authorization");
     });
 });
 

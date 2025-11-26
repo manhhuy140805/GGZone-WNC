@@ -12,3 +12,4 @@ export { Register } from "./Register";
 export { Friends } from "./Friends";
 export { Messages } from "./Messages";
 export { Cart } from "./Cart";
+export { Settings } from "./Settings";

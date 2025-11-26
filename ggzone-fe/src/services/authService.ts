@@ -1,14 +1,6 @@
 import { HttpClient, ApiError } from '../utils/httpClient';
 import { API_CONFIG } from '../config/api';
-
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  fullName?: string;
-  avatarUrl?: string;
-  role?: string;
-}
+import { User } from '../types';
 
 export interface LoginCredentials {
   email: string;

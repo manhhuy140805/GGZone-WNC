@@ -6,7 +6,7 @@ import { useAuth } from "./context/AuthContext";
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -54,6 +54,18 @@ function AppContent() {
 
   // Public pages without layout (Login, Register, Admin)
   const isPublicPage = location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/admin";
+
+  // Hiển thị loading khi đang kiểm tra authentication
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Đang tải...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (isPublicPage || !isAuthenticated) {
     return <AppRoutes />;

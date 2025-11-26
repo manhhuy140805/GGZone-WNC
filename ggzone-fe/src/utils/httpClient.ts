@@ -6,6 +6,33 @@ export interface ApiError {
   errors?: Record<string, string[]>;
 }
 
+// Convert PascalCase to camelCase
+function toCamelCase(str: string): string {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+}
+
+// Recursively convert object keys from PascalCase to camelCase
+function convertKeysToCamelCase(obj: any): any {
+  if (obj === null || obj === undefined) return obj;
+  
+  if (Array.isArray(obj)) {
+    return obj.map(convertKeysToCamelCase);
+  }
+  
+  if (typeof obj !== 'object') {
+    return obj;
+  }
+  
+  const converted: any = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const camelKey = toCamelCase(key);
+      converted[camelKey] = convertKeysToCamelCase(obj[key]);
+    }
+  }
+  return converted;
+}
+
 export class HttpClient {
   private static getAuthToken(): string | null {
     return localStorage.getItem('ggzone_auth_token');
@@ -49,7 +76,9 @@ export class HttpClient {
       return {} as T;
     }
 
-    return response.json();
+    const data = await response.json();
+    // Convert PascalCase keys to camelCase
+    return convertKeysToCamelCase(data);
   }
 
   static async get<T>(endpoint: string, requireAuth: boolean = false): Promise<T> {

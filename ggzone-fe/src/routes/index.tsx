@@ -15,7 +15,9 @@ import {
   Friends,
   Messages,
   Cart,
+  Settings,
 } from "../pages";
+import { CloudinaryTest } from "../pages/CloudinaryTest";
 import { useAuth } from "../context/AuthContext";
 import AdminPage from "../admin/admin";
 
@@ -209,10 +211,26 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
+        path="/settings"
+        element={
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/admin"
         element={
           <ProtectedRoute>
             <AdminPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/test/cloudinary"
+        element={
+          <ProtectedRoute>
+            <CloudinaryTest />
           </ProtectedRoute>
         }
       />

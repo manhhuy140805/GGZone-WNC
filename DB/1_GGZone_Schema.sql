@@ -1006,7 +1006,6 @@ GO
 
 GO
 
-
 -- Update timestamps
 CREATE TRIGGER tr_Users_UpdatedAt ON Users AFTER UPDATE
 AS BEGIN

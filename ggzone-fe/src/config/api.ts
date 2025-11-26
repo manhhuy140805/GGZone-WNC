@@ -7,8 +7,12 @@ export const API_CONFIG = {
       REGISTER: '/api/auth/register',
     },
     USERS: {
-      BASE: '/api/users',
-      BY_ID: (id: string) => `/api/users/${id}`,
+      BASE: '/api/User',
+      BY_ID: (id: string) => `/api/User/${id}`,
+      ME: '/api/User/me',
+      PROFILE: '/api/User/profile',
+      PASSWORD: '/api/User/password',
+      STATUS: '/api/User/status',
     },
     POSTS: {
       BASE: '/api/posts',

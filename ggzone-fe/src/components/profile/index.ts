@@ -15,3 +15,7 @@ export { VideoTab } from "./tabs/VideoTab";
 // Sections
 export { StatsCards } from "./sections/StatsCards";
 export { NewsletterCTA } from "./sections/NewsletterCTA";
+
+// Modals
+export { EditProfileModal } from "./EditProfileModal";
+export { ChangePasswordModal } from "./ChangePasswordModal";

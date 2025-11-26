@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { authService, LoginCredentials, User } from "../services/authService";
+import { authService, LoginCredentials } from "../services/authService";
+import { User } from "../types";
 
 interface AuthContextType {
   user: User | null;
@@ -11,6 +12,7 @@ interface AuthContextType {
   }>;
   mockLogin: (user: User) => void;
   logout: () => void;
+  setUser: (user: User | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,11 +25,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Kiểm tra user đã đăng nhập khi load app
   useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    setIsLoading(false);
+    const checkAuth = () => {
+      // Kiểm tra token còn hợp lệ không
+      if (authService.isAuthenticated()) {
+        const currentUser = authService.getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
+        }
+      } else {
+        // Token hết hạn hoặc không hợp lệ, xóa dữ liệu
+        authService.logout();
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
@@ -54,6 +67,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
   };
 
+  const updateUser = (updatedUser: User | null) => {
+    setUser(updatedUser);
+    if (updatedUser) {
+      localStorage.setItem('ggzone_user', JSON.stringify(updatedUser));
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -63,6 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         login,
         mockLogin,
         logout,
+        setUser: updateUser,
       }}
     >
       {children}
