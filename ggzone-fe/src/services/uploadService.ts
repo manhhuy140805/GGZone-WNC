@@ -31,13 +31,28 @@ class UploadService {
     onProgress?: UploadProgressCallback
   ): Promise<UploadResponse> {
     const token = authService.getToken();
-    console.log('Upload token:', token ? 'EXISTS' : 'MISSING');
 
     if (!token) {
+      // Token không tồn tại - redirect về login
+      localStorage.removeItem('ggzone_auth_token');
+      localStorage.removeItem('ggzone_user');
+      window.location.href = '/login';
       return {
         success: false,
         message: 'Vui lòng đăng nhập để tải lên ảnh',
         error: 'NOT_AUTHENTICATED'
+      };
+    }
+
+    // Kiểm tra token có hết hạn không
+    if (!authService.isAuthenticated()) {
+      localStorage.removeItem('ggzone_auth_token');
+      localStorage.removeItem('ggzone_user');
+      window.location.href = '/login';
+      return {
+        success: false,
+        message: 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.',
+        error: 'TOKEN_EXPIRED'
       };
     }
 

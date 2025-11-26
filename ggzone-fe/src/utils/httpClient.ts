@@ -6,6 +6,13 @@ export interface ApiError {
   errors?: Record<string, string[]>;
 }
 
+// Callback để handle unauthorized
+let onUnauthorizedCallback: (() => void) | null = null;
+
+export const setUnauthorizedCallback = (callback: () => void) => {
+  onUnauthorizedCallback = callback;
+};
+
 // Convert PascalCase to camelCase
 function toCamelCase(str: string): string {
   return str.charAt(0).toLowerCase() + str.slice(1);
@@ -66,6 +73,18 @@ export class HttpClient {
         error.errors = errorData.errors;
       } catch {
         error.message = response.statusText || 'An error occurred';
+      }
+
+      // Handle 401 Unauthorized - token hết hạn hoặc không hợp lệ
+      if (response.status === 401) {
+        // Xóa token và user từ localStorage
+        localStorage.removeItem('ggzone_auth_token');
+        localStorage.removeItem('ggzone_user');
+        
+        // Gọi callback để redirect về login
+        if (onUnauthorizedCallback) {
+          onUnauthorizedCallback();
+        }
       }
 
       throw error;

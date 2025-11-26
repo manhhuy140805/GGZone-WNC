@@ -20,6 +20,17 @@ class UserService {
   // Lấy thông tin user hiện tại
   async getCurrentUser(): Promise<UserProfileResponse> {
     try {
+      // Kiểm tra token trước
+      const token = localStorage.getItem('ggzone_auth_token');
+      if (!token) {
+        localStorage.removeItem('ggzone_user');
+        window.location.href = '/login';
+        return {
+          success: false,
+          message: 'Vui lòng đăng nhập',
+        };
+      }
+
       const response = await HttpClient.get<any>(
         API_CONFIG.ENDPOINTS.USERS.ME,
         true
@@ -32,6 +43,7 @@ class UserService {
       };
     } catch (error) {
       const apiError = error as ApiError;
+      // 401 sẽ được handle bởi HttpClient interceptor
       return {
         success: false,
         message: apiError.message || 'Lỗi khi lấy thông tin user',
@@ -63,6 +75,17 @@ class UserService {
   // Cập nhật profile
   async updateProfile(data: UpdateProfileData): Promise<UserProfileResponse> {
     try {
+      // Kiểm tra token trước
+      const token = localStorage.getItem('ggzone_auth_token');
+      if (!token) {
+        localStorage.removeItem('ggzone_user');
+        window.location.href = '/login';
+        return {
+          success: false,
+          message: 'Vui lòng đăng nhập',
+        };
+      }
+
       const response = await HttpClient.put<any>(
         API_CONFIG.ENDPOINTS.USERS.PROFILE,
         data,
@@ -76,6 +99,7 @@ class UserService {
       };
     } catch (error) {
       const apiError = error as ApiError;
+      // 401 sẽ được handle bởi HttpClient interceptor
       return {
         success: false,
         message: apiError.message || 'Lỗi khi cập nhật profile',

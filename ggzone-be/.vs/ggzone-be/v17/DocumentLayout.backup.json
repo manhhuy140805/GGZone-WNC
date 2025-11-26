@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\services\\cloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:services\\cloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -63,10 +67,6 @@
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -78,7 +78,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 20,
           "Children": [
             {
               "$type": "Bookmark",
@@ -98,7 +98,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "CloudinaryService.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\CloudinaryService.cs",
               "RelativeDocumentMoniker": "Services\\CloudinaryService.cs",
@@ -111,7 +111,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "CommentController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\CommentController.cs",
               "RelativeDocumentMoniker": "Controllers\\CommentController.cs",
@@ -123,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ActivityController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ActivityController.cs",
               "RelativeDocumentMoniker": "Controllers\\ActivityController.cs",
@@ -135,7 +135,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -147,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -159,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ForumController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs",
               "RelativeDocumentMoniker": "Controllers\\ForumController.cs",
@@ -171,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "StoreController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\StoreController.cs",
               "RelativeDocumentMoniker": "Controllers\\StoreController.cs",
@@ -183,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ErrorHandlingMiddleware.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Middleware\\ErrorHandlingMiddleware.cs",
               "RelativeDocumentMoniker": "Middleware\\ErrorHandlingMiddleware.cs",
@@ -195,7 +195,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "AdminController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
@@ -207,7 +207,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Game.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\Game.cs",
               "RelativeDocumentMoniker": "Models\\Game.cs",
@@ -219,7 +219,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "GroupController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\GroupController.cs",
               "RelativeDocumentMoniker": "Controllers\\GroupController.cs",
@@ -231,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
@@ -244,7 +244,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
@@ -256,7 +256,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "AuthController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -280,7 +280,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
@@ -292,15 +292,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 0,
               "Title": "UserService.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "Services\\UserService.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
-              "RelativeToolTip": "Services\\UserService.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA8AAAAlAAAAAAAAAA==",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs*",
+              "RelativeToolTip": "Services\\UserService.cs*",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAlwIEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T15:02:27.922Z"
+              "WhenOpened": "2025-11-14T15:02:27.922Z",
+              "EditorCaption": ""
             }
           ]
         },

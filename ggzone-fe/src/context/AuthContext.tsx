@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { authService, LoginCredentials } from "../services/authService";
+import { userService } from "../services/userService";
+import { setUnauthorizedCallback } from "../utils/httpClient";
 import { User } from "../types";
 
 interface AuthContextType {
@@ -13,6 +15,7 @@ interface AuthContextType {
   mockLogin: (user: User) => void;
   logout: () => void;
   setUser: (user: User | null) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,14 +26,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Set unauthorized callback khi component mount
+  useEffect(() => {
+    setUnauthorizedCallback(() => {
+      // Logout user
+      authService.logout();
+      setUser(null);
+      // Redirect về login
+      window.location.href = '/login';
+    });
+  }, []);
+
+  // Fetch full user data từ API
+  const fetchFullUserData = async () => {
+    try {
+      const response = await userService.getCurrentUser();
+      if (response.success && response.data) {
+        setUser(response.data);
+        localStorage.setItem('ggzone_user', JSON.stringify(response.data));
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
   // Kiểm tra user đã đăng nhập khi load app
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       // Kiểm tra token còn hợp lệ không
       if (authService.isAuthenticated()) {
         const currentUser = authService.getCurrentUser();
         if (currentUser) {
           setUser(currentUser);
+          // Fetch full user data từ API
+          await fetchFullUserData();
         }
       } else {
         // Token hết hạn hoặc không hợp lệ, xóa dữ liệu
@@ -48,6 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (response.success && response.user) {
       setUser(response.user);
+      // Fetch full user data từ API sau khi login
+      await fetchFullUserData();
       return { success: true, message: response.message };
     }
 
@@ -84,6 +115,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         mockLogin,
         logout,
         setUser: updateUser,
+        refreshUser: fetchFullUserData,
       }}
     >
       {children}
