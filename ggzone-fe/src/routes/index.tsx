@@ -17,6 +17,7 @@ import {
   Cart,
 } from "../pages";
 import { useAuth } from "../context/AuthContext";
+import AdminPage from "../admin/admin";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -204,6 +205,14 @@ export const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute>
             <CartWrapper />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminPage />
           </ProtectedRoute>
         }
       />

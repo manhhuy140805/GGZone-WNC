@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2 } from "lucide-react";
+import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
@@ -14,6 +15,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
   const [showCart, setShowCart] = useState(false);
   const { user, logout } = useAuth();
   const { cartItems, removeFromCart, getTotalPrice, getTotalItems } = useCart();
+  const navigate = useNavigate();
 
   const cartTotal = getTotalPrice();
   const cartCount = getTotalItems();
@@ -212,6 +214,19 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
                         )}
                       </div>
                     </div>
+
+                    {user?.role === 'admin' && (
+                      <button
+                        onClick={() => {
+                          setShowUserMenu(false);
+                          navigate('/admin');
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2 transition"
+                      >
+                        <Settings size={16} />
+                        Admin Panel
+                      </button>
+                    )}
 
                     <button
                       onClick={handleLogout}

@@ -12,7 +12,7 @@ export const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showDemoAccounts, setShowDemoAccounts] = useState(false);
 
-  const { login } = useAuth();
+  const { login, mockLogin } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,34 +34,71 @@ export const Login: React.FC = () => {
     }
   };
 
-  const handleDemoLogin = async (demoEmail: string, demoPassword: string) => {
+  const handleDemoLogin = async (demoEmail: string, demoPassword: string, demoRole: string, demoFullName: string) => {
     setEmail(demoEmail);
     setPassword(demoPassword);
     setError("");
     setIsLoading(true);
 
     try {
+      // Try real login first
       const result = await login({ email: demoEmail, password: demoPassword });
 
       if (result.success) {
         navigate("/");
       } else {
-        setError(result.message || "Đăng nhập thất bại");
+        // If real login fails, use mock login for demo
+        const mockUser = {
+          id: Math.random().toString(36).substr(2, 9),
+          username: demoFullName.toLowerCase().replace(/\s+/g, ''),
+          email: demoEmail,
+          fullName: demoFullName,
+          role: demoRole,
+          avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(demoFullName)}&background=random`
+        };
+        
+        // Use mockLogin from AuthContext
+        mockLogin(mockUser);
+        navigate("/");
       }
     } catch (err) {
-      setError("Có lỗi xảy ra. Vui lòng thử lại.");
+      // Use mock login on error
+      const mockUser = {
+        id: Math.random().toString(36).substr(2, 9),
+        username: demoFullName.toLowerCase().replace(/\s+/g, ''),
+        email: demoEmail,
+        fullName: demoFullName,
+        role: demoRole,
+        avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(demoFullName)}&background=random`
+      };
+      
+      mockLogin(mockUser);
+      navigate("/");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // TODO: Fetch demo accounts from API
+  // Demo accounts for testing
   const demoAccounts: Array<{
     email: string;
     password: string;
     fullName: string;
     role: string;
-  }> = [];
+  }> = [
+    {
+      email: "admin@ggzone.com",
+      password: "admin123",
+      fullName: "Admin User",
+      role: "admin"
+    },
+    {
+      email: "user@ggzone.com",
+      password: "user123",
+      fullName: "Regular User",
+      role: "user"
+    }
+  ];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -297,7 +334,7 @@ export const Login: React.FC = () => {
                   <button
                     key={account.email}
                     onClick={() => {
-                      handleDemoLogin(account.email, account.password);
+                      handleDemoLogin(account.email, account.password, account.role, account.fullName);
                       setShowDemoAccounts(false);
                     }}
                     disabled={isLoading}

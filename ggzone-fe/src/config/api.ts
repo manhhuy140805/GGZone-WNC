@@ -1,6 +1,6 @@
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: (import.meta as any).env?.VITE_API_URL || 'http://localhost:7009',
+  BASE_URL: (import.meta as any).env?.VITE_API_URL || '',
   ENDPOINTS: {
     AUTH: {
       LOGIN: '/api/auth/login',
