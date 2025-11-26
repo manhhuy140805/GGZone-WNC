@@ -3,6 +3,12 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../types';
 import { API_CONFIG, buildUrl } from '../config/api';
+import { 
+  LayoutDashboard, Users, Bell, Settings, BarChart3, 
+  FileText, Shield, Gamepad2, ShoppingCart, MessageSquare,
+  TrendingUp, UserCheck, DollarSign, Activity, Clock,
+  Edit, Trash2, Eye, Check, X, Plus, Search, Filter
+} from 'lucide-react';
 import './AdminStyles.css';
 
 type TabType = 'dashboard' | 'users' | 'notifications' | 'settings' | 'analytics' | 'reports' | 'content' | 'security' | 'games' | 'marketplace';
@@ -91,69 +97,79 @@ const AdminPage: React.FC = () => {
     <div className="admin-container">
       <div className="admin-sidebar">
         <div className="admin-logo">
-          <h2>Admin Panel</h2>
-          <p className="admin-user">👋 {user?.fullName}</p>
+          <h2>🎮 GGZone Admin</h2>
+          <p className="admin-user">{user?.fullName}</p>
         </div>
         <nav className="admin-nav">
           <button
             className={activeTab === 'dashboard' ? 'active' : ''}
             onClick={() => setActiveTab('dashboard')}
           >
-            📊 Dashboard
+            <LayoutDashboard size={18} />
+            <span>Dashboard</span>
           </button>
           <button
             className={activeTab === 'users' ? 'active' : ''}
             onClick={() => setActiveTab('users')}
           >
-            👥 Quản lý người dùng
+            <Users size={18} />
+            <span>Quản lý người dùng</span>
           </button>
           <button
             className={activeTab === 'notifications' ? 'active' : ''}
             onClick={() => setActiveTab('notifications')}
           >
-            🔔 Quản lý thông báo
+            <Bell size={18} />
+            <span>Thông báo</span>
           </button>
           <button
             className={activeTab === 'content' ? 'active' : ''}
             onClick={() => setActiveTab('content')}
           >
-            📝 Quản lý nội dung
+            <FileText size={18} />
+            <span>Nội dung</span>
           </button>
           <button
             className={activeTab === 'games' ? 'active' : ''}
             onClick={() => setActiveTab('games')}
           >
-            🎮 Quản lý Games
+            <Gamepad2 size={18} />
+            <span>Games</span>
           </button>
           <button
             className={activeTab === 'marketplace' ? 'active' : ''}
             onClick={() => setActiveTab('marketplace')}
           >
-            🛒 Marketplace
+            <ShoppingCart size={18} />
+            <span>Marketplace</span>
           </button>
           <button
             className={activeTab === 'analytics' ? 'active' : ''}
             onClick={() => setActiveTab('analytics')}
           >
-            📈 Phân tích
+            <BarChart3 size={18} />
+            <span>Phân tích</span>
           </button>
           <button
             className={activeTab === 'reports' ? 'active' : ''}
             onClick={() => setActiveTab('reports')}
           >
-            📋 Báo cáo
+            <MessageSquare size={18} />
+            <span>Báo cáo</span>
           </button>
           <button
             className={activeTab === 'security' ? 'active' : ''}
             onClick={() => setActiveTab('security')}
           >
-            🔒 Bảo mật
+            <Shield size={18} />
+            <span>Bảo mật</span>
           </button>
           <button
             className={activeTab === 'settings' ? 'active' : ''}
             onClick={() => setActiveTab('settings')}
           >
-            ⚙️ Cài đặt
+            <Settings size={18} />
+            <span>Cài đặt</span>
           </button>
           <div className="nav-divider"></div>
           <button onClick={() => navigate('/')} className="btn-back">
@@ -177,35 +193,51 @@ const Dashboard: React.FC<{ stats: any }> = ({ stats }) => {
       
       <div className="stats-grid">
         <div className="stat-card blue">
-          <div className="stat-icon">👥</div>
+          <div className="stat-icon">
+            <Users size={32} strokeWidth={2} />
+          </div>
           <div className="stat-info">
             <h3>{stats.totalUsers.toLocaleString()}</h3>
             <p>Tổng người dùng</p>
-            <span className="stat-change positive">+12% so với tháng trước</span>
+            <span className="stat-change positive">
+              <TrendingUp size={14} /> +12% so với tháng trước
+            </span>
           </div>
         </div>
         <div className="stat-card green">
-          <div className="stat-icon">✅</div>
+          <div className="stat-icon">
+            <UserCheck size={32} strokeWidth={2} />
+          </div>
           <div className="stat-info">
             <h3>{stats.activeUsers.toLocaleString()}</h3>
             <p>Người dùng hoạt động</p>
-            <span className="stat-change positive">+8% so với tuần trước</span>
+            <span className="stat-change positive">
+              <TrendingUp size={14} /> +8% so với tuần trước
+            </span>
           </div>
         </div>
         <div className="stat-card purple">
-          <div className="stat-icon">📝</div>
+          <div className="stat-icon">
+            <FileText size={32} strokeWidth={2} />
+          </div>
           <div className="stat-info">
             <h3>{stats.totalPosts.toLocaleString()}</h3>
             <p>Tổng bài viết</p>
-            <span className="stat-change positive">+15% so với tháng trước</span>
+            <span className="stat-change positive">
+              <TrendingUp size={14} /> +15% so với tháng trước
+            </span>
           </div>
         </div>
         <div className="stat-card orange">
-          <div className="stat-icon">🔔</div>
+          <div className="stat-icon">
+            <DollarSign size={32} strokeWidth={2} />
+          </div>
           <div className="stat-info">
-            <h3>{stats.totalNotifications}</h3>
-            <p>Thông báo đã gửi</p>
-            <span className="stat-change neutral">Trong tháng này</span>
+            <h3>${(stats.totalNotifications * 100).toLocaleString()}</h3>
+            <p>Doanh thu tháng này</p>
+            <span className="stat-change positive">
+              <TrendingUp size={14} /> +23% so với tháng trước
+            </span>
           </div>
         </div>
       </div>
@@ -382,13 +414,13 @@ const UsersManagement: React.FC = () => {
                 <td>
                   <div className="action-buttons">
                     <button className="btn-icon" onClick={() => handleEditUser(user)} title="Chỉnh sửa">
-                      ✏️
+                      <Edit size={16} />
                     </button>
                     <button className="btn-icon" onClick={() => handleBanUser(user.id)} title="Cấm">
-                      🚫
+                      <X size={16} />
                     </button>
                     <button className="btn-icon danger" onClick={() => handleDeleteUser(user.id)} title="Xóa">
-                      🗑️
+                      <Trash2 size={16} />
                     </button>
                   </div>
                 </td>
@@ -508,7 +540,8 @@ const NotificationsManagement: React.FC = () => {
           <p className="subtitle">Gửi thông báo đến người dùng</p>
         </div>
         <button className="btn-add" onClick={() => setShowCreateModal(true)}>
-          + Tạo thông báo mới
+          <Plus size={18} />
+          <span>Tạo thông báo mới</span>
         </button>
       </div>
 
@@ -528,7 +561,7 @@ const NotificationsManagement: React.FC = () => {
                 👥 {notification.targetUsers === 'all' ? 'Tất cả người dùng' : 'Người dùng cụ thể'}
               </span>
               <button className="btn-icon danger" onClick={() => handleDeleteNotification(notification.id)}>
-                🗑️
+                <Trash2 size={16} />
               </button>
             </div>
           </div>
@@ -834,9 +867,9 @@ const ReportsManagement: React.FC = () => {
                 <td>{report.date}</td>
                 <td>
                   <div className="action-buttons">
-                    <button className="btn-icon">👁️</button>
-                    <button className="btn-icon">✅</button>
-                    <button className="btn-icon danger">❌</button>
+                    <button className="btn-icon"><Eye size={16} /></button>
+                    <button className="btn-icon"><Check size={16} /></button>
+                    <button className="btn-icon danger"><X size={16} /></button>
                   </div>
                 </td>
               </tr>
@@ -907,7 +940,10 @@ const GamesManagement: React.FC = () => {
           <h1>Quản lý Games</h1>
           <p className="subtitle">Thêm, sửa, xóa games trong hệ thống</p>
         </div>
-        <button className="btn-add">+ Thêm Game</button>
+        <button className="btn-add">
+          <Plus size={18} />
+          <span>Thêm Game</span>
+        </button>
       </div>
       <div className="stats-grid" style={{marginBottom: '2rem'}}>
         <div className="stat-card blue">
@@ -978,7 +1014,10 @@ const ContentManagement: React.FC = () => {
           <h1>Quản lý nội dung</h1>
           <p className="subtitle">Quản lý bài viết, bình luận và media</p>
         </div>
-        <button className="btn-add">+ Tạo bài viết</button>
+        <button className="btn-add">
+          <Plus size={18} />
+          <span>Tạo bài viết</span>
+        </button>
       </div>
       <div className="table-container">
         <table className="data-table">
@@ -1002,8 +1041,8 @@ const ContentManagement: React.FC = () => {
                 <td>{post.likes}</td>
                 <td>
                   <div className="action-buttons">
-                    <button className="btn-icon">✏️</button>
-                    <button className="btn-icon danger">🗑️</button>
+                    <button className="btn-icon"><Edit size={16} /></button>
+                    <button className="btn-icon danger"><Trash2 size={16} /></button>
                   </div>
                 </td>
               </tr>
