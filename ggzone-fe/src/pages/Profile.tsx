@@ -1,16 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { mockGames } from "../assets/mock/games";
-import { 
-  mockPosts, 
-  mockComments 
-} from "../assets/mock/posts";
-import { mockPhotos } from "../assets/mock/photos";
-import { 
-  getUserGroups, 
-  getUserFriends,
-  getUserPosts 
-} from "../assets/mock/helpers";
 import {
   ProfileHeader,
   ProfileTabs,
@@ -29,13 +18,14 @@ export const Profile: React.FC = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<ProfileTab>("posts");
 
-  // Get user data
-  const userPosts = user ? getUserPosts(user.id) : [];
-  const userPhotos = user ? mockPhotos.filter(p => p.userId === user.id) : [];
-  const userGroups = user ? getUserGroups(user.id) : [];
-  const userFriends = user ? getUserFriends(user.id) : [];
+  // TODO: Fetch data from API
+  const userPosts: any[] = [];
+  const userPhotos: any[] = [];
+  const userGroups: any[] = [];
+  const userFriends: any[] = [];
+  const games: any[] = [];
+  const comments: any[] = [];
   
-  // Removed achievements feature
   const earnedCount = 0;
   const totalPoints = 0;
 
@@ -53,7 +43,7 @@ export const Profile: React.FC = () => {
       )}
 
       {activeTab === "stats" && (
-        <StatsTab user={user} totalPoints={totalPoints} games={mockGames} />
+        <StatsTab user={user} totalPoints={totalPoints} games={games} />
       )}
 
       {activeTab === "about" && (
@@ -70,7 +60,7 @@ export const Profile: React.FC = () => {
       {activeTab === "groups" && <GroupsTab userGroups={userGroups} />}
 
       {activeTab === "forums" && (
-        <ForumsTab user={user} userPosts={userPosts} comments={mockComments} />
+        <ForumsTab user={user} userPosts={userPosts} comments={comments} />
       )}
 
       {activeTab === "video" && <VideoTab userPosts={userPosts} />}

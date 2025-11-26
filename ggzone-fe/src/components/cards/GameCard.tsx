@@ -1,6 +1,6 @@
 import React from "react";
 import { Play } from "lucide-react";
-import type { Game } from "../../assets/mock/games";
+import type { Game } from "../../types";
 
 interface GameCardProps {
   game: Game;

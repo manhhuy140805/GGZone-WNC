@@ -10,7 +10,16 @@ import {
   Zap,
   ChevronRight,
 } from "lucide-react";
-import { mockGames } from "../assets/mock/games";
+
+interface Game {
+  id: string;
+  name: string;
+  description: string;
+  coverImageUrl: string;
+  genre: string;
+  platform: string;
+  releaseDate: string;
+}
 
 interface BrowseProps {
   onViewGame?: (gameId: string) => void;
@@ -25,7 +34,10 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
   );
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const filteredGames = mockGames.filter((game) => {
+  // TODO: Fetch data from API
+  const games: Game[] = [];
+
+  const filteredGames = games.filter((game) => {
     const matchesSearch =
       game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       game.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -47,11 +59,11 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
     return 0;
   });
 
-  const genres = Array.from(new Set(mockGames.map((g) => g.genre)));
-  const platforms = Array.from(new Set(mockGames.map((g) => g.platform)));
+  const genres = Array.from(new Set(games.map((g) => g.genre)));
+  const platforms = Array.from(new Set(games.map((g) => g.platform)));
 
   // Featured games (first 3)
-  const featuredGames = mockGames.slice(0, 3);
+  const featuredGames = games.slice(0, 3);
 
   return (
     <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
@@ -76,7 +88,7 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
           <h1 className="text-4xl font-bold text-gray-900">Browse Games</h1>
         </div>
         <p className="text-gray-600 text-lg">
-          Discover and explore {mockGames.length}+ amazing games
+          Discover and explore amazing games
         </p>
       </div>
 

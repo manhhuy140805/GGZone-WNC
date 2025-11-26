@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../../../assets/mock/users";
+import { User } from "../../../types";
 
 interface ProfileHeaderProps {
   user: User | null;

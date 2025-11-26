@@ -1,6 +1,6 @@
 import React from "react";
 import { GameCard } from "../cards";
-import { Game } from "../../assets/mock/games";
+import { Game } from "../../types";
 import { ChevronRight } from "lucide-react";
 
 interface TrendingGamesProps {

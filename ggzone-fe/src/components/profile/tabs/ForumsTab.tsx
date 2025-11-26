@@ -1,7 +1,6 @@
 import React from "react";
 import { MessageCircle, Heart, Star } from "lucide-react";
-import { Post, Comment } from "../../../assets/mock/posts";
-import { User } from "../../../assets/mock/users";
+import { Post, Comment, User } from "../../../types";
 
 interface ForumsTabProps {
   user: User | null;

@@ -6295,6 +6295,10 @@
           "password": {
             "type": "string",
             "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -6761,10 +6765,6 @@
             "maxLength": 20,
             "type": "string",
             "nullable": true
-          },
-          "level": {
-            "type": "integer",
-            "format": "int32"
           },
           "isVerified": {
             "type": "boolean"

@@ -28,11 +28,16 @@ namespace ggzone_be.Services
             if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
                 throw new Exception("Email already exists");
 
+            // Kiểm tra username tồn tại
+            if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
+                throw new Exception("Username already exists");
+
             var user = new User
             {
                 Username = dto.Username,
                 Email = dto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                FullName = dto.FullName,
                 Status = "offline",
                 Role = "user",
                 CreatedAt = DateTime.UtcNow,
@@ -40,6 +45,25 @@ namespace ggzone_be.Services
             };
 
             _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            // Tạo UserStats mặc định cho user mới
+            var userStats = new UserStats
+            {
+                UserId = user.Id,
+                FriendsCount = 0,
+                WinningCount = 0,
+                TournamentsCount = 0,
+                PostsCount = 0,
+                PhotosCount = 0,
+                VideosCount = 0,
+                ForumsCount = 0,
+                GroupsCount = 0,
+                TotalPoints = 0,
+                Level = 1
+            };
+
+            _context.UserStats.Add(userStats);
             await _context.SaveChangesAsync();
 
             return user;

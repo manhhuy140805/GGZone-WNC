@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { MarketplaceCard } from "../cards";
-import type { MarketplaceItem } from "../../assets/mock/marketplace";
+import type { MarketplaceItem } from "../../types";
 
 interface StoreSectionProps {
   items: MarketplaceItem[];

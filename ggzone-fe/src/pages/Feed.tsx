@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  mockPosts,
-  additionalMockPosts,
-  mockPostMedia,
-  mockComments,
-} from "../assets/mock/posts";
-import { mockPhotos } from "../assets/mock/photos";
-import { mockUsers } from "../assets/mock/users";
-import {
   Image,
   Video,
   FileText,
@@ -29,6 +21,49 @@ import {
 
 type FeedTab = "all" | "posts" | "videos" | "photos" | "moments";
 type SortType = "recent" | "popular" | "trending";
+
+interface User {
+  id: string;
+  username: string;
+  avatarUrl?: string;
+  bio?: string;
+}
+
+interface Post {
+  id: string;
+  userId: string;
+  content: string;
+  createdAt: string;
+  likesCount: number;
+  commentsCount: number;
+  sharesCount: number;
+  postType: string;
+  videoUrl?: string;
+  isPinned?: boolean;
+  groupId?: string;
+}
+
+interface Photo {
+  id: string;
+  userId: string;
+  imageUrl: string;
+  caption: string;
+  likesCount: number;
+}
+
+interface Comment {
+  id: string;
+  postId: string;
+  content: string;
+  createdAt: string;
+  likesCount: number;
+  user?: User;
+}
+
+interface PostMedia {
+  postId: string;
+  mediaUrl: string;
+}
 
 export const Feed: React.FC = () => {
   const [activeTab, setActiveTab] = useState<FeedTab>("all");
@@ -79,12 +114,19 @@ export const Feed: React.FC = () => {
     };
   }, []);
 
-  const allPosts = [...mockPosts, ...additionalMockPosts].sort(
+  // TODO: Fetch data from API
+  const posts: Post[] = [];
+  const photos: Photo[] = [];
+  const users: User[] = [];
+  const comments: Comment[] = [];
+  const postMedia: PostMedia[] = [];
+
+  const allPosts = [...posts].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
   const getUserInfo = (userId: string) => {
-    return mockUsers.find((u) => u.id === userId);
+    return users.find((u) => u.id === userId);
   };
 
   const getTimeAgo = (dateString: string) => {
@@ -112,7 +154,7 @@ export const Feed: React.FC = () => {
         content = allPosts.filter((p) => p.postType === "image");
         break;
       case "moments":
-        return mockPhotos;
+        return photos;
       default:
         content = allPosts;
     }
@@ -305,7 +347,7 @@ export const Feed: React.FC = () => {
           {activeTab === "moments" ? (
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {mockPhotos.map((photo) => {
+                {photos.map((photo) => {
                   const user = getUserInfo(photo.userId);
                   return (
                     <div
@@ -365,7 +407,7 @@ export const Feed: React.FC = () => {
           ) : (
             filteredContent().map((post: any) => {
               const user = getUserInfo(post.userId);
-              const media = mockPostMedia.find((m) => m.postId === post.id);
+              const media = postMedia.find((m) => m.postId === post.id);
 
               return (
                 <div
@@ -477,7 +519,7 @@ export const Feed: React.FC = () => {
                   {expandedComments === post.id && (
                     <div className="px-4 pb-4 border-t border-gray-200 pt-4">
                       <div className="space-y-3 mb-4">
-                        {mockComments
+                        {comments
                           .filter((c) => c.postId === post.id)
                           .map((comment) => (
                             <div key={comment.id} className="flex gap-3">
@@ -509,11 +551,13 @@ export const Feed: React.FC = () => {
 
                       {/* Add Comment */}
                       <div className="flex gap-3">
-                        <img
-                          src={mockUsers[0].avatarUrl}
-                          alt="You"
-                          className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                        />
+                        {users[0] && (
+                          <img
+                            src={users[0].avatarUrl}
+                            alt="You"
+                            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
+                          />
+                        )}
                         <div className="flex-1 flex gap-2">
                           <input
                             type="text"
@@ -624,7 +668,7 @@ export const Feed: React.FC = () => {
           <div className="bg-white rounded-xl shadow-md border border-gray-200 p-4">
             <h3 className="font-bold text-gray-900 mb-4">Suggested Users</h3>
             <div className="space-y-3">
-              {mockUsers.slice(0, 5).map((user) => (
+              {users.slice(0, 5).map((user) => (
                 <div key={user.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <img

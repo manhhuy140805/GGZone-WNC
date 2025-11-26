@@ -6,9 +6,6 @@ import {
   ChevronRight,
   Zap,
 } from "lucide-react";
-import { mockGroups } from "../assets/mock/groups";
-import { mockMarketplaceItems } from "../assets/mock/marketplace";
-import { mockGames } from "../assets/mock/games";
 import {
   GameCard,
   CommunityCard,
@@ -109,10 +106,8 @@ export const Home: React.FC<HomeProps> = ({
           </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockGames.slice(0, 6).map((game, idx) => (
-            <GameCard key={game.id} game={game} rank={idx} onViewGame={handleGameClick} />
-          ))}
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
         </div>
       </section>
 
@@ -131,12 +126,8 @@ export const Home: React.FC<HomeProps> = ({
           </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {mockGroups.slice(0, 4).map((group) => (
-            <div key={group.id} onClick={() => handleGroupClick(group.id)} className="cursor-pointer">
-              <CommunityCard group={group} />
-            </div>
-          ))}
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
         </div>
       </section>
 
@@ -155,14 +146,8 @@ export const Home: React.FC<HomeProps> = ({
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {mockMarketplaceItems.slice(0, 4).map((item) => (
-            <MarketplaceCard 
-              key={item.id} 
-              item={item}
-              onViewDetails={() => handleProductClick(item.id)}
-            />
-          ))}
+        <div className="text-center py-12 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
         </div>
       </section>
 

@@ -45,8 +45,6 @@ namespace ggzone_be.Models
         [MaxLength(20)]
         public string Role { get; set; } = "user";
 
-        public int Level { get; set; } = 1;
-
         public bool IsVerified { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

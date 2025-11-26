@@ -1,6 +1,4 @@
 import React, { useState, useMemo } from "react";
-import { mockUsers } from "../assets/mock/users";
-import { mockFriendships } from "../assets/mock/friendships";
 import { useAuth } from "../context/AuthContext";
 import {
   FriendsHeader,
@@ -9,6 +7,19 @@ import {
   FriendsList,
   SuggestionsList,
 } from "../components/friends";
+
+interface User {
+  id: string;
+  fullName: string;
+  username: string;
+  avatarUrl?: string;
+}
+
+interface Friendship {
+  userId: string;
+  friendId: string;
+  status: string;
+}
 
 interface FriendsProps {
   onNavigate?: (page: string, userId?: string) => void;
@@ -21,9 +32,13 @@ export const Friends: React.FC<FriendsProps> = ({ onNavigate }) => {
 
   const currentUserId = user?.id || "";
 
+  // TODO: Fetch data from API
+  const users: User[] = [];
+  const friendships: Friendship[] = [];
+
   // Get friends list
   const friends = useMemo(() => {
-    const friendIds = mockFriendships
+    const friendIds = friendships
       .filter(
         (f) =>
           f.status === "accepted" &&
@@ -31,16 +46,16 @@ export const Friends: React.FC<FriendsProps> = ({ onNavigate }) => {
       )
       .map((f) => (f.userId === currentUserId ? f.friendId : f.userId));
 
-    return mockUsers.filter((u) => friendIds.includes(u.id));
-  }, [currentUserId]);
+    return users.filter((u) => friendIds.includes(u.id));
+  }, [currentUserId, users, friendships]);
 
   // Get friend suggestions (users not yet friends)
   const suggestions = useMemo(() => {
     const friendIds = friends.map((f) => f.id);
-    return mockUsers.filter(
+    return users.filter(
       (u) => u.id !== currentUserId && !friendIds.includes(u.id)
     );
-  }, [currentUserId, friends]);
+  }, [currentUserId, friends, users]);
 
   // Filter based on search
   const filteredFriends = useMemo(() => {

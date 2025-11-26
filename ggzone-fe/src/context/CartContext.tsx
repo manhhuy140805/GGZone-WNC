@@ -1,5 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import type { MarketplaceItem } from "../assets/mock/marketplace";
+
+export interface MarketplaceItem {
+  id: string;
+  title: string;
+  name?: string;
+  description: string;
+  price: number;
+  coverImageUrl: string;
+  category: string;
+  platform: string;
+  rating: number;
+  reviewsCount: number;
+  status: string;
+}
 
 export interface CartItem {
   product: MarketplaceItem;

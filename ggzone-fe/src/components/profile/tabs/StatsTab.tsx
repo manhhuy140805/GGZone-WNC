@@ -1,7 +1,6 @@
 import React from "react";
 import { Trophy, Star, Flame } from "lucide-react";
-import { User } from "../../../assets/mock/users";
-import { Game } from "../../../assets/mock/games";
+import { User, Game } from "../../../types";
 
 interface StatsTabProps {
   user: User | null;

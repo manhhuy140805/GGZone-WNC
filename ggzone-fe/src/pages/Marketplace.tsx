@@ -1,8 +1,21 @@
 import React, { useState } from "react";
 import { MarketplaceCard } from "../components/cards";
 import { Search, Grid3x3, List, SlidersHorizontal } from "lucide-react";
-import { mockMarketplaceItems, MarketplaceItem } from "../assets/mock/marketplace";
 import { useCart } from "../context/CartContext";
+
+export interface MarketplaceItem {
+  id: string;
+  title: string;
+  name?: string;
+  description: string;
+  price: number;
+  coverImageUrl: string;
+  category: string;
+  platform: string;
+  rating: number;
+  reviewsCount: number;
+  status: string;
+}
 
 interface MarketplaceProps {
   onViewProduct: (productId: string) => void;
@@ -16,7 +29,10 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onViewProduct }) => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000000]);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
-  const filteredItems = mockMarketplaceItems.filter((item) => {
+  // TODO: Fetch data from API
+  const marketplaceItems: MarketplaceItem[] = [];
+
+  const filteredItems = marketplaceItems.filter((item) => {
     const itemTitle = item.title || item.name || "";
     const itemDescription = item.description || "";
     const matchesSearch =
@@ -33,7 +49,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onViewProduct }) => {
     return 0;
   });
 
-  const categories = Array.from(new Set(mockMarketplaceItems.map((i) => i.category)));
+  const categories = Array.from(new Set(marketplaceItems.map((i) => i.category)));
 
   const handleAddToCart = (item: MarketplaceItem) => {
     addToCart(item, 1);
@@ -218,23 +234,7 @@ export const Marketplace: React.FC<MarketplaceProps> = ({ onViewProduct }) => {
           {/* Latest Products Preview */}
           <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
             <h3 className="text-gray-900 font-semibold mb-3">Latest Products</h3>
-            {mockMarketplaceItems.slice(0, 3).map((item) => (
-              <div
-                key={item.id}
-                onClick={() => onViewProduct(item.id)}
-                className="flex gap-3 mb-3 last:mb-0 cursor-pointer hover:bg-gray-50 p-2 rounded transition"
-              >
-                <img
-                  src={item.coverImageUrl}
-                  alt={item.title}
-                  className="w-16 h-16 object-cover rounded border border-gray-200"
-                />
-                <div className="flex-1">
-                  <h4 className="text-gray-900 text-sm font-medium line-clamp-2">{item.title}</h4>
-                  <p className="text-orange-600 font-semibold">${item.price.toLocaleString()}</p>
-                </div>
-              </div>
-            ))}
+            <p className="text-gray-500 text-sm">Dữ liệu sẽ được tải từ API</p>
           </div>
         </div>
       </div>

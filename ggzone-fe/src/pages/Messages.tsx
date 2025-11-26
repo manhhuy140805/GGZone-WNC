@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { mockUsers } from "../assets/mock/users";
-import { mockConversations, mockMessages } from "../assets/mock/messages";
 import { useAuth } from "../context/AuthContext";
 import { Search, Send, MessageCircle, ArrowLeft } from "lucide-react";
+
+interface User {
+  id: string;
+  fullName: string;
+  username: string;
+  avatarUrl?: string;
+}
+
+interface Conversation {
+  id: string;
+  participants: string[];
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+}
+
+interface Message {
+  id: string;
+  conversationId: string;
+  senderId: string;
+  content: string;
+  createdAt: string;
+}
 
 interface MessagesProps {
   selectedUserId?: string;
@@ -18,22 +39,27 @@ export const Messages: React.FC<MessagesProps> = ({ selectedUserId }) => {
 
   const currentUserId = user?.id || "";
 
+  // TODO: Fetch data from API
+  const users: User[] = [];
+  const conversations: Conversation[] = [];
+  const messages: Message[] = [];
+
   // Auto-select conversation when coming from Friends page
   useEffect(() => {
     if (selectedUserId) {
-      const conv = mockConversations.find((c) =>
+      const conv = conversations.find((c) =>
         c.participants.includes(selectedUserId)
       );
       if (conv) {
         setSelectedConversation(conv.id);
       }
     }
-  }, [selectedUserId]);
+  }, [selectedUserId, conversations]);
 
   // Filter conversations
-  const filteredConversations = mockConversations.filter((conv) => {
+  const filteredConversations = conversations.filter((conv) => {
     const otherUserId = conv.participants.find((id) => id !== currentUserId);
-    const otherUser = mockUsers.find((u) => u.id === otherUserId);
+    const otherUser = users.find((u) => u.id === otherUserId);
     return (
       otherUser &&
       (otherUser.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,10 +67,10 @@ export const Messages: React.FC<MessagesProps> = ({ selectedUserId }) => {
     );
   });
 
-  const selectedConv = mockConversations.find(
+  const selectedConv = conversations.find(
     (c) => c.id === selectedConversation
   );
-  const conversationMessages = mockMessages.filter(
+  const conversationMessages = messages.filter(
     (m) => m.conversationId === selectedConversation
   );
 
@@ -103,7 +129,7 @@ export const Messages: React.FC<MessagesProps> = ({ selectedUserId }) => {
                 const otherUserId = conv.participants.find(
                   (id) => id !== currentUserId
                 );
-                const otherUser = mockUsers.find((u) => u.id === otherUserId);
+                const otherUser = users.find((u) => u.id === otherUserId);
 
                 if (!otherUser) return null;
 
@@ -172,7 +198,7 @@ export const Messages: React.FC<MessagesProps> = ({ selectedUserId }) => {
                     const otherUserId = selectedConv.participants.find(
                       (id) => id !== currentUserId
                     );
-                    const otherUser = mockUsers.find((u) => u.id === otherUserId);
+                    const otherUser = users.find((u) => u.id === otherUserId);
                     return (
                       <>
                         {otherUser?.avatarUrl ? (
@@ -201,7 +227,7 @@ export const Messages: React.FC<MessagesProps> = ({ selectedUserId }) => {
                 <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
                   {conversationMessages.map((msg) => {
                     const isOwn = msg.senderId === currentUserId;
-                    const sender = mockUsers.find((u) => u.id === msg.senderId);
+                    const sender = users.find((u) => u.id === msg.senderId);
 
                     return (
                       <div

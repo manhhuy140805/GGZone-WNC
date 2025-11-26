@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/authService";
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -28,31 +29,38 @@ export const Register: React.FC = () => {
 
     // Validation
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      setError("Mật khẩu không khớp");
       return;
     }
 
     if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError("Mật khẩu phải có ít nhất 6 ký tự");
       return;
     }
 
     if (!formData.agreeToTerms) {
-      setError("You must agree to the Terms and Conditions");
+      setError("Bạn phải đồng ý với Điều khoản và Điều kiện");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
-      // Success - navigate to login
-      alert("Account created successfully! Please login.");
-      navigate("/login");
+      const result = await authService.register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        fullName: formData.fullName,
+      });
+
+      if (result.success) {
+        // Đăng ký thành công, chuyển về trang chủ
+        navigate("/");
+      } else {
+        setError(result.message || "Đăng ký thất bại");
+      }
     } catch (err) {
-      setError("Registration failed. Please try again.");
+      setError("Có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }

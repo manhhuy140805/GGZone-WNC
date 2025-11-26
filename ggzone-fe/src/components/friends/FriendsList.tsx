@@ -1,6 +1,6 @@
 import React from "react";
 import { FriendCard } from "./FriendCard";
-import { User } from "../../assets/mock/users";
+import { User } from "../../types";
 import { MessageCircle, Users } from "lucide-react";
 
 interface FriendsListProps {

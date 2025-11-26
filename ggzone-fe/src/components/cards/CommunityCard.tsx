@@ -1,6 +1,6 @@
 import React from "react";
 import { Heart, Users2 } from "lucide-react";
-import type { Group } from "../../assets/mock/groups";
+import type { Group } from "../../types";
 
 interface CommunityCardProps {
   group: Group;

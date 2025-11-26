@@ -1,0 +1,79 @@
+// Common types used across the application
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  fullName: string;
+  avatarUrl?: string;
+  role: string;
+  bio?: string;
+}
+
+export interface Game {
+  id: string;
+  name: string;
+  description: string;
+  coverImageUrl: string;
+  genre: string;
+  platform: string;
+  releaseDate: string;
+  publisher: string;
+}
+
+export interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  membersCount: number;
+  posts: number;
+  createdAt: string;
+  coverImageUrl: string;
+  iconUrl?: string;
+  visibility: string;
+}
+
+export interface MarketplaceItem {
+  id: string;
+  title: string;
+  name?: string;
+  description: string;
+  price: number;
+  coverImageUrl: string;
+  category: string;
+  platform: string;
+  rating: number;
+  reviewsCount: number;
+  status: string;
+}
+
+export interface Post {
+  id: string;
+  userId: string;
+  content: string;
+  createdAt: string;
+  likesCount: number;
+  commentsCount: number;
+  sharesCount: number;
+  postType: string;
+  videoUrl?: string;
+  isPinned?: boolean;
+  groupId?: string;
+}
+
+export interface Photo {
+  id: string;
+  userId: string;
+  imageUrl: string;
+  caption: string;
+  likesCount: number;
+}
+
+export interface Comment {
+  id: string;
+  postId: string;
+  content: string;
+  createdAt: string;
+  likesCount: number;
+  user?: User;
+}

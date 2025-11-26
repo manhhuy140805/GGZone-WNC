@@ -1,7 +1,7 @@
 import React from "react";
 import { Zap } from "lucide-react";
 import { Avatar, Button } from "../common";
-import type { User } from "../../assets/mock/users";
+import type { User } from "../../types";
 
 interface UserCardProps {
   user: User;
