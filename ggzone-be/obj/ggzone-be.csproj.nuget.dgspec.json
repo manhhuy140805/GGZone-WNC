@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj": {}
+    "D:\\BTNHOMLTWNC125\\ggzone-be\\ggzone-be.csproj": {}
   },
   "projects": {
-    "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj": {
+    "D:\\BTNHOMLTWNC125\\ggzone-be\\ggzone-be.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
+        "projectUniqueName": "D:\\BTNHOMLTWNC125\\ggzone-be\\ggzone-be.csproj",
         "projectName": "ggzone-be",
-        "projectPath": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\obj\\",
+        "projectPath": "D:\\BTNHOMLTWNC125\\ggzone-be\\ggzone-be.csproj",
+        "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
+        "outputPath": "D:\\BTNHOMLTWNC125\\ggzone-be\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Dowload\\VsCode_Tim\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Hi\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

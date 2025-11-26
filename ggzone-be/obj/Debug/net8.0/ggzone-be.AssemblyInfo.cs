@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ggzone-be")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cdfc319e6c2070effd71bde252b98f8fdb3afa78")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+943b6078a80b12abf6fbca5994da8b3ea15b1847")]
 [assembly: System.Reflection.AssemblyProductAttribute("ggzone-be")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ggzone-be")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

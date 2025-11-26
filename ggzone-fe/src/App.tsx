@@ -52,8 +52,8 @@ function AppContent() {
     return "HOME";
   };
 
-  // Public pages without layout (Login, Register)
-  const isPublicPage = location.pathname === "/login" || location.pathname === "/register";
+  // Public pages without layout (Login, Register, Admin)
+  const isPublicPage = location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/admin";
 
   if (isPublicPage || !isAuthenticated) {
     return <AppRoutes />;

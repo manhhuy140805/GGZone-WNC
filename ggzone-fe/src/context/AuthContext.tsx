@@ -9,6 +9,7 @@ interface AuthContextType {
     success: boolean;
     message?: string;
   }>;
+  mockLogin: (user: User) => void;
   logout: () => void;
 }
 
@@ -40,6 +41,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return { success: false, message: response.message };
   };
 
+  const mockLogin = (mockUser: User) => {
+    // Save mock user to localStorage
+    localStorage.setItem('ggzone_user', JSON.stringify(mockUser));
+    localStorage.setItem('ggzone_auth_token', 'mock_token_' + Date.now());
+    // Update state
+    setUser(mockUser);
+  };
+
   const logout = () => {
     authService.logout();
     setUser(null);
@@ -52,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         isAuthenticated: !!user,
         isLoading,
         login,
+        mockLogin,
         logout,
       }}
     >
