@@ -238,7 +238,6 @@ D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.bui
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.development.json
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.Up2Date
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.dll
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\refint\ggzone-be.dll

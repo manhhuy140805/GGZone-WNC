@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { authService } from "../services/authService";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -10,7 +9,6 @@ export const Login: React.FC = () => {
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showDemoAccounts, setShowDemoAccounts] = useState(false);
 
   const { login } = useAuth();
 
@@ -33,35 +31,6 @@ export const Login: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  const handleDemoLogin = async (demoEmail: string, demoPassword: string) => {
-    setEmail(demoEmail);
-    setPassword(demoPassword);
-    setError("");
-    setIsLoading(true);
-
-    try {
-      const result = await login({ email: demoEmail, password: demoPassword });
-
-      if (result.success) {
-        navigate("/");
-      } else {
-        setError(result.message || "Đăng nhập thất bại");
-      }
-    } catch (err) {
-      setError("Có lỗi xảy ra. Vui lòng thử lại.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // TODO: Fetch demo accounts from API
-  const demoAccounts: Array<{
-    email: string;
-    password: string;
-    fullName: string;
-    role: string;
-  }> = [];
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -236,19 +205,6 @@ export const Login: React.FC = () => {
                 </button>
               </div>
 
-              {/* Demo Accounts Button */}
-              <div className="mt-6 pt-6 border-t border-gray-300">
-                <button
-                  onClick={() => setShowDemoAccounts(true)}
-                  className="w-full text-sm text-gray-600 hover:text-orange-600 transition-colors flex items-center justify-center gap-3 py-2 group"
-                >
-                  <svg className="w-5 h-5 text-gray-600 group-hover:text-orange-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                  </svg>
-                  <span className="font-semibold uppercase tracking-wide">Try Demo Accounts</span>
-                </button>
-              </div>
-
               {/* Footer */}
               <p className="text-center text-gray-700 text-sm mt-6">
                 Don't have an account?{" "}
@@ -263,82 +219,6 @@ export const Login: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Demo Accounts Popup Modal */}
-      {showDemoAccounts && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fadeIn">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden border border-gray-200 animate-slideUp">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-5 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
-                </svg>
-                <h3 className="text-xl font-black text-white uppercase tracking-wide">Demo Accounts</h3>
-              </div>
-              <button
-                onClick={() => setShowDemoAccounts(false)}
-                className="text-white hover:text-gray-200 transition-colors p-1 hover:bg-white/10 rounded-lg"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-6 bg-gray-50">
-              <p className="text-sm text-gray-600 mb-6 text-center">
-                Select a demo account to quickly explore the platform
-              </p>
-              
-              <div className="space-y-3 max-h-[50vh] overflow-y-auto pr-2">
-                {demoAccounts.map((account) => (
-                  <button
-                    key={account.email}
-                    onClick={() => {
-                      handleDemoLogin(account.email, account.password);
-                      setShowDemoAccounts(false);
-                    }}
-                    disabled={isLoading}
-                    className="w-full p-4 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-orange-500 rounded-xl text-left transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group shadow-sm"
-                  >
-                    <div className="flex items-center gap-4">
-                      {/* Avatar */}
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-md">
-                        {account.fullName.charAt(0)}
-                      </div>
-                      
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-bold text-base text-gray-900 group-hover:text-orange-600 transition-colors">
-                          {account.fullName}
-                        </div>
-                        <div className="text-sm text-gray-600 mt-0.5">{account.email}</div>
-                      </div>
-                      
-                      {/* Role Badge */}
-                      <div className="text-xs px-3 py-1.5 bg-orange-100 text-orange-700 rounded-lg border border-orange-300 font-bold uppercase tracking-wide flex-shrink-0">
-                        {account.role}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="bg-white px-6 py-4 border-t border-gray-200">
-              <button
-                onClick={() => setShowDemoAccounts(false)}
-                className="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold rounded-xl transition-all duration-200"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

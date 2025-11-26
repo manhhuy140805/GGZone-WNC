@@ -52,6 +52,8 @@ class AuthService {
         credentials,
         false
       );
+      
+      console.log("Login response:", response);
 
       if (response.token) {
         // Lưu token
