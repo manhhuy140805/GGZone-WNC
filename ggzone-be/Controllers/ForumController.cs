@@ -183,6 +183,7 @@ namespace ggzone_be.Controllers
             var replies = await _context.ForumReplies
                 .Where(r => r.TopicId == id)
                 .Include(r => r.Author)
+                    .ThenInclude(a => a.UserStats)
                 .OrderBy(r => r.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -198,7 +199,7 @@ namespace ggzone_be.Controllers
                         r.Author.Username,
                         r.Author.FullName,
                         r.Author.AvatarUrl,
-                        r.Author.Level
+                        Level = r.Author.UserStats != null ? r.Author.UserStats.Level : 1
                     }
                 })
                 .ToListAsync();

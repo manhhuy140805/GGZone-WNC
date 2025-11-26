@@ -1,7 +1,7 @@
 import React from "react";
 import { TrendingUp } from "lucide-react";
 import { GameCard } from "../cards";
-import type { Game } from "../../assets/mock/games";
+import type { Game } from "../../types";
 
 interface TrendingSectionProps {
   games: Game[];

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\ggzone-be\\ggzone-be.csproj": {}
+    "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj": {}
   },
   "projects": {
-    "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\ggzone-be\\ggzone-be.csproj": {
+    "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\ggzone-be\\ggzone-be.csproj",
+        "projectUniqueName": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
         "projectName": "ggzone-be",
-        "projectPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\ggzone-be\\ggzone-be.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\ggzone-be\\obj\\",
+        "projectPath": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "D:\\1HK125\\WEB_NANG_CAO\\GGZone-WNC\\ggzone-be\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "D:\\Dowload\\VsCode_Tim\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -98,7 +98,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

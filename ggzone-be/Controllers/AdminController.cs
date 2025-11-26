@@ -131,6 +131,7 @@ namespace ggzone_be.Controllers
                 query = query.Where(u => u.Username.Contains(search) || u.Email.Contains(search));
 
             var users = await query
+                .Include(u => u.UserStats)
                 .OrderByDescending(u => u.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -141,7 +142,7 @@ namespace ggzone_be.Controllers
                     u.Email,
                     u.FullName,
                     u.Status,
-                    u.Level,
+                    Level = u.UserStats != null ? u.UserStats.Level : 1,
                     u.CreatedAt,
                     IsBanned = _context.UserBans.Any(ub => ub.UserId == u.Id && ub.ExpiresAt > DateTime.UtcNow)
                 })

@@ -1,8 +1,6 @@
 import React from "react";
 import { Heart, MessageCircle, Share2, Image as ImageIcon } from "lucide-react";
-import { Post } from "../../../assets/mock/posts";
-import { Photo } from "../../../assets/mock/photos";
-import { User } from "../../../assets/mock/users";
+import { Post, Photo, User } from "../../../types";
 
 interface PostsTabProps {
   user: User | null;

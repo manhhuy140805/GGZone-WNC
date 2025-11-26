@@ -55,7 +55,13 @@ export const Login: React.FC = () => {
     }
   };
 
-  const demoAccounts = authService.getDemoAccounts();
+  // TODO: Fetch demo accounts from API
+  const demoAccounts: Array<{
+    email: string;
+    password: string;
+    fullName: string;
+    role: string;
+  }> = [];
 
   return (
     <div className="min-h-screen relative overflow-hidden">

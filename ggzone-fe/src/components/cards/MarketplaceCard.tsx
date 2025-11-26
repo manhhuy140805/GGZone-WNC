@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ShoppingCart, Heart, Star } from "lucide-react";
-import type { MarketplaceItem } from "../../assets/mock/marketplace";
+import type { MarketplaceItem } from "../../types";
 
 interface MarketplaceCardProps {
   item: MarketplaceItem;

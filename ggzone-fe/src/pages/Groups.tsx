@@ -8,7 +8,18 @@ import {
   ChevronRight,
   Filter,
 } from "lucide-react";
-import { mockGroups } from "../assets/mock/groups";
+
+interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  membersCount: number;
+  posts: number;
+  createdAt: string;
+  coverImageUrl: string;
+  iconUrl?: string;
+  visibility: string;
+}
 
 interface GroupsProps {
   onViewGroup?: (groupId: string) => void;
@@ -24,7 +35,10 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
     "all"
   );
 
-  const filteredGroups = mockGroups.filter((group) => {
+  // TODO: Fetch data from API
+  const groups: Group[] = [];
+
+  const filteredGroups = groups.filter((group) => {
     const matchesSearch =
       group.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (group.description || "").toLowerCase().includes(searchTerm.toLowerCase());
@@ -59,8 +73,8 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
   };
 
   // Featured groups (first 3)
-  const featuredGroups = mockGroups.slice(0, 2);
-  const myGroups = mockGroups.filter((g) => joinedGroups.includes(g.id));
+  const featuredGroups = groups.slice(0, 2);
+  const myGroups = groups.filter((g) => joinedGroups.includes(g.id));
 
   return (
     <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
@@ -86,7 +100,7 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
             <h1 className="text-4xl font-bold text-gray-900">Gaming Groups</h1>
           </div>
           <p className="text-gray-600 text-lg">
-            Join {mockGroups.length} communities and play with friends
+            Join communities and play with friends
           </p>
         </div>
         <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg whitespace-nowrap">

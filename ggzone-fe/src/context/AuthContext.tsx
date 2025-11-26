@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { User } from "../assets/mock/users";
-import { authService, LoginCredentials } from "../services/authService";
+import { authService, LoginCredentials, User } from "../services/authService";
 
 interface AuthContextType {
   user: User | null;

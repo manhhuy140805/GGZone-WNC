@@ -1,6 +1,6 @@
 import React from "react";
 import { SuggestionCard } from "./SuggestionCard";
-import { User } from "../../assets/mock/users";
+import { User } from "../../types";
 import { UserPlus } from "lucide-react";
 
 interface SuggestionsListProps {

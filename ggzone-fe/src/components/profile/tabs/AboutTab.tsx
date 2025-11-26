@@ -1,6 +1,6 @@
 import React from "react";
 import { Calendar, MapPin, Mail, Shield, Users } from "lucide-react";
-import { User } from "../../../assets/mock/users";
+import { User } from "../../../types";
 
 interface AboutTabProps {
   user: User | null;

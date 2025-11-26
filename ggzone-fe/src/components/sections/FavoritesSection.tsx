@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
-import type { Group } from "../../assets/mock/groups";
+import type { Group } from "../../types";
 import { Button } from "../common";
 
 interface FavoritesSectionProps {

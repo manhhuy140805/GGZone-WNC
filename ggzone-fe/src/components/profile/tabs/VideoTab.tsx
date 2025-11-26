@@ -1,6 +1,6 @@
 import React from "react";
 import { Video, Heart, MessageCircle } from "lucide-react";
-import { Post } from "../../../assets/mock/posts";
+import { Post } from "../../../types";
 
 interface VideoTabProps {
   userPosts: Post[];

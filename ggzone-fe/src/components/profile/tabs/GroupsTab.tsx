@@ -1,6 +1,6 @@
 import React from "react";
 import { Users } from "lucide-react";
-import { Group } from "../../../assets/mock/groups";
+import { Group } from "../../../types";
 
 interface GroupsTabProps {
   userGroups: (Group | undefined)[];

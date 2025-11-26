@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { ArrowLeft, Star, ShoppingCart, Heart, Minus, Plus } from "lucide-react";
-import type { MarketplaceItem } from "../assets/mock/marketplace";
-import { mockMarketplaceItems } from "../assets/mock/marketplace";
 import { useCart } from "../context/CartContext";
+
+interface MarketplaceItem {
+  id: string;
+  title: string;
+  name?: string;
+  description: string;
+  price: number;
+  coverImageUrl: string;
+  category: string;
+  platform: string;
+  rating: number;
+  reviewsCount: number;
+  status: string;
+}
 
 interface ProductDetailProps {
   productId: string;
@@ -20,12 +32,13 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const { addToCart } = useCart();
 
-  const product = mockMarketplaceItems.find((item) => item.id === productId);
+  // TODO: Fetch product from API
+  const product: MarketplaceItem | null = null;
 
   if (!product) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">Product not found</p>
+        <p className="text-gray-500 text-lg">Dữ liệu sản phẩm sẽ được tải từ API</p>
         <button
           onClick={onBack}
           className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
@@ -36,9 +49,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
     );
   }
 
-  const relatedProducts = mockMarketplaceItems
-    .filter((item) => item.category === product.category && item.id !== product.id)
-    .slice(0, 4);
+  // TODO: Fetch related products from API
+  const relatedProducts: MarketplaceItem[] = [];
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
