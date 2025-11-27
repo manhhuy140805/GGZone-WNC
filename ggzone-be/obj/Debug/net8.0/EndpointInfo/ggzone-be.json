@@ -4491,6 +4491,48 @@
         }
       }
     },
+    "/api/upload/video": {
+      "post": {
+        "tags": [
+          "Upload"
+        ],
+        "parameters": [
+          {
+            "name": "folder",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "ggzone/videos"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/upload/test": {
       "post": {
         "tags": [
@@ -5120,10 +5162,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
           "adminUser": {
             "$ref": "#/components/schemas/User"
           }
@@ -5204,7 +5242,11 @@
             "type": "string",
             "format": "uuid"
           },
-          "expiresAt": {
+          "banType": {
+            "type": "string",
+            "nullable": true
+          },
+          "endDate": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -5520,23 +5562,11 @@
             "format": "uuid",
             "nullable": true
           },
-          "displayOrder": {
-            "type": "integer",
-            "format": "int32"
-          },
           "topicsCount": {
             "type": "integer",
             "format": "int32"
           },
-          "topicCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "postsCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "postCount": {
             "type": "integer",
             "format": "int32"
           },
@@ -5634,15 +5664,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "viewCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "repliesCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "replyCount": {
             "type": "integer",
             "format": "int32"
           },
@@ -6472,10 +6494,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "commentCount": {
-            "type": "integer",
-            "format": "int32"
-          },
           "sharesCount": {
             "type": "integer",
             "format": "int32"
@@ -6743,11 +6761,6 @@
             "type": "string",
             "nullable": true
           },
-          "imageUrl": {
-            "maxLength": 500,
-            "type": "string",
-            "nullable": true
-          },
           "price": {
             "type": "number",
             "format": "double"
@@ -6756,13 +6769,6 @@
             "maxLength": 50,
             "type": "string",
             "nullable": true
-          },
-          "stock": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "isAvailable": {
-            "type": "boolean"
           },
           "gameId": {
             "type": "string",

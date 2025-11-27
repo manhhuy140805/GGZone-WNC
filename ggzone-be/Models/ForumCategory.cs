@@ -18,11 +18,8 @@ namespace ggzone_be.Models
 
         public Guid? GameId { get; set; }
 
-        public int DisplayOrder { get; set; } = 0;
         public int TopicsCount { get; set; } = 0;
-        public int TopicCount { get; set; } = 0;
         public int PostsCount { get; set; } = 0;
-        public int PostCount { get; set; } = 0;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

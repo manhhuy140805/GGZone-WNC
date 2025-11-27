@@ -6,6 +6,7 @@ using System.Xml.Linq;
 
 namespace ggzone_be.Models
 {
+    [Table("PostMedia")]
     public class PostMedia
     {
         [Key]

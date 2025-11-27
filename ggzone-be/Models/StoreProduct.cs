@@ -18,19 +18,12 @@ namespace ggzone_be.Models
         [MaxLength(500)]
         public string? CoverImageUrl { get; set; }
 
-        [MaxLength(500)]
-        public string? ImageUrl { get; set; }
-
         [Required]
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
 
         [MaxLength(50)]
         public string? Category { get; set; }
-
-        public int Stock { get; set; } = 0;
-
-        public bool IsAvailable { get; set; } = true;
 
         public Guid? GameId { get; set; }
 

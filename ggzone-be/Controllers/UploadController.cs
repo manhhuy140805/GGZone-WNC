@@ -52,6 +52,45 @@ namespace ggzone_be.Controllers
             }
         }
 
+        [HttpPost("video")]
+        [Authorize]
+        public async Task<IActionResult> UploadVideo(IFormFile file, [FromQuery] string folder = "ggzone/videos")
+        {
+            try
+            {
+                if (file == null || file.Length == 0)
+                    return BadRequest(ApiResponse.ErrorResponse("No file provided"));
+
+                // Validate file type
+                var allowedExtensions = new[] { ".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".wmv" };
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
+                
+                if (!allowedExtensions.Contains(fileExtension))
+                    return BadRequest(ApiResponse.ErrorResponse("Invalid file type. Allowed: mp4, avi, mov, mkv, webm, flv, wmv"));
+
+                // Validate file size (max 500MB)
+                if (file.Length > 500 * 1024 * 1024)
+                    return BadRequest(ApiResponse.ErrorResponse("File size exceeds 500MB limit"));
+
+                var (videoUrl, thumbnailUrl, duration) = await _cloudinaryService.UploadVideoAsync(file, folder);
+
+                if (string.IsNullOrEmpty(videoUrl))
+                    return BadRequest(ApiResponse.ErrorResponse("Failed to upload video"));
+
+                return Ok(ApiResponse<object>.SuccessResponse(new 
+                { 
+                    videoUrl, 
+                    thumbnailUrl, 
+                    duration 
+                }, "Video uploaded successfully"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Video upload error: {ex.Message}");
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
+        }
+
         [HttpPost("test")]
         public async Task<IActionResult> TestUpload(IFormFile file)
         {

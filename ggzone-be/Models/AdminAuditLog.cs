@@ -34,7 +34,6 @@ namespace ggzone_be.Models
         public string? Reason { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
         // Navigation property
         [ForeignKey("AdminUserId")]

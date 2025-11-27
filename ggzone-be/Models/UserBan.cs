@@ -22,10 +22,8 @@ namespace ggzone_be.Models
         public string Reason { get; set; } = string.Empty;
 
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
-        public DateTime BannedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? EndDate { get; set; }
-        public DateTime? ExpiresAt { get; set; }
 
         public bool IsActive { get; set; } = true;
 
