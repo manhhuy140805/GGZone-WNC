@@ -22,16 +22,15 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetCategories()
         {
             var categories = await _context.ForumCategories
-                .OrderBy(c => c.DisplayOrder)
+                .OrderBy(c => c.CreatedAt)
                 .Select(c => new
                 {
                     c.Id,
                     c.Name,
                     c.Description,
                     c.IconUrl,
-                    c.DisplayOrder,
-                    c.TopicCount,
-                    c.PostCount,
+                    c.TopicsCount,
+                    c.PostsCount,
                     c.CreatedAt
                 })
                 .ToListAsync();
@@ -51,9 +50,8 @@ namespace ggzone_be.Controllers
                     c.Name,
                     c.Description,
                     c.IconUrl,
-                    c.DisplayOrder,
-                    c.TopicCount,
-                    c.PostCount,
+                    c.TopicsCount,
+                    c.PostsCount,
                     c.CreatedAt
                 })
                 .FirstOrDefaultAsync();
@@ -73,7 +71,7 @@ namespace ggzone_be.Controllers
         {
             var topics = await _context.ForumTopics
                 .Where(t => t.CategoryId == id)
-                .Include(t => t.Author)
+                .Include(t => t.User)
                 .OrderByDescending(t => t.IsPinned)
                 .ThenByDescending(t => t.LastReplyAt ?? t.CreatedAt)
                 .Skip((page - 1) * pageSize)
@@ -84,15 +82,15 @@ namespace ggzone_be.Controllers
                     t.Title,
                     t.IsPinned,
                     t.IsLocked,
-                    t.ViewCount,
-                    t.ReplyCount,
+                    t.ViewsCount,
+                    t.RepliesCount,
                     t.CreatedAt,
                     t.LastReplyAt,
                     Author = new
                     {
-                        t.Author.Id,
-                        t.Author.Username,
-                        t.Author.AvatarUrl
+                        t.User.Id,
+                        t.User.Username,
+                        t.User.AvatarUrl
                     }
                 })
                 .ToListAsync();
@@ -105,7 +103,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<object>> GetTopic(Guid id)
         {
             var topic = await _context.ForumTopics
-                .Include(t => t.Author)
+                .Include(t => t.User)
                 .Include(t => t.Category)
                 .Where(t => t.Id == id)
                 .Select(t => new
@@ -115,16 +113,16 @@ namespace ggzone_be.Controllers
                     t.Content,
                     t.IsPinned,
                     t.IsLocked,
-                    t.ViewCount,
-                    t.ReplyCount,
+                    t.ViewsCount,
+                    t.RepliesCount,
                     t.CreatedAt,
                     t.LastReplyAt,
                     Author = new
                     {
-                        t.Author.Id,
-                        t.Author.Username,
-                        t.Author.FullName,
-                        t.Author.AvatarUrl
+                        t.User.Id,
+                        t.User.Username,
+                        t.User.FullName,
+                        t.User.AvatarUrl
                     },
                     Category = new
                     {
@@ -141,7 +139,7 @@ namespace ggzone_be.Controllers
             var topicEntity = await _context.ForumTopics.FindAsync(id);
             if (topicEntity != null)
             {
-                topicEntity.ViewCount++;
+                topicEntity.ViewsCount++;
                 await _context.SaveChangesAsync();
             }
 
@@ -155,8 +153,8 @@ namespace ggzone_be.Controllers
         {
             topic.Id = Guid.NewGuid();
             topic.CreatedAt = DateTime.UtcNow;
-            topic.ViewCount = 0;
-            topic.ReplyCount = 0;
+            topic.ViewsCount = 0;
+            topic.RepliesCount = 0;
 
             _context.ForumTopics.Add(topic);
 
@@ -164,8 +162,8 @@ namespace ggzone_be.Controllers
             var category = await _context.ForumCategories.FindAsync(topic.CategoryId);
             if (category != null)
             {
-                category.TopicCount++;
-                category.PostCount++;
+                category.TopicsCount++;
+                category.PostsCount++;
             }
 
             await _context.SaveChangesAsync();
@@ -182,7 +180,7 @@ namespace ggzone_be.Controllers
         {
             var replies = await _context.ForumReplies
                 .Where(r => r.TopicId == id)
-                .Include(r => r.Author)
+                .Include(r => r.User)
                     .ThenInclude(a => a.UserStats)
                 .OrderBy(r => r.CreatedAt)
                 .Skip((page - 1) * pageSize)
@@ -195,11 +193,11 @@ namespace ggzone_be.Controllers
                     r.UpdatedAt,
                     Author = new
                     {
-                        r.Author.Id,
-                        r.Author.Username,
-                        r.Author.FullName,
-                        r.Author.AvatarUrl,
-                        Level = r.Author.UserStats != null ? r.Author.UserStats.Level : 1
+                        r.User.Id,
+                        r.User.Username,
+                        r.User.FullName,
+                        r.User.AvatarUrl,
+                        Level = r.User.UserStats != null ? r.User.UserStats.Level : 1
                     }
                 })
                 .ToListAsync();
@@ -226,14 +224,14 @@ namespace ggzone_be.Controllers
             _context.ForumReplies.Add(reply);
 
             // Update topic
-            topic.ReplyCount++;
+            topic.RepliesCount++;
             topic.LastReplyAt = DateTime.UtcNow;
 
             // Update category
             var category = await _context.ForumCategories.FindAsync(topic.CategoryId);
             if (category != null)
             {
-                category.PostCount++;
+                category.PostsCount++;
             }
 
             await _context.SaveChangesAsync();
@@ -273,7 +271,7 @@ namespace ggzone_be.Controllers
 
             if (topic != null)
             {
-                topic.ReplyCount--;
+                topic.RepliesCount--;
             }
 
             await _context.SaveChangesAsync();

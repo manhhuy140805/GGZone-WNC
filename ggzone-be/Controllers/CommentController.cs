@@ -62,7 +62,7 @@ namespace ggzone_be.Controllers
             var post = await _context.Posts.FindAsync(comment.PostId);
             if (post != null)
             {
-                post.CommentCount++;
+                post.CommentsCount++;
             }
 
             await _context.SaveChangesAsync();
@@ -116,9 +116,9 @@ namespace ggzone_be.Controllers
 
             // Update post comment count
             var post = await _context.Posts.FindAsync(comment.PostId);
-            if (post != null && post.CommentCount > 0)
+            if (post != null && post.CommentsCount > 0)
             {
-                post.CommentCount--;
+                post.CommentsCount--;
             }
 
             _context.Comments.Remove(comment);

@@ -43,10 +43,9 @@ namespace ggzone_be.Controllers
                     p.Name,
                     p.Description,
                     p.Price,
-                    p.ImageUrl,
+                    p.CoverImageUrl,
                     p.Category,
-                    p.Stock,
-                    p.IsAvailable,
+                    p.Status,
                     p.CreatedAt
                 })
                 .ToListAsync();

@@ -17,9 +17,7 @@ namespace ggzone_be.Models
         public string? Content { get; set; }
 
         public int ViewsCount { get; set; } = 0;
-        public int ViewCount { get; set; } = 0;
         public int RepliesCount { get; set; } = 0;
-        public int ReplyCount { get; set; } = 0;
 
         public bool IsPinned { get; set; } = false;
         public bool IsLocked { get; set; } = false;

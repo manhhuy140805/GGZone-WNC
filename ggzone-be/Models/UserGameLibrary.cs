@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ggzone_be.Models
 {
+    [Table("UserGameLibrary")]
     public class UserGameLibrary
     {
         [Key]

@@ -1,19 +1,29 @@
 import React from "react";
-import { Calendar, MapPin, Mail, Shield, Users } from "lucide-react";
+import { Calendar, MapPin, Mail, Shield, Users, Award } from "lucide-react";
 import { User } from "../../../types";
+
+interface Badge {
+  id: string;
+  badgeName: string;
+  badgeType: string;
+  iconUrl: string;
+  awardedAt: string;
+}
 
 interface AboutTabProps {
   user: User | null;
-  userFriends: (User | undefined)[];
+  userFriends: User[];
   userGroups: any[];
   earnedCount: number;
+  userBadges?: Badge[];
 }
 
 export const AboutTab: React.FC<AboutTabProps> = ({ 
   user, 
   userFriends, 
   userGroups, 
-  earnedCount 
+  earnedCount,
+  userBadges = []
 }) => {
   return (
     <section className="space-y-6">
@@ -37,19 +47,19 @@ export const AboutTab: React.FC<AboutTabProps> = ({
             </div>
             <div className="flex items-center gap-3 text-gray-700">
               <Mail size={18} className="text-gray-400" />
-              <span>{user?.email}</span>
+              <span>{user?.email || "Email not set"}</span>
             </div>
             <div className="flex items-center gap-3 text-gray-700">
               <Calendar size={18} className="text-gray-400" />
-              <span>Joined {new Date(user?.createdAt || "").toLocaleDateString('en-US', { 
+              <span>Joined {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
-              })}</span>
+              }) : "Date unknown"}</span>
             </div>
             <div className="flex items-center gap-3 text-gray-700">
               <Shield size={18} className="text-gray-400" />
-              <span className="capitalize">{user?.role} Account</span>
+              <span className="capitalize">{user?.role || "user"} Account</span>
             </div>
           </div>
         </div>
@@ -85,30 +95,59 @@ export const AboutTab: React.FC<AboutTabProps> = ({
       {/* Friends Section */}
       <div className="bg-white rounded-xl p-6 border border-gray-200">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-gray-900">Friends</h3>
+          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <Users size={20} />
+            Friends
+          </h3>
           <span className="text-sm text-gray-600">{userFriends.length} friends</span>
         </div>
         {userFriends.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {userFriends.slice(0, 6).map((friend) => {
-              if (!friend) return null;
-              return (
-                <div key={friend.id} className="text-center">
-                  <img
-                    src={friend.avatarUrl}
-                    alt={friend.fullName}
-                    className="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-gray-200 object-cover"
-                  />
-                  <p className="text-sm font-medium text-gray-900 truncate">{friend.fullName}</p>
-                  <p className="text-xs text-gray-500">@{friend.username}</p>
-                </div>
-              );
-            })}
+            {userFriends.slice(0, 6).map((friend) => (
+              <div key={friend.id} className="text-center hover:bg-gray-50 p-2 rounded-lg transition">
+                <img
+                  src={friend.avatarUrl || "https://via.placeholder.com/64"}
+                  alt={friend.fullName || friend.username}
+                  className="w-16 h-16 rounded-full mx-auto mb-2 border-2 border-gray-200 object-cover"
+                />
+                <p className="text-sm font-medium text-gray-900 truncate">{friend.fullName || friend.username}</p>
+                <p className="text-xs text-gray-500">@{friend.username}</p>
+              </div>
+            ))}
           </div>
         ) : (
           <p className="text-center text-gray-500 py-4">No friends yet</p>
         )}
       </div>
+
+      {/* Achievements/Badges Section */}
+      {userBadges.length > 0 && (
+        <div className="bg-white rounded-xl p-6 border border-gray-200">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <Award size={20} />
+              Achievements
+            </h3>
+            <span className="text-sm text-gray-600">{userBadges.length} earned</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {userBadges.slice(0, 12).map((badge) => (
+              <div key={badge.id} className="text-center hover:bg-yellow-50 p-3 rounded-lg transition">
+                <img
+                  src={badge.iconUrl || "https://via.placeholder.com/64"}
+                  alt={badge.badgeName}
+                  className="w-16 h-16 rounded-lg mx-auto mb-2 object-cover"
+                />
+                <p className="text-sm font-medium text-gray-900 truncate">{badge.badgeName}</p>
+                <p className="text-xs text-gray-500">{badge.badgeType}</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  {new Date(badge.awardedAt).toLocaleDateString()}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Status */}
       <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200">

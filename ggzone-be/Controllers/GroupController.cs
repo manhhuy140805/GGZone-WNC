@@ -28,8 +28,24 @@ namespace ggzone_be.Controllers
         public async Task<IActionResult> GetAllGroups()
         {
             var groups = await _context.Groups
-                .Include(g => g.Creator)
                 .OrderByDescending(g => g.MembersCount)
+                .Select(g => new
+                {
+                    g.Id,
+                    g.Name,
+                    g.Description,
+                    g.CoverImageUrl,
+                    g.IconUrl,
+                    g.Visibility,
+                    g.MembersCount,
+                    g.CreatedAt,
+                    Creator = new
+                    {
+                        g.Creator!.Id,
+                        g.Creator.Username,
+                        g.Creator.AvatarUrl
+                    }
+                })
                 .ToListAsync();
 
             return Ok(groups);
@@ -39,10 +55,38 @@ namespace ggzone_be.Controllers
         public async Task<IActionResult> GetGroupById(Guid id)
         {
             var group = await _context.Groups
-                .Include(g => g.Creator)
-                .Include(g => g.Members)
-                    .ThenInclude(gm => gm.User)
-                .FirstOrDefaultAsync(g => g.Id == id);
+                .Where(g => g.Id == id)
+                .Select(g => new
+                {
+                    g.Id,
+                    g.Name,
+                    g.Description,
+                    g.CoverImageUrl,
+                    g.IconUrl,
+                    g.Visibility,
+                    g.MembersCount,
+                    g.CreatedAt,
+                    g.UpdatedAt,
+                    Creator = new
+                    {
+                        g.Creator!.Id,
+                        g.Creator.Username,
+                        g.Creator.AvatarUrl
+                    },
+                    Members = g.Members.Select(gm => new
+                    {
+                        gm.Id,
+                        gm.Role,
+                        gm.JoinedAt,
+                        User = new
+                        {
+                            gm.User.Id,
+                            gm.User.Username,
+                            gm.User.AvatarUrl
+                        }
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
             if (group == null) return NotFound();
 
@@ -53,13 +97,37 @@ namespace ggzone_be.Controllers
         public async Task<IActionResult> GetGroupPosts(Guid id, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
             var posts = await _context.Posts
-                .Include(p => p.User)
-                .Include(p => p.Media)
                 .Where(p => p.GroupId == id)
                 .OrderByDescending(p => p.IsPinned)
                 .ThenByDescending(p => p.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Content,
+                    p.PostType,
+                    p.VideoUrl,
+                    p.LikesCount,
+                    p.CommentsCount,
+                    p.SharesCount,
+                    p.IsPinned,
+                    p.CreatedAt,
+                    p.UpdatedAt,
+                    User = new
+                    {
+                        p.User.Id,
+                        p.User.Username,
+                        p.User.AvatarUrl
+                    },
+                    Media = p.Media.Select(m => new
+                    {
+                        m.Id,
+                        m.MediaUrl,
+                        m.MediaType,
+                        m.OrderIndex
+                    }).ToList()
+                })
                 .ToListAsync();
 
             return Ok(posts);
