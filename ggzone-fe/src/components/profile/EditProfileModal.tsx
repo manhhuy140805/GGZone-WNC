@@ -201,7 +201,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6 max-h-[calc(90vh-350px)] overflow-y-auto pr-2">
+          <form onSubmit={handleSubmit} className="space-y-6 max-h-[calc(90vh-350px)] overflow-y-auto pr-2 py-10">
             {/* Messages */}
             {error && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
@@ -222,8 +222,8 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             )}
 
             {/* Read-only Information */}
-            <div className="space-y-3 p-4 bg-gray-50 rounded-lg opacity-60">
-              <h3 className="text-sm font-semibold text-gray-700">Thông tin tài khoản (không thể sửa)</h3>
+            <div className="space-y-3 p-4 bg-gray-50 rounded-lg">
+              <h3 className="text-sm font-semibold text-gray-700">Thông tin tài khoản</h3>
               
               <div className="grid grid-cols-2 gap-4">
                 {/* Username */}
@@ -291,7 +291,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
             </div>
 
             {/* Editable Information */}
-            <div className="space-y-4 pt-4 border-t">
+            <div className="space-y-4 p-4 border-t">
               <h3 className="text-sm font-semibold text-gray-900">Thông tin cá nhân</h3>
 
               {/* Full Name */}
