@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flame,
   Users,
   TrendingUp,
   ChevronRight,
   Zap,
+  Loader,
 } from "lucide-react";
 import {
   GameCard,
   CommunityCard,
   MarketplaceCard,
 } from "../components/cards";
+import { homeService } from "../services/homeService";
+import { Game } from "../types";
+
+interface Group {
+  id: string;
+  name: string;
+  description?: string;
+  image?: string;
+  memberCount?: number;
+}
 
 interface HomeProps {
   onNavigate?: (page: string) => void;
@@ -25,6 +36,35 @@ export const Home: React.FC<HomeProps> = ({
   onViewGame,
   onViewGroup
 }) => {
+  const [trendingGames, setTrendingGames] = useState<Game[]>([]);
+  const [popularGroups, setPopularGroups] = useState<Group[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadHomeData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await homeService.getHomeData();
+        
+        if (response.success && response.data) {
+          setTrendingGames(response.data.trendingGames || []);
+          setPopularGroups(response.data.popularGroups || []);
+        } else {
+          setError(response.message || 'Lỗi khi tải dữ liệu');
+        }
+      } catch (err) {
+        setError('Lỗi khi tải dữ liệu trang Home');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadHomeData();
+  }, []);
+
   const handleMarketplaceClick = () => {
     onNavigate?.("MARKETPLACE");
   };
@@ -91,12 +131,12 @@ export const Home: React.FC<HomeProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </section>
 
-      {/* Trending Games */}
+      {/* Games */}
       <section>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <TrendingUp size={28} className="text-orange-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Trending Games</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Games</h2>
           </div>
           <a
             href="#"
@@ -106,9 +146,29 @@ export const Home: React.FC<HomeProps> = ({
           </a>
         </div>
 
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
+            <Loader className="animate-spin text-orange-600" size={32} />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 bg-red-50 rounded-lg">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : trendingGames.length > 0 ? (
+          <div className="grid grid-cols-3 gap-6">
+            {trendingGames.map((game) => (
+              <GameCard
+                key={game.id}
+                game={game}
+                onClick={() => handleGameClick(game.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Không có game nào</p>
+          </div>
+        )}
       </section>
 
       {/* Communities */}
@@ -116,7 +176,7 @@ export const Home: React.FC<HomeProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Users size={28} className="text-purple-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Popular Communities</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Communities</h2>
           </div>
           <a
             href="#"
@@ -126,9 +186,29 @@ export const Home: React.FC<HomeProps> = ({
           </a>
         </div>
 
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
+            <Loader className="animate-spin text-purple-600" size={32} />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 bg-red-50 rounded-lg">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : popularGroups.length > 0 ? (
+          <div className="grid grid-cols-2 gap-6">
+            {popularGroups.map((group) => (
+              <CommunityCard
+                key={group.id}
+                group={group}
+                onClick={() => handleGroupClick(group.id)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Không có cộng đồng nào</p>
+          </div>
+        )}
       </section>
 
       {/* Featured Marketplace */}
