@@ -1006,14 +1006,6 @@ GO
 
 GO
 
--- Update timestamps
-CREATE TRIGGER tr_Users_UpdatedAt ON Users AFTER UPDATE
-AS BEGIN
-    UPDATE Users SET UpdatedAt = GETDATE()
-    FROM Users u INNER JOIN inserted i ON u.Id = i.Id;
-END;
-GO
-
 CREATE TRIGGER tr_Posts_UpdatedAt ON Posts AFTER UPDATE
 AS BEGIN
     UPDATE Posts SET UpdatedAt = GETDATE()

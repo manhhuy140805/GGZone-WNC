@@ -35,6 +35,10 @@ namespace ggzone_be.Services
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
                 throw new Exception("Username already exists");
 
+            // Validate password length (BCrypt has 72 byte limit)
+            if (string.IsNullOrEmpty(dto.Password) || dto.Password.Length > 72)
+                throw new Exception("Password must be between 1 and 72 characters");
+
             var user = new User
             {
                 Username = dto.Username,
@@ -76,6 +80,10 @@ namespace ggzone_be.Services
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == dto.Email);
             if (user == null) return null;
+
+            // Validate password length before verification
+            if (string.IsNullOrEmpty(dto.Password) || dto.Password.Length > 72)
+                return null;
 
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
                 return null;
@@ -140,6 +148,13 @@ namespace ggzone_be.Services
             var user = await _userRepository.GetByIdAsync(userId);
             if (user == null)
                 throw new Exception("User not found");
+
+            // Validate password lengths
+            if (string.IsNullOrEmpty(dto.CurrentPassword) || dto.CurrentPassword.Length > 72)
+                throw new Exception("Current password is incorrect");
+
+            if (string.IsNullOrEmpty(dto.NewPassword) || dto.NewPassword.Length > 72)
+                throw new Exception("New password must be between 1 and 72 characters");
 
             if (!BCrypt.Net.BCrypt.Verify(dto.CurrentPassword, user.PasswordHash))
                 throw new Exception("Current password is incorrect");

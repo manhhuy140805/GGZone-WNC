@@ -29,7 +29,31 @@ export const API_CONFIG = {
     // Posts
     POSTS: {
       BASE: '/api/posts',
-      FEED: '/api/posts/feed',
+      FEED: (page?: number, pageSize?: number, sortBy?: string, groupId?: string) => {
+        let url = '/api/posts/feed';
+        const params = [];
+        if (page) params.push(`page=${page}`);
+        if (pageSize) params.push(`pageSize=${pageSize}`);
+        if (sortBy) params.push(`sortBy=${sortBy}`);
+        if (groupId) params.push(`groupId=${groupId}`);
+        return url + (params.length ? `?${params.join('&')}` : '');
+      },
+      FILTER: (page?: number, pageSize?: number, groupId?: string, userId?: string, sortBy?: string) => {
+        let url = '/api/posts/filter';
+        const params = [];
+        if (page) params.push(`page=${page}`);
+        if (pageSize) params.push(`pageSize=${pageSize}`);
+        if (groupId) params.push(`groupId=${groupId}`);
+        if (userId) params.push(`userId=${userId}`);
+        if (sortBy) params.push(`sortBy=${sortBy}`);
+        return url + (params.length ? `?${params.join('&')}` : '');
+      },
+      SEARCH: (query: string, page?: number, pageSize?: number) => {
+        let url = `/api/posts/search?q=${encodeURIComponent(query)}`;
+        if (page) url += `&page=${page}`;
+        if (pageSize) url += `&pageSize=${pageSize}`;
+        return url;
+      },
       BY_ID: (id: string) => `/api/posts/${id}`,
       LIKE: (id: string) => `/api/posts/${id}/like`,
       UNLIKE: (id: string) => `/api/posts/${id}/like`,
@@ -56,6 +80,23 @@ export const API_CONFIG = {
       BY_ID: (id: string) => `/api/games/${id}`,
       BY_SLUG: (slug: string) => `/api/games/slug/${slug}`,
       TRENDING: (limit?: number) => `/api/games/trending${limit ? `?limit=${limit}` : ''}`,
+      SEARCH: (query: string, page?: number, pageSize?: number) => {
+        let url = `/api/games/search?q=${encodeURIComponent(query)}`;
+        if (page) url += `&page=${page}`;
+        if (pageSize) url += `&pageSize=${pageSize}`;
+        return url;
+      },
+      FILTER: (genre?: string, platform?: string, page?: number, pageSize?: number) => {
+        let url = '/api/games/filter';
+        const params = [];
+        if (genre) params.push(`genre=${encodeURIComponent(genre)}`);
+        if (platform) params.push(`platform=${encodeURIComponent(platform)}`);
+        if (page) params.push(`page=${page}`);
+        if (pageSize) params.push(`pageSize=${pageSize}`);
+        return url + (params.length ? `?${params.join('&')}` : '');
+      },
+      GENRES: '/api/games/genres',
+      PLATFORMS: '/api/games/platforms',
     },
 
     // Groups
@@ -141,6 +182,20 @@ export const API_CONFIG = {
     UPLOAD: {
       IMAGE: (folder?: string) => `/api/upload/image${folder ? `?folder=${folder}` : ''}`,
       TEST: '/api/upload/test',
+    },
+
+    // Marketplace
+    MARKETPLACE: {
+      BASE: '/api/marketplace',
+      BY_ID: (id: string) => `/api/marketplace/${id}`,
+      FEATURED: (limit?: number) => `/api/marketplace/featured${limit ? `?limit=${limit}` : ''}`,
+      BY_CATEGORY: (category: string, page?: number, pageSize?: number) => {
+        let url = `/api/marketplace?category=${category}`;
+        if (page) url += `&page=${page}`;
+        if (pageSize) url += `&pageSize=${pageSize}`;
+        return url;
+      },
+      REVIEWS: (id: string) => `/api/marketplace/${id}/reviews`,
     },
   },
   TIMEOUT: 30000, // 30 seconds

@@ -6,6 +6,54 @@ USE GGZone;
 GO
 
 -- ================================================
+-- CLEAR EXISTING DATA (Optional - uncomment if needed)
+-- ================================================
+-- Delete all data to start fresh
+DELETE FROM EmailTemplates;
+DELETE FROM Announcements;
+DELETE FROM FeaturedContent;
+DELETE FROM DailyStatistics;
+DELETE FROM AdminAuditLogs;
+DELETE FROM UserActivityLog;
+DELETE FROM GameLaunchLogs;
+DELETE FROM UserGameLibrary;
+DELETE FROM GameReviews;
+DELETE FROM TrendingPlayers;
+DELETE FROM TrendingItems;
+DELETE FROM ShoppingCart;
+DELETE FROM OrderItems;
+DELETE FROM StoreOrders;
+DELETE FROM MarketplaceReviews;
+DELETE FROM MarketplaceItems;
+DELETE FROM StoreProducts;
+DELETE FROM ForumReplies;
+DELETE FROM ForumTopics;
+DELETE FROM ForumCategories;
+DELETE FROM VideoLikes;
+DELETE FROM VideoComments;
+DELETE FROM Videos;
+DELETE FROM TournamentParticipants;
+DELETE FROM Tournaments;
+DELETE FROM Messages;
+DELETE FROM Notifications;
+DELETE FROM Comments;
+DELETE FROM PostLikes;
+DELETE FROM PostMedia;
+DELETE FROM Posts;
+DELETE FROM Photos;
+DELETE FROM UserBadges;
+DELETE FROM UserPreferences;
+DELETE FROM FriendSuggestions;
+DELETE FROM Friendships;
+DELETE FROM GroupMembers;
+DELETE FROM Groups;
+DELETE FROM UserStats;
+DELETE FROM Users;
+DELETE FROM Games;
+
+GO
+
+-- ================================================
 -- ALL INSERTS IN ONE BATCH (No GO statements between)
 -- ================================================
 
@@ -15,65 +63,118 @@ DECLARE @User2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @User3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @User4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @User5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @User15 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Game1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game6 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Group1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Group2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Group3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Group4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Group5 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Post1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Post5 UNIQUEIDENTIFIER = NEWID();
-
--- Achievements removed (no longer needed)
+DECLARE @Post6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Post15 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Market1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market6 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Prod1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod8 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Tour1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Tour2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Tour3 UNIQUEIDENTIFIER = NEWID();
-
--- LiveChannels removed (no longer needed)
+DECLARE @Tour4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Tour5 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Video1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Video2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Video3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Video9 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @ForumCat1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @ForumCat2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @ForumCat3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @ForumCat4 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Topic1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Topic2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Topic3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Topic4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Topic5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Topic6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Topic7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Topic8 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Order1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Order2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Order3 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order4 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order5 UNIQUEIDENTIFIER = NEWID();
 
 -- ================================================
 -- INSERT USERS
 -- ================================================
 INSERT INTO Users (Id, Username, Email, PasswordHash, FullName, AvatarUrl, Bio, Location, Status, Role, IsVerified)
 VALUES
-(@User1, 'alice_gamer', 'alice@ggzone.com', '$2a$10$hash1', N'Alice Nguyễn', 'https://i.pravatar.cc/150?img=1', N'Pro Valorant player | Streaming daily', N'Hà Nội, Vietnam', 'online', 'user', 1),
-(@User2, 'bob_fps', 'bob@ggzone.com', '$2a$10$hash2', N'Bob Trần', 'https://i.pravatar.cc/150?img=2', N'FPS enthusiast | CS2 veteran', N'TP.HCM, Vietnam', 'in-game', 'user', 1),
-(@User3, 'charlie_moba', 'charlie@ggzone.com', '$2a$10$hash3', N'Charlie Lê', 'https://i.pravatar.cc/150?img=3', N'League of Legends Diamond player', N'Đà Nẵng, Vietnam', 'online', 'moderator', 1),
-(@User4, 'diana_streamer', 'diana@ggzone.com', '$2a$10$hash4', N'Diana Phạm', 'https://i.pravatar.cc/150?img=4', N'Full-time streamer | Content creator', N'Hà Nội, Vietnam', 'online', 'user', 1),
-(@User5, 'admin_ggzone', 'admin@ggzone.com', '$2a$10$hash5', N'GGZone Admin', 'https://i.pravatar.cc/150?img=5', N'Official GGZone account', N'Vietnam', 'online', 'admin', 1);
+(@User1, 'alice_gamer', 'alice@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Alice Nguyễn', 'https://i.pravatar.cc/150?img=1', N'Pro Valorant player | Streaming daily', N'Hà Nội, Vietnam', 'online', 'user', 1),
+(@User2, 'bob_fps', 'bob@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Bob Trần', 'https://i.pravatar.cc/150?img=2', N'FPS enthusiast | CS2 veteran', N'TP.HCM, Vietnam', 'in-game', 'user', 1),
+(@User3, 'charlie_moba', 'charlie@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Charlie Lê', 'https://i.pravatar.cc/150?img=3', N'League of Legends Diamond player', N'Đà Nẵng, Vietnam', 'online', 'moderator', 1),
+(@User4, 'diana_streamer', 'diana@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Diana Phạm', 'https://i.pravatar.cc/150?img=4', N'Full-time streamer | Content creator', N'Hà Nội, Vietnam', 'online', 'user', 1),
+(@User5, 'admin_ggzone', 'admin@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'GGZone Admin', 'https://i.pravatar.cc/150?img=5', N'Official GGZone account', N'Vietnam', 'online', 'admin', 1),
+(@User6, 'evan_pro', 'evan@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Evan Hoàng', 'https://i.pravatar.cc/150?img=6', N'Dota 2 pro player | Tournament winner', N'Hà Nội, Vietnam', 'online', 'user', 1),
+(@User7, 'fiona_casual', 'fiona@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Fiona Võ', 'https://i.pravatar.cc/150?img=7', N'Casual gamer | Love story games', N'TP.HCM, Vietnam', 'offline', 'user', 1),
+(@User8, 'grace_speedrun', 'grace@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Grace Trịnh', 'https://i.pravatar.cc/150?img=8', N'Speedrunner | World record holder', N'Đà Nẵng, Vietnam', 'in-game', 'user', 1),
+(@User9, 'henry_analyst', 'henry@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Henry Đặng', 'https://i.pravatar.cc/150?img=9', N'Game analyst | Content creator', N'Hà Nội, Vietnam', 'online', 'user', 1),
+(@User10, 'iris_artist', 'iris@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Iris Lý', 'https://i.pravatar.cc/150?img=10', N'Game artist | Concept designer', N'TP.HCM, Vietnam', 'offline', 'user', 1),
+(@User11, 'jack_competitive', 'jack@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Jack Ngô', 'https://i.pravatar.cc/150?img=11', N'Competitive player | Team captain', N'Hà Nội, Vietnam', 'online', 'user', 1),
+(@User12, 'kate_casual', 'kate@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Kate Phan', 'https://i.pravatar.cc/150?img=12', N'Casual gamer | Social butterfly', N'Đà Nẵng, Vietnam', 'online', 'user', 1),
+(@User13, 'leo_streamer', 'leo@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Leo Trần', 'https://i.pravatar.cc/150?img=13', N'Twitch streamer | 50k followers', N'TP.HCM, Vietnam', 'in-game', 'user', 1),
+(@User14, 'mia_moderator', 'mia@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Mia Hoàng', 'https://i.pravatar.cc/150?img=14', N'Community moderator | Helper', N'Hà Nội, Vietnam', 'online', 'moderator', 1),
+(@User15, 'noah_developer', 'noah@ggzone.com', '$2a$11$O/k0GbkXlX2sbDXrCeYoBe/VjofMTkKTFqpjzOz2.nmrSx9lJ9CXi', N'Noah Lê', 'https://i.pravatar.cc/150?img=15', N'Game developer | Indie creator', N'TP.HCM, Vietnam', 'offline', 'user', 1);
 
 -- ================================================
 -- INSERT USER STATS
@@ -84,7 +185,17 @@ VALUES
 (@User2, 2, 89, 3, 15, 20, 8, 5, 2, 1800, 18),
 (@User3, 3, 234, 8, 45, 67, 20, 15, 4, 4200, 35),
 (@User4, 4, 56, 2, 89, 120, 45, 12, 3, 3100, 28),
-(@User5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1);
+(@User5, 0, 0, 0, 5, 0, 0, 0, 0, 0, 1),
+(@User6, 5, 312, 12, 67, 89, 34, 22, 5, 5600, 42),
+(@User7, 2, 34, 1, 12, 15, 3, 2, 1, 890, 12),
+(@User8, 4, 456, 15, 78, 156, 67, 34, 6, 7200, 50),
+(@User9, 3, 123, 4, 156, 234, 89, 45, 4, 4500, 38),
+(@User10, 2, 67, 2, 34, 78, 12, 8, 2, 1950, 16),
+(@User11, 6, 289, 10, 98, 145, 45, 28, 5, 5100, 40),
+(@User12, 3, 78, 3, 45, 67, 15, 12, 3, 2300, 22),
+(@User13, 8, 198, 7, 234, 345, 156, 67, 7, 6800, 48),
+(@User14, 4, 145, 5, 89, 123, 34, 56, 4, 3800, 32),
+(@User15, 2, 56, 2, 23, 45, 8, 10, 2, 1650, 14);
 
 -- ================================================
 -- INSERT GAMES
@@ -94,7 +205,9 @@ VALUES
 (@Game1, 'Valorant', 'valorant', N'Tactical 5v5 character-based shooter', 'https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt5c61c0d3b6c5c5e9/valorant-cover.jpg', 'https://i.imgur.com/valorant-icon.png', 'FPS', 'PC', '2020-06-02', 'Riot Games', 1),
 (@Game2, 'League of Legends', 'league-of-legends', N'5v5 MOBA strategy game', 'https://images.contentstack.io/v3/assets/blt731023b3d1c6b189/lol-cover.jpg', 'https://i.imgur.com/lol-icon.png', 'MOBA', 'PC', '2009-10-27', 'Riot Games', 1),
 (@Game3, 'Counter-Strike 2', 'cs2', N'The legendary tactical shooter reborn', 'https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg', 'https://i.imgur.com/cs2-icon.png', 'FPS', 'PC', '2023-09-27', 'Valve', 1),
-(@Game4, 'Dota 2', 'dota-2', N'The ultimate MOBA experience', 'https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg', 'https://i.imgur.com/dota2-icon.png', 'MOBA', 'PC', '2013-07-09', 'Valve', 1);
+(@Game4, 'Dota 2', 'dota-2', N'The ultimate MOBA experience', 'https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg', 'https://i.imgur.com/dota2-icon.png', 'MOBA', 'PC', '2013-07-09', 'Valve', 1),
+(@Game5, 'Overwatch 2', 'overwatch-2', N'Team-based first-person shooter', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'https://i.imgur.com/ow2-icon.png', 'FPS', 'PC', '2022-10-04', 'Blizzard', 1),
+(@Game6, 'Apex Legends', 'apex-legends', N'Battle royale hero shooter', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'https://i.imgur.com/apex-icon.png', 'Battle Royale', 'PC', '2019-02-04', 'Respawn Entertainment', 1);
 
 -- ================================================
 -- INSERT GROUPS
@@ -103,7 +216,9 @@ INSERT INTO Groups (Id, Name, Description, CoverImageUrl, IconUrl, Visibility, M
 VALUES
 (@Group1, N'Gamers Vietnam', N'Cộng đồng game thủ Việt Nam', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'https://i.imgur.com/group1.png', 'public', 3, @User1),
 (@Group2, N'FPS Legends', N'Group for FPS enthusiasts and pro players', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'https://i.imgur.com/group2.png', 'public', 3, @User2),
-(@Group3, N'MOBA Masters', N'MOBA strategy and tips community', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'https://i.imgur.com/group3.png', 'public', 2, @User3);
+(@Group3, N'MOBA Masters', N'MOBA strategy and tips community', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'https://i.imgur.com/group3.png', 'public', 2, @User3),
+(@Group4, N'Speedrunners United', N'Speedrunning community and challenges', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'https://i.imgur.com/group4.png', 'public', 4, @User8),
+(@Group5, N'Indie Game Lovers', N'Support indie developers and games', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'https://i.imgur.com/group5.png', 'public', 5, @User15);
 
 -- ================================================
 -- INSERT GROUP MEMBERS
@@ -113,11 +228,26 @@ VALUES
 (@Group1, @User1, 'admin'),
 (@Group1, @User2, 'member'),
 (@Group1, @User3, 'member'),
+(@Group1, @User6, 'member'),
+(@Group1, @User9, 'moderator'),
 (@Group2, @User2, 'admin'),
 (@Group2, @User1, 'moderator'),
 (@Group2, @User4, 'member'),
+(@Group2, @User8, 'member'),
+(@Group2, @User13, 'member'),
 (@Group3, @User3, 'admin'),
-(@Group3, @User4, 'member');
+(@Group3, @User4, 'member'),
+(@Group3, @User6, 'member'),
+(@Group3, @User11, 'member'),
+(@Group4, @User8, 'admin'),
+(@Group4, @User1, 'member'),
+(@Group4, @User9, 'member'),
+(@Group4, @User14, 'member'),
+(@Group5, @User15, 'admin'),
+(@Group5, @User10, 'member'),
+(@Group5, @User7, 'member'),
+(@Group5, @User12, 'member'),
+(@Group5, @User14, 'member');
 
 -- ================================================
 -- INSERT FRIENDSHIPS
@@ -127,9 +257,25 @@ VALUES
 (@User1, @User2, 'accepted'),
 (@User1, @User3, 'accepted'),
 (@User1, @User4, 'accepted'),
+(@User1, @User6, 'accepted'),
+(@User1, @User8, 'accepted'),
 (@User2, @User3, 'accepted'),
 (@User2, @User4, 'pending'),
-(@User3, @User4, 'accepted');
+(@User2, @User13, 'accepted'),
+(@User3, @User4, 'accepted'),
+(@User3, @User6, 'accepted'),
+(@User3, @User11, 'accepted'),
+(@User4, @User9, 'accepted'),
+(@User4, @User12, 'pending'),
+(@User6, @User8, 'accepted'),
+(@User6, @User11, 'accepted'),
+(@User7, @User12, 'accepted'),
+(@User8, @User9, 'accepted'),
+(@User9, @User14, 'accepted'),
+(@User10, @User15, 'accepted'),
+(@User11, @User13, 'accepted'),
+(@User12, @User14, 'accepted'),
+(@User13, @User14, 'accepted');
 
 -- ================================================
 -- INSERT POSTS
@@ -140,7 +286,17 @@ VALUES
 (@Post2, @User2, @Group2, N'Looking for teammates for CS2 ranked. Need 2 more players!', 'text', 23, 8, 2),
 (@Post3, @User3, @Group3, N'New League patch is insane! Check out my gameplay highlights', 'video', 67, 15, 10),
 (@Post4, @User4, NULL, N'Streaming live now! Come hang out 🎮', 'text', 89, 23, 15),
-(@Post5, @User1, @Group1, N'Tournament this weekend! Who''s joining?', 'text', 34, 18, 7);
+(@Post5, @User1, @Group1, N'Tournament this weekend! Who''s joining?', 'text', 34, 18, 7),
+(@Post6, @User6, @Group3, N'Dota 2 International predictions - who''s your pick?', 'text', 156, 45, 23),
+(@Post7, @User8, @Group4, N'Just completed a new speedrun record! 2:34:12 🏃', 'text', 234, 67, 34),
+(@Post8, @User9, NULL, N'Breaking down the meta changes in Valorant 13.0', 'text', 178, 52, 28),
+(@Post9, @User13, NULL, N'Going live with 12-hour Valorant marathon! Join me!', 'text', 345, 89, 56),
+(@Post10, @User11, @Group2, N'Team recruitment: Looking for IGL and support player', 'text', 98, 34, 12),
+(@Post11, @User12, @Group1, N'Finally got my first pentakill in League! 😍', 'text', 123, 41, 19),
+(@Post12, @User14, @Group1, N'Community event this Saturday - everyone welcome!', 'text', 87, 28, 15),
+(@Post13, @User7, @Group5, N'Indie game recommendations - what are you playing?', 'text', 145, 56, 31),
+(@Post14, @User10, @Group5, N'Concept art for my upcoming game project', 'text', 267, 78, 45),
+(@Post15, @User15, @Group5, N'Game dev tips: Optimization for indie developers', 'text', 189, 63, 38);
 
 -- ================================================
 -- INSERT POST MEDIA
@@ -148,7 +304,13 @@ VALUES
 INSERT INTO PostMedia (PostId, MediaUrl, MediaType, OrderIndex)
 VALUES
 (@Post3, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'video', 0),
-(@Post4, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'image', 0);
+(@Post4, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'image', 0),
+(@Post7, 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'image', 0),
+(@Post8, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'image', 0),
+(@Post9, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'video', 0),
+(@Post11, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'image', 0),
+(@Post14, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'image', 0),
+(@Post14, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'image', 1);
 
 -- ================================================
 -- INSERT POST LIKES
@@ -158,17 +320,74 @@ VALUES
 (@Post1, @User2),
 (@Post1, @User3),
 (@Post1, @User4),
+(@Post1, @User6),
+(@Post1, @User8),
 (@Post2, @User1),
 (@Post2, @User3),
+(@Post2, @User11),
+(@Post2, @User13),
 (@Post3, @User1),
 (@Post3, @User2),
 (@Post3, @User4),
+(@Post3, @User6),
+(@Post3, @User11),
 (@Post4, @User1),
 (@Post4, @User2),
 (@Post4, @User3),
+(@Post4, @User9),
+(@Post4, @User13),
 (@Post5, @User2),
 (@Post5, @User3),
-(@Post5, @User4);
+(@Post5, @User4),
+(@Post5, @User6),
+(@Post6, @User1),
+(@Post6, @User2),
+(@Post6, @User3),
+(@Post6, @User4),
+(@Post6, @User8),
+(@Post6, @User11),
+(@Post7, @User1),
+(@Post7, @User2),
+(@Post7, @User4),
+(@Post7, @User9),
+(@Post7, @User14),
+(@Post8, @User1),
+(@Post8, @User2),
+(@Post8, @User3),
+(@Post8, @User6),
+(@Post8, @User13),
+(@Post9, @User1),
+(@Post9, @User2),
+(@Post9, @User3),
+(@Post9, @User4),
+(@Post9, @User6),
+(@Post9, @User8),
+(@Post10, @User1),
+(@Post10, @User3),
+(@Post10, @User4),
+(@Post10, @User8),
+(@Post11, @User1),
+(@Post11, @User2),
+(@Post11, @User4),
+(@Post11, @User6),
+(@Post11, @User9),
+(@Post12, @User1),
+(@Post12, @User2),
+(@Post12, @User3),
+(@Post12, @User4),
+(@Post13, @User7),
+(@Post13, @User10),
+(@Post13, @User12),
+(@Post13, @User15),
+(@Post14, @User1),
+(@Post14, @User7),
+(@Post14, @User9),
+(@Post14, @User12),
+(@Post14, @User15),
+(@Post15, @User1),
+(@Post15, @User7),
+(@Post15, @User10),
+(@Post15, @User12);
 
 -- ================================================
 -- INSERT COMMENTS
@@ -178,15 +397,52 @@ VALUES
 (@Post1, @User2, N'Congrats! Well deserved!', 5),
 (@Post1, @User3, N'Amazing! Teach me your ways 😄', 3),
 (@Post1, @User4, N'Let''s duo queue sometime!', 2),
+(@Post1, @User6, N'Insane grind! Respect!', 4),
 (@Post2, @User1, N'I can join! What rank?', 4),
 (@Post2, @User3, N'Count me in if you need one more', 2),
+(@Post2, @User11, N'I''m down, let''s go!', 3),
 (@Post3, @User1, N'That play at 2:30 was insane!', 8),
 (@Post3, @User2, N'Nice mechanics bro', 3),
+(@Post3, @User6, N'Patch is definitely broken lol', 5),
 (@Post4, @User1, N'On my way!', 1),
 (@Post4, @User2, N'Followed! Great content', 2),
+(@Post4, @User9, N'Love your streams!', 6),
 (@Post5, @User2, N'What time does it start?', 1),
 (@Post5, @User3, N'I''m in! Let''s win this', 3),
-(@Post5, @User4, N'Registered already 🔥', 2);
+(@Post5, @User4, N'Registered already 🔥', 2),
+(@Post6, @User1, N'TI predictions are always fun', 7),
+(@Post6, @User2, N'My money is on Team Secret', 4),
+(@Post6, @User3, N'Dark horse pick incoming', 5),
+(@Post6, @User4, N'Great analysis!', 3),
+(@Post7, @User1, N'Wow! New record?', 8),
+(@Post7, @User2, N'That''s insane! How long did it take?', 6),
+(@Post7, @User9, N'Speedrunning is crazy', 4),
+(@Post8, @User1, N'Thanks for the breakdown!', 9),
+(@Post8, @User2, N'This helps a lot', 5),
+(@Post8, @User3, N'Great content as always', 7),
+(@Post9, @User1, N'I''ll be there!', 3),
+(@Post9, @User2, N'12 hours? That''s dedication!', 8),
+(@Post9, @User4, N'Gonna watch for sure', 5),
+(@Post10, @User1, N'What rank are you looking for?', 4),
+(@Post10, @User3, N'Good luck finding teammates!', 2),
+(@Post10, @User8, N'I might be interested', 3),
+(@Post11, @User1, N'Congrats! First of many!', 6),
+(@Post11, @User2, N'Nice! Keep it up!', 4),
+(@Post11, @User4, N'That''s awesome!', 3),
+(@Post12, @User1, N'What time on Saturday?', 2),
+(@Post12, @User2, N'Count me in!', 3),
+(@Post12, @User3, N'Sounds fun!', 2),
+(@Post13, @User7, N'What are your top picks?', 5),
+(@Post13, @User10, N'I need new games to play', 4),
+(@Post13, @User12, N'Great recommendations!', 3),
+(@Post14, @User1, N'This looks amazing!', 8),
+(@Post14, @User7, N'Love the art style!', 6),
+(@Post14, @User9, N'When is it releasing?', 4),
+(@Post14, @User12, N'Looks professional!', 5),
+(@Post15, @User1, N'Very helpful tips!', 7),
+(@Post15, @User7, N'Thanks for sharing!', 5),
+(@Post15, @User10, N'Bookmarking this!', 4),
+(@Post15, @User12, N'Great advice!', 3);
 
 -- ================================================
 -- INSERT PHOTOS
@@ -197,7 +453,17 @@ VALUES
 (@User2, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', N'CS2 ace on Dust2', @Game3, 67),
 (@User3, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', N'Pentakill in ranked!', @Game2, 89),
 (@User4, 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', N'New gaming setup!', NULL, 123),
-(@User1, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', N'Tournament victory!', @Game1, 156);
+(@User1, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', N'Tournament victory!', @Game1, 156),
+(@User6, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', N'Dota 2 International moment', @Game4, 178),
+(@User8, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', N'Speedrun complete!', NULL, 234),
+(@User9, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', N'Analysis setup', NULL, 145),
+(@User13, 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', N'Stream setup upgrade', NULL, 267),
+(@User11, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', N'Team photo at LAN', NULL, 189),
+(@User12, 'https://images.unsplash.com/photo-1542751371-adc38448a05e', N'First ranked win!', @Game2, 98),
+(@User14, 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', N'Community event', NULL, 156),
+(@User7, 'https://images.unsplash.com/photo-1511512578047-dfb367046420', N'Gaming with friends', NULL, 123),
+(@User10, 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', N'Art workspace', NULL, 201),
+(@User15, 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', N'Game dev setup', NULL, 178);
 
 -- ================================================
 -- ACHIEVEMENTS MODULE REMOVED
@@ -209,9 +475,12 @@ VALUES
 -- ================================================
 INSERT INTO MarketplaceItems (Id, SellerId, GameId, Title, Description, CoverImageUrl, Category, Price, Rating, ReviewsCount, Status)
 VALUES
-(@Market1, @User1, @Game1, N'Valorant Account - Radiant Rank', N'High-level account with rare skins', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Accounts', 5000000, 4.8, 12, 'online'),
-(@Market2, @User2, @Game3, N'CS2 Knife - Karambit Fade', N'Factory New condition, rare pattern', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 15000000, 4.9, 8, 'online'),
-(@Market3, @User3, @Game2, N'LoL Account - Diamond 1', N'All champions unlocked, many skins', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 3500000, 4.5, 15, 'online');
+(@Market1, @User1, @Game1, N'Valorant Account - Radiant Rank', N'High-level account with rare skins', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Accounts', 5000.00, 4.8, 12, 'online'),
+(@Market2, @User2, @Game3, N'CS2 Knife - Karambit Fade', N'Factory New condition, rare pattern', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 1500.00, 4.9, 8, 'online'),
+(@Market3, @User3, @Game2, N'LoL Account - Diamond 1', N'All champions unlocked, many skins', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 3500000, 4.5, 15, 'online'),
+(@Market4, @User6, @Game4, N'Dota 2 Account - Immortal Rank', N'Fully leveled with cosmetics', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'Accounts', 4200000, 4.7, 18, 'online'),
+(@Market5, @User13, @Game1, N'Valorant Skins Bundle', N'5 premium skins collection', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'Skins', 2800000, 4.6, 22, 'online'),
+(@Market6, @User11, @Game3, N'CS2 Dragon Lore Souvenir', N'Rare souvenir from Major', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Skins', 25000000, 5.0, 5, 'online');
 
 -- ================================================
 -- INSERT MARKETPLACE REVIEWS
@@ -220,28 +489,42 @@ INSERT INTO MarketplaceReviews (ItemId, UserId, Rating, Comment)
 VALUES
 (@Market1, @User2, 5, N'Great account! Fast delivery'),
 (@Market1, @User3, 5, N'Exactly as described, highly recommend'),
+(@Market1, @User4, 4, N'Good account, smooth transaction'),
 (@Market2, @User1, 5, N'Beautiful knife, worth every penny'),
+(@Market2, @User3, 5, N'Authentic and pristine condition'),
 (@Market3, @User2, 4, N'Good account but took a while to transfer'),
-(@Market3, @User4, 5, N'Perfect! Thanks seller');
+(@Market3, @User4, 5, N'Perfect! Thanks seller'),
+(@Market3, @User6, 5, N'Excellent service and communication'),
+(@Market4, @User1, 5, N'Amazing account, great value'),
+(@Market4, @User2, 4, N'Good but had minor issues'),
+(@Market5, @User3, 5, N'Skins are beautiful!'),
+(@Market5, @User4, 5, N'Exactly what I wanted'),
+(@Market6, @User1, 5, N'Legendary item, perfect condition');
 
 -- ================================================
 -- INSERT STORE PRODUCTS
 -- ================================================
 INSERT INTO StoreProducts (Id, Name, Description, CoverImageUrl, Price, Category, GameId, Rating, ReviewsCount, Status)
 VALUES
-(@Prod1, N'Premium Avatar Frame', N'Exclusive animated avatar frame', 'https://i.imgur.com/prod1.png', 50000, 'Cosmetics', NULL, 4.7, 234, 'online'),
-(@Prod2, N'Level Boost Pack', N'Instant +10 levels', 'https://i.imgur.com/prod2.png', 100000, 'Boosts', NULL, 4.5, 567, 'online'),
-(@Prod3, N'VIP Membership - 1 Month', N'Access to exclusive features', 'https://i.imgur.com/prod3.png', 150000, 'Membership', NULL, 4.9, 1234, 'online'),
-(@Prod4, N'Custom Profile Theme', N'Personalize your profile', 'https://i.imgur.com/prod4.png', 75000, 'Cosmetics', NULL, 4.6, 456, 'online');
+(@Prod1, N'Premium Avatar Frame', N'Exclusive animated avatar frame', 'https://i.imgur.com/prod1.png', 50.00, 'Cosmetics', NULL, 4.7, 234, 'online'),
+(@Prod2, N'Level Boost Pack', N'Instant +10 levels', 'https://i.imgur.com/prod2.png', 100.00, 'Boosts', NULL, 4.5, 567, 'online'),
+(@Prod3, N'VIP Membership - 1 Month', N'Access to exclusive features', 'https://i.imgur.com/prod3.png', 150.00, 'Membership', NULL, 4.9, 1234, 'online'),
+(@Prod4, N'Custom Profile Theme', N'Personalize your profile', 'https://i.imgur.com/prod4.png', 75.00, 'Cosmetics', NULL, 4.6, 456, 'online'),
+(@Prod5, N'VIP Membership - 3 Months', N'Extended VIP access', 'https://i.imgur.com/prod5.png', 400.00, 'Membership', NULL, 4.8, 890, 'online'),
+(@Prod6, N'Exclusive Badge Pack', N'5 rare badges for profile', 'https://i.imgur.com/prod6.png', 120.00, 'Cosmetics', NULL, 4.7, 345, 'online'),
+(@Prod7, N'Tournament Entry Pass', N'Access to premium tournaments', 'https://i.imgur.com/prod7.png', 250.00, 'Tournament', NULL, 4.9, 678, 'online'),
+(@Prod8, N'Streaming Bundle', N'Overlay + alerts + emotes', 'https://i.imgur.com/prod8.png', 300.00, 'Streaming', NULL, 4.8, 523, 'online');
 
 -- ================================================
 -- INSERT TOURNAMENTS
 -- ================================================
 INSERT INTO Tournaments (Id, GameId, Name, Description, CoverImageUrl, StartDate, EndDate, MaxParticipants, CurrentParticipants, PrizePool, Status, CreatedBy)
 VALUES
-(@Tour1, @Game1, N'Vietnam Valorant Championship', N'National championship for top players', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', DATEADD(DAY, 7, GETDATE()), DATEADD(DAY, 10, GETDATE()), 64, 45, 50000000, 'upcoming', @User5),
-(@Tour2, @Game3, N'CS2 Winter Cup', N'Seasonal tournament with big prizes', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, 2, GETDATE()), 32, 32, 30000000, 'ongoing', @User5),
-(@Tour3, @Game2, N'LoL Masters Series', N'Monthly competitive series', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', DATEADD(DAY, -10, GETDATE()), DATEADD(DAY, -5, GETDATE()), 128, 128, 75000000, 'completed', @User5);
+(@Tour1, @Game1, N'Vietnam Valorant Championship', N'National championship for top players', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', DATEADD(DAY, 7, GETDATE()), DATEADD(DAY, 10, GETDATE()), 64, 45, 5000000.00, 'upcoming', @User5),
+(@Tour2, @Game3, N'CS2 Winter Cup', N'Seasonal tournament with big prizes', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, 2, GETDATE()), 32, 32, 3000000.00, 'ongoing', @User5),
+(@Tour3, @Game2, N'LoL Masters Series', N'Monthly competitive series', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', DATEADD(DAY, -10, GETDATE()), DATEADD(DAY, -5, GETDATE()), 128, 128, 7500000.00, 'completed', @User5),
+(@Tour4, @Game4, N'Dota 2 International Qualifiers', N'Path to the International', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', DATEADD(DAY, 14, GETDATE()), DATEADD(DAY, 21, GETDATE()), 16, 12, 9999999.99, 'upcoming', @User5),
+(@Tour5, @Game1, N'Valorant Rookie Cup', N'For new and emerging players', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', DATEADD(DAY, 3, GETDATE()), DATEADD(DAY, 6, GETDATE()), 32, 28, 1500000.00, 'upcoming', @User5);
 
 -- ================================================
 -- INSERT TOURNAMENT PARTICIPANTS
@@ -251,12 +534,27 @@ VALUES
 (@Tour1, @User1, NULL, 0),
 (@Tour1, @User2, NULL, 0),
 (@Tour1, @User3, NULL, 0),
+(@Tour1, @User6, NULL, 0),
+(@Tour1, @User8, NULL, 0),
+(@Tour1, @User11, NULL, 0),
 (@Tour2, @User1, 5, 2450),
 (@Tour2, @User2, 3, 2780),
 (@Tour2, @User4, 12, 1890),
+(@Tour2, @User13, 8, 2120),
+(@Tour2, @User14, 15, 1650),
 (@Tour3, @User1, 2, 3450),
 (@Tour3, @User3, 1, 3890),
-(@Tour3, @User4, 8, 2340);
+(@Tour3, @User4, 8, 2340),
+(@Tour3, @User6, 4, 3120),
+(@Tour3, @User11, 6, 2890),
+(@Tour4, @User6, NULL, 0),
+(@Tour4, @User8, NULL, 0),
+(@Tour4, @User11, NULL, 0),
+(@Tour4, @User13, NULL, 0),
+(@Tour5, @User1, NULL, 0),
+(@Tour5, @User2, NULL, 0),
+(@Tour5, @User9, NULL, 0),
+(@Tour5, @User12, NULL, 0);
 
 -- ================================================
 -- LIVESTREAM MODULE REMOVED
@@ -270,7 +568,13 @@ INSERT INTO Videos (Id, UserId, GameId, Title, Description, VideoUrl, ThumbnailU
 VALUES
 (@Video1, @User1, @Game1, N'How to Rank Up Fast in Valorant', N'Complete guide to climbing ranks', 'https://video.ggzone.com/v1', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 720, 15234, 1234, 89, 'tutorial', 1),
 (@Video2, @User2, @Game3, N'CS2 Best Plays Montage', N'My best moments from last month', 'https://video.ggzone.com/v2', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 480, 8765, 876, 45, 'highlight', 1),
-(@Video3, @User3, @Game2, N'League Patch 13.24 Analysis', N'Breaking down the new meta', 'https://video.ggzone.com/v3', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 900, 23456, 2345, 156, 'review', 1);
+(@Video3, @User3, @Game2, N'League Patch 13.24 Analysis', N'Breaking down the new meta', 'https://video.ggzone.com/v3', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 900, 23456, 2345, 156, 'review', 1),
+(@Video4, @User6, @Game4, N'Dota 2 Beginner Guide', N'Everything you need to know', 'https://video.ggzone.com/v4', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 1200, 34567, 3456, 234, 'tutorial', 1),
+(@Video5, @User8, NULL, N'Speedrun World Record Attempt', N'Going for the new record!', 'https://video.ggzone.com/v5', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 3600, 45678, 4567, 345, 'highlight', 1),
+(@Video6, @User9, @Game1, N'Valorant Meta Breakdown', N'Current meta analysis and tips', 'https://video.ggzone.com/v6', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 1080, 28934, 2893, 198, 'analysis', 1),
+(@Video7, @User13, NULL, N'24-Hour Gaming Marathon', N'Streaming all day and night', 'https://video.ggzone.com/v7', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 86400, 56789, 5678, 456, 'stream', 1),
+(@Video8, @User14, NULL, N'Community Highlights Compilation', N'Best moments from the community', 'https://video.ggzone.com/v8', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 600, 19234, 1923, 134, 'highlight', 1),
+(@Video9, @User15, NULL, N'Game Development Tutorial Series', N'Learn game dev from scratch', 'https://video.ggzone.com/v9', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 2400, 38456, 3845, 267, 'tutorial', 1);
 
 -- ================================================
 -- INSERT VIDEO COMMENTS
@@ -280,11 +584,32 @@ VALUES
 (@Video1, @User2, N'Super helpful! Thanks for sharing', 12),
 (@Video1, @User3, N'This actually works! Ranked up 2 tiers', 8),
 (@Video1, @User4, N'More content like this please!', 5),
+(@Video1, @User6, N'Best guide ever!', 7),
 (@Video2, @User1, N'Insane shots bro!', 15),
 (@Video2, @User3, N'That 1v5 clutch was crazy', 10),
+(@Video2, @User4, N'Sick plays!', 6),
 (@Video3, @User1, N'Great analysis as always', 20),
 (@Video3, @User2, N'Helped me understand the new patch', 8),
-(@Video3, @User4, N'When is the next video coming?', 3);
+(@Video3, @User4, N'When is the next video coming?', 3),
+(@Video3, @User6, N'Perfect breakdown!', 9),
+(@Video4, @User1, N'Finally understand Dota!', 14),
+(@Video4, @User2, N'Great beginner guide', 11),
+(@Video4, @User3, N'Subscribing for more!', 8),
+(@Video5, @User1, N'Insane speedrun!', 25),
+(@Video5, @User2, N'Did you get the record?', 12),
+(@Video5, @User4, N'Amazing performance!', 18),
+(@Video6, @User1, N'Love your analysis', 16),
+(@Video6, @User2, N'Very informative', 10),
+(@Video6, @User4, N'Thanks for the tips!', 7),
+(@Video7, @User1, N'Watched the whole thing!', 22),
+(@Video7, @User2, N'Dedication!', 15),
+(@Video7, @User3, N'Crazy marathon!', 12),
+(@Video8, @User1, N'Great compilation!', 13),
+(@Video8, @User2, N'Love community content', 9),
+(@Video8, @User4, N'More please!', 6),
+(@Video9, @User1, N'Learning so much!', 18),
+(@Video9, @User2, N'Best tutorial series', 14),
+(@Video9, @User4, N'Can''t wait for next episode', 11);
 
 -- ================================================
 -- INSERT VIDEO LIKES
@@ -294,12 +619,46 @@ VALUES
 (@Video1, @User2),
 (@Video1, @User3),
 (@Video1, @User4),
+(@Video1, @User6),
+(@Video1, @User8),
 (@Video2, @User1),
 (@Video2, @User3),
 (@Video2, @User4),
+(@Video2, @User9),
+(@Video2, @User13),
 (@Video3, @User1),
 (@Video3, @User2),
-(@Video3, @User4);
+(@Video3, @User4),
+(@Video3, @User6),
+(@Video3, @User11),
+(@Video4, @User1),
+(@Video4, @User2),
+(@Video4, @User3),
+(@Video4, @User6),
+(@Video4, @User8),
+(@Video5, @User1),
+(@Video5, @User2),
+(@Video5, @User4),
+(@Video5, @User9),
+(@Video5, @User14),
+(@Video6, @User1),
+(@Video6, @User2),
+(@Video6, @User3),
+(@Video6, @User4),
+(@Video6, @User13),
+(@Video7, @User1),
+(@Video7, @User2),
+(@Video7, @User3),
+(@Video7, @User4),
+(@Video7, @User6),
+(@Video8, @User1),
+(@Video8, @User2),
+(@Video8, @User3),
+(@Video8, @User4),
+(@Video9, @User1),
+(@Video9, @User2),
+(@Video9, @User4),
+(@Video9, @User15);
 
 -- ================================================
 -- INSERT FORUM CATEGORIES
@@ -308,7 +667,8 @@ INSERT INTO ForumCategories (Id, Name, Description, IconUrl, GameId, TopicsCount
 VALUES
 (@ForumCat1, N'General Discussion', N'Talk about anything gaming related', 'https://i.imgur.com/forum1.png', NULL, 45, 234),
 (@ForumCat2, N'Valorant Strategy', N'Tips, tricks, and strategies', 'https://i.imgur.com/forum2.png', @Game1, 67, 456),
-(@ForumCat3, N'CS2 Community', N'CS2 discussions and updates', 'https://i.imgur.com/forum3.png', @Game3, 89, 678);
+(@ForumCat3, N'CS2 Community', N'CS2 discussions and updates', 'https://i.imgur.com/forum3.png', @Game3, 89, 678),
+(@ForumCat4, N'League of Legends', N'LoL discussions and guides', 'https://i.imgur.com/forum4.png', @Game2, 123, 890);
 
 -- ================================================
 -- INSERT FORUM TOPICS
@@ -317,7 +677,12 @@ INSERT INTO ForumTopics (Id, CategoryId, UserId, Title, Content, ViewsCount, Rep
 VALUES
 (@Topic1, @ForumCat1, @User1, N'Welcome to GGZone!', N'Introduce yourself here', 1234, 45, 1, GETDATE(), @User3),
 (@Topic2, @ForumCat2, @User2, N'Best Agent Compositions for Ranked', N'Let''s discuss the current meta', 567, 23, 0, DATEADD(HOUR, -2, GETDATE()), @User4),
-(@Topic3, @ForumCat3, @User3, N'CS2 Update Discussion', N'What do you think about the new update?', 890, 34, 0, DATEADD(HOUR, -1, GETDATE()), @User2);
+(@Topic3, @ForumCat3, @User3, N'CS2 Update Discussion', N'What do you think about the new update?', 890, 34, 0, DATEADD(HOUR, -1, GETDATE()), @User2),
+(@Topic4, @ForumCat2, @User1, N'Valorant Crosshair Settings Guide', N'Share your crosshair codes', 1456, 67, 1, DATEADD(HOUR, -3, GETDATE()), @User6),
+(@Topic5, @ForumCat3, @User2, N'Best Maps for Competitive Play', N'Which maps do you prefer?', 678, 28, 0, DATEADD(HOUR, -5, GETDATE()), @User13),
+(@Topic6, @ForumCat4, @User3, N'Jungle Pathing in Season 14', N'New jungle changes discussion', 1123, 56, 0, DATEADD(HOUR, -4, GETDATE()), @User11),
+(@Topic7, @ForumCat1, @User9, N'Tournament Tips and Tricks', N'How to prepare for competitions', 2345, 89, 1, DATEADD(HOUR, -1, GETDATE()), @User14),
+(@Topic8, @ForumCat4, @User6, N'Champion Tier List Discussion', N'Current meta champions ranked', 1789, 72, 0, DATEADD(HOUR, -6, GETDATE()), @User3);
 
 -- ================================================
 -- INSERT FORUM REPLIES
@@ -327,12 +692,32 @@ VALUES
 (@Topic1, @User2, N'Hi everyone! Excited to be here', 5),
 (@Topic1, @User3, N'Welcome! Feel free to ask anything', 3),
 (@Topic1, @User4, N'Great community so far!', 2),
+(@Topic1, @User6, N'Looking forward to gaming with you all!', 4),
+(@Topic1, @User8, N'Welcome aboard!', 2),
 (@Topic2, @User1, N'I think Jett + Sage is still strong', 8),
 (@Topic2, @User3, N'Don''t sleep on Viper comps', 6),
 (@Topic2, @User4, N'Chamber is underrated right now', 4),
+(@Topic2, @User6, N'Omen is meta right now', 7),
+(@Topic2, @User11, N'Astra is making a comeback', 5),
 (@Topic3, @User1, N'The new maps are amazing!', 10),
 (@Topic3, @User2, N'Performance improvements are great', 7),
-(@Topic3, @User4, N'Still getting used to the changes', 3);
+(@Topic3, @User4, N'Still getting used to the changes', 3),
+(@Topic3, @User13, N'Vertigo is my favorite', 6),
+(@Topic4, @User2, N'My crosshair: 1-0-1-2-3', 12),
+(@Topic4, @User4, N'Try this one: 0-0-0-1-2', 9),
+(@Topic4, @User6, N'Crosshair settings matter so much', 8),
+(@Topic5, @User1, N'Mirage is the best', 11),
+(@Topic5, @User3, N'Inferno for competitive', 9),
+(@Topic5, @User13, N'Dust2 classic', 7),
+(@Topic6, @User1, N'Jungle changes are huge', 14),
+(@Topic6, @User2, N'New pathing is interesting', 10),
+(@Topic6, @User4, N'Gank timings are different now', 8),
+(@Topic7, @User1, N'Great tips!', 5),
+(@Topic7, @User2, N'Mental preparation is key', 8),
+(@Topic7, @User3, N'Practice makes perfect', 6),
+(@Topic8, @User1, N'Agree with this list', 9),
+(@Topic8, @User2, N'Some picks are debatable', 7),
+(@Topic8, @User4, N'Meta is always changing', 5);
 
 -- ================================================
 -- INSERT NOTIFICATIONS
@@ -369,12 +754,20 @@ VALUES
 ('game', @Game3, @Game3, 12456, 88.3, 2, CAST(GETDATE() AS DATE)),
 ('game', @Game2, @Game2, 10234, 82.7, 3, CAST(GETDATE() AS DATE)),
 ('game', @Game4, @Game4, 8765, 75.2, 4, CAST(GETDATE() AS DATE)),
+('game', @Game5, @Game5, 7234, 71.3, 5, CAST(GETDATE() AS DATE)),
+('game', @Game6, @Game6, 6789, 68.9, 6, CAST(GETDATE() AS DATE)),
 ('video', @Video3, @Game2, 23456, 92.1, 1, CAST(GETDATE() AS DATE)),
 ('video', @Video1, @Game1, 15234, 85.6, 2, CAST(GETDATE() AS DATE)),
 ('video', @Video2, @Game3, 8765, 78.3, 3, CAST(GETDATE() AS DATE)),
+('video', @Video4, @Game4, 34567, 89.2, 4, CAST(GETDATE() AS DATE)),
+('video', @Video5, NULL, 45678, 94.5, 5, CAST(GETDATE() AS DATE)),
+('video', @Video6, @Game1, 28934, 87.3, 6, CAST(GETDATE() AS DATE)),
 ('player', @User3, NULL, 5678, 88.8, 1, CAST(GETDATE() AS DATE)),
 ('player', @User1, NULL, 4567, 82.3, 2, CAST(GETDATE() AS DATE)),
-('player', @User2, NULL, 3456, 75.6, 3, CAST(GETDATE() AS DATE));
+('player', @User2, NULL, 3456, 75.6, 3, CAST(GETDATE() AS DATE)),
+('player', @User6, NULL, 6234, 91.2, 4, CAST(GETDATE() AS DATE)),
+('player', @User8, NULL, 5890, 86.7, 5, CAST(GETDATE() AS DATE)),
+('player', @User13, NULL, 7123, 93.4, 6, CAST(GETDATE() AS DATE));
 
 -- ================================================
 -- INSERT TRENDING PLAYERS
@@ -384,7 +777,11 @@ VALUES
 (@User3, @Game2, 1, 3890, 78.5, 234, CAST(GETDATE() AS DATE)),
 (@User1, @Game1, 2, 3450, 72.3, 189, CAST(GETDATE() AS DATE)),
 (@User2, @Game3, 3, 2780, 68.9, 156, CAST(GETDATE() AS DATE)),
-(@User4, @Game1, 5, 2340, 65.2, 145, CAST(GETDATE() AS DATE));
+(@User4, @Game1, 5, 2340, 65.2, 145, CAST(GETDATE() AS DATE)),
+(@User6, @Game4, 1, 4120, 81.2, 267, CAST(GETDATE() AS DATE)),
+(@User8, @Game1, 4, 2890, 70.5, 178, CAST(GETDATE() AS DATE)),
+(@User11, @Game3, 2, 3210, 75.8, 201, CAST(GETDATE() AS DATE)),
+(@User13, @Game1, 3, 3120, 71.4, 195, CAST(GETDATE() AS DATE));
 
 -- ================================================
 -- INSERT SHOPPING CART
@@ -395,25 +792,34 @@ VALUES
 (@User1, NULL, @Market2, 1),
 (@User2, @Prod3, NULL, 1),
 (@User3, @Prod2, NULL, 2),
-(@User4, NULL, @Market3, 1);
+(@User4, NULL, @Market3, 1),
+(@User6, @Prod5, NULL, 1),
+(@User8, NULL, @Market4, 1),
+(@User9, @Prod7, NULL, 1),
+(@User11, @Prod6, NULL, 2),
+(@User13, NULL, @Market6, 1);
 
 -- ================================================
 -- INSERT STORE ORDERS
 -- ================================================
 INSERT INTO StoreOrders (Id, UserId, ProductId, Quantity, TotalAmount, Status)
 VALUES
-(@Order1, @User1, @Prod1, 1, 50000, 'completed'),
-(@Order2, @User2, @Prod3, 1, 150000, 'completed'),
-(@Order3, @User3, @Prod2, 1, 100000, 'pending');
+(@Order1, @User1, @Prod1, 1, 50000.00, 'completed'),
+(@Order2, @User2, @Prod3, 1, 150000.00, 'completed'),
+(@Order3, @User3, @Prod2, 1, 100000.00, 'pending'),
+(@Order4, @User4, @Prod5, 1, 400000.00, 'completed'),
+(@Order5, @User6, @Prod7, 2, 500000.00, 'completed');
 
 -- ================================================
 -- INSERT ORDER ITEMS
 -- ================================================
 INSERT INTO OrderItems (OrderId, ProductId, ProductName, Quantity, UnitPrice, TotalPrice)
 VALUES
-(@Order1, @Prod1, N'Premium Avatar Frame', 1, 50000, 50000),
-(@Order2, @Prod3, N'VIP Membership - 1 Month', 1, 150000, 150000),
-(@Order3, @Prod2, N'Level Boost Pack', 1, 100000, 100000);
+(@Order1, @Prod1, N'Premium Avatar Frame', 1, 50000.00, 50000.00),
+(@Order2, @Prod3, N'VIP Membership - 1 Month', 1, 150000.00, 150000.00),
+(@Order3, @Prod2, N'Level Boost Pack', 1, 100000.00, 100000.00),
+(@Order4, @Prod5, N'VIP Membership - 3 Months', 1, 400000.00, 400000.00),
+(@Order5, @Prod7, N'Tournament Entry Pass', 2, 250000.00, 500000.00);
 
 -- ================================================
 -- INSERT USER PREFERENCES
@@ -448,11 +854,24 @@ INSERT INTO UserGameLibrary (UserId, GameId, IsInstalled, InstallPath, LastPlaye
 VALUES
 (@User1, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -2, GETDATE()), 30000, 1),
 (@User1, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(DAY, -1, GETDATE()), 72000, 1),
+(@User1, @Game3, 1, 'C:\Games\CS2', DATEADD(DAY, -3, GETDATE()), 15000, 0),
 (@User2, @Game3, 1, 'C:\Games\CS2', DATEADD(HOUR, -1, GETDATE()), 27000, 1),
 (@User2, @Game1, 0, NULL, DATEADD(DAY, -5, GETDATE()), 18000, 0),
+(@User2, @Game5, 1, 'C:\Games\Overwatch2', DATEADD(DAY, -2, GETDATE()), 12000, 0),
 (@User3, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(HOUR, -3, GETDATE()), 43200, 1),
 (@User3, @Game4, 1, 'C:\Games\Dota2', DATEADD(DAY, -2, GETDATE()), 28800, 0),
-(@User4, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -5, GETDATE()), 8700, 1);
+(@User3, @Game1, 1, 'C:\Games\Valorant', DATEADD(DAY, -4, GETDATE()), 8000, 0),
+(@User4, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -5, GETDATE()), 8700, 1),
+(@User4, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(DAY, -1, GETDATE()), 5400, 0),
+(@User6, @Game4, 1, 'C:\Games\Dota2', DATEADD(HOUR, -4, GETDATE()), 72000, 1),
+(@User6, @Game1, 1, 'C:\Games\Valorant', DATEADD(DAY, -2, GETDATE()), 12000, 0),
+(@User8, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -6, GETDATE()), 18000, 1),
+(@User8, @Game6, 1, 'C:\Games\ApexLegends', DATEADD(DAY, -1, GETDATE()), 9000, 0),
+(@User9, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -3, GETDATE()), 24000, 1),
+(@User11, @Game3, 1, 'C:\Games\CS2', DATEADD(HOUR, -2, GETDATE()), 36000, 1),
+(@User11, @Game1, 1, 'C:\Games\Valorant', DATEADD(DAY, -1, GETDATE()), 15000, 0),
+(@User13, @Game1, 1, 'C:\Games\Valorant', DATEADD(HOUR, -1, GETDATE()), 48000, 1),
+(@User13, @Game2, 1, 'C:\Games\LeagueOfLegends', DATEADD(DAY, -2, GETDATE()), 21000, 0);
 
 -- ================================================
 -- INSERT GAME LAUNCH LOGS
@@ -461,9 +880,17 @@ INSERT INTO GameLaunchLogs (UserId, GameId, LaunchMethod, LaunchedAt, SessionDur
 VALUES
 (@User1, @Game1, 'desktop', DATEADD(HOUR, -4, GETDATE()), 120, DATEADD(HOUR, -2, GETDATE())),
 (@User1, @Game2, 'desktop', DATEADD(DAY, -1, GETDATE()), 180, DATEADD(DAY, -1, DATEADD(HOUR, 3, GETDATE()))),
+(@User1, @Game1, 'desktop', DATEADD(DAY, -2, GETDATE()), 150, DATEADD(DAY, -2, DATEADD(HOUR, 2, GETDATE()))),
 (@User2, @Game3, 'desktop', DATEADD(HOUR, -3, GETDATE()), 90, DATEADD(HOUR, -1, GETDATE())),
+(@User2, @Game3, 'desktop', DATEADD(DAY, -1, GETDATE()), 120, DATEADD(DAY, -1, DATEADD(HOUR, 2, GETDATE()))),
 (@User3, @Game2, 'desktop', DATEADD(HOUR, -5, GETDATE()), 150, DATEADD(HOUR, -3, GETDATE())),
-(@User4, @Game1, 'desktop', DATEADD(HOUR, -6, GETDATE()), 60, DATEADD(HOUR, -5, GETDATE()));
+(@User3, @Game4, 'desktop', DATEADD(DAY, -2, GETDATE()), 200, DATEADD(DAY, -2, DATEADD(HOUR, 3, GETDATE()))),
+(@User4, @Game1, 'desktop', DATEADD(HOUR, -6, GETDATE()), 60, DATEADD(HOUR, -5, GETDATE())),
+(@User6, @Game4, 'desktop', DATEADD(HOUR, -4, GETDATE()), 180, DATEADD(HOUR, -1, GETDATE())),
+(@User8, @Game1, 'desktop', DATEADD(HOUR, -6, GETDATE()), 240, DATEADD(HOUR, -2, GETDATE())),
+(@User9, @Game1, 'desktop', DATEADD(HOUR, -3, GETDATE()), 90, DATEADD(HOUR, -1, GETDATE())),
+(@User11, @Game3, 'desktop', DATEADD(HOUR, -2, GETDATE()), 120, DATEADD(HOUR, -1, GETDATE())),
+(@User13, @Game1, 'desktop', DATEADD(HOUR, -1, GETDATE()), 60, DATEADD(MINUTE, -30, GETDATE()));
 
 -- ================================================
 -- INSERT GAME REVIEWS
@@ -472,9 +899,19 @@ INSERT INTO GameReviews (GameId, UserId, Rating, Title, Content, HoursPlayed, Is
 VALUES
 (@Game1, @User1, 5, N'Amazing tactical shooter!', N'Best FPS game I''ve played. Great mechanics and strategy depth.', 500, 1, 45),
 (@Game1, @User2, 4, N'Great game but steep learning curve', N'Takes time to master but very rewarding', 300, 1, 23),
+(@Game1, @User6, 5, N'Addictive and competitive', N'Love the competitive scene and constant updates', 600, 1, 56),
+(@Game1, @User13, 5, N'Perfect for streaming', N'Great game for content creation', 800, 1, 78),
 (@Game2, @User3, 5, N'The MOBA king', N'Still the best MOBA after all these years', 1200, 1, 89),
+(@Game2, @User6, 4, N'Great but demanding', N'Requires dedication but very rewarding', 950, 1, 67),
+(@Game2, @User11, 5, N'Competitive excellence', N'Best competitive MOBA experience', 1100, 1, 92),
 (@Game3, @User2, 5, N'CS2 is incredible', N'Huge improvement over CS:GO. Love the new engine', 450, 1, 67),
-(@Game4, @User3, 4, N'Complex but rewarding', N'Steep learning curve but amazing once you get it', 800, 1, 34);
+(@Game3, @User13, 5, N'Timeless classic', N'Still the best tactical shooter', 700, 1, 84),
+(@Game4, @User3, 4, N'Complex but rewarding', N'Steep learning curve but amazing once you get it', 800, 1, 34),
+(@Game4, @User6, 5, N'Dota is life', N'Most complex and rewarding game ever', 2000, 1, 156),
+(@Game5, @User1, 4, N'Fun team shooter', N'Great gameplay but needs balance updates', 250, 1, 38),
+(@Game5, @User4, 4, N'Solid hero shooter', N'Good game with regular updates', 300, 1, 42),
+(@Game6, @User8, 5, N'Battle royale perfection', N'Best BR mechanics and gunplay', 600, 1, 73),
+(@Game6, @User13, 4, N'Great for casual play', N'Fun and accessible battle royale', 450, 1, 51);
 
 -- ================================================
 -- INSERT FRIEND SUGGESTIONS
@@ -494,11 +931,29 @@ VALUES
 (@User1, 'login', NULL, NULL, '{"ip": "192.168.1.1", "device": "Windows PC"}'),
 (@User1, 'post_created', @Post1, 'post', '{"content_length": 45}'),
 (@User1, 'tournament_joined', @Tour1, 'tournament', '{"tournament_name": "Vietnam Valorant Championship"}'),
+(@User1, 'game_played', @Game1, 'game', '{"duration": 120, "result": "win"}'),
 (@User2, 'login', NULL, NULL, '{"ip": "192.168.1.2", "device": "Windows PC"}'),
 (@User2, 'game_played', @Game3, 'game', '{"duration": 45, "result": "win"}'),
+(@User2, 'post_created', @Post2, 'post', '{"content_length": 67}'),
 (@User3, 'login', NULL, NULL, '{"ip": "192.168.1.3", "device": "Mac"}'),
 (@User3, 'video_uploaded', @Video3, 'video', '{"duration": 900}'),
-(@User4, 'product_purchased', @Prod3, 'product', '{"product_name": "VIP Membership", "amount": 150000}');
+(@User3, 'tournament_joined', @Tour3, 'tournament', '{"tournament_name": "LoL Masters Series"}'),
+(@User4, 'product_purchased', @Prod3, 'product', '{"product_name": "VIP Membership", "amount": 150000}'),
+(@User4, 'game_played', @Game1, 'game', '{"duration": 60, "result": "loss"}'),
+(@User6, 'login', NULL, NULL, '{"ip": "192.168.1.6", "device": "Windows PC"}'),
+(@User6, 'tournament_joined', @Tour4, 'tournament', '{"tournament_name": "Dota 2 International Qualifiers"}'),
+(@User8, 'login', NULL, NULL, '{"ip": "192.168.1.8", "device": "Windows PC"}'),
+(@User8, 'video_uploaded', @Video5, 'video', '{"duration": 3600}'),
+(@User9, 'login', NULL, NULL, '{"ip": "192.168.1.9", "device": "Windows PC"}'),
+(@User9, 'video_uploaded', @Video6, 'video', '{"duration": 1080}'),
+(@User11, 'login', NULL, NULL, '{"ip": "192.168.1.11", "device": "Windows PC"}'),
+(@User11, 'game_played', @Game3, 'game', '{"duration": 90, "result": "win"}'),
+(@User13, 'login', NULL, NULL, '{"ip": "192.168.1.13", "device": "Windows PC"}'),
+(@User13, 'stream_started', NULL, NULL, '{"platform": "twitch", "viewers": 1250}'),
+(@User14, 'login', NULL, NULL, '{"ip": "192.168.1.14", "device": "Windows PC"}'),
+(@User14, 'post_created', @Post12, 'post', '{"content_length": 89}'),
+(@User15, 'login', NULL, NULL, '{"ip": "192.168.1.15", "device": "Windows PC"}'),
+(@User15, 'video_uploaded', @Video9, 'video', '{"duration": 2400}');
 
 -- ================================================
 -- INSERT ADMIN AUDIT LOGS
@@ -507,13 +962,25 @@ INSERT INTO AdminAuditLogs (AdminUserId, Action, TargetType, TargetId, OldValue,
 VALUES
 (@User5, 'user_verified', 'user', @User1, 'IsVerified: 0', 'IsVerified: 1', '192.168.1.100', 'Mozilla/5.0', N'User verification approved'),
 (@User5, 'post_featured', 'post', @Post1, NULL, 'IsFeatured: 1', '192.168.1.100', 'Mozilla/5.0', N'Featured on homepage'),
-(@User3, 'post_moderated', 'post', @Post2, NULL, 'Status: approved', '192.168.1.101', 'Mozilla/5.0', N'Content review passed');
+(@User3, 'post_moderated', 'post', @Post2, NULL, 'Status: approved', '192.168.1.101', 'Mozilla/5.0', N'Content review passed'),
+(@User5, 'user_verified', 'user', @User3, 'IsVerified: 0', 'IsVerified: 1', '192.168.1.100', 'Mozilla/5.0', N'Moderator verification'),
+(@User5, 'tournament_created', 'tournament', @Tour1, NULL, 'Status: upcoming', '192.168.1.100', 'Mozilla/5.0', N'Tournament setup'),
+(@User3, 'post_moderated', 'post', @Post6, NULL, 'Status: approved', '192.168.1.101', 'Mozilla/5.0', N'Content review passed'),
+(@User5, 'user_role_changed', 'user', @User14, 'Role: user', 'Role: moderator', '192.168.1.100', 'Mozilla/5.0', N'Promoted to moderator'),
+(@User5, 'marketplace_item_featured', 'marketplace', @Market1, NULL, 'IsFeatured: 1', '192.168.1.100', 'Mozilla/5.0', N'Featured marketplace item'),
+(@User3, 'post_removed', 'post', @Post3, 'Status: approved', 'Status: removed', '192.168.1.101', 'Mozilla/5.0', N'Violates community guidelines'),
+(@User5, 'game_added', 'game', @Game5, NULL, 'Status: active', '192.168.1.100', 'Mozilla/5.0', N'New game added to platform');
 
 -- ================================================
 -- INSERT DAILY STATISTICS
 -- ================================================
 INSERT INTO DailyStatistics (StatDate, NewUsers, ActiveUsers, TotalPosts, TotalComments, TotalVideos, TotalGameLaunches, TotalRevenue, TotalOrders)
 VALUES
+(CAST(DATEADD(DAY, -7, GETDATE()) AS DATE), 12, 156, 28, 67, 4, 234, 1200000, 6),
+(CAST(DATEADD(DAY, -6, GETDATE()) AS DATE), 18, 201, 35, 89, 6, 312, 1800000, 9),
+(CAST(DATEADD(DAY, -5, GETDATE()) AS DATE), 22, 267, 42, 112, 8, 401, 2100000, 11),
+(CAST(DATEADD(DAY, -4, GETDATE()) AS DATE), 19, 289, 48, 134, 9, 456, 2400000, 13),
+(CAST(DATEADD(DAY, -3, GETDATE()) AS DATE), 25, 312, 56, 156, 11, 523, 2700000, 15),
 (CAST(DATEADD(DAY, -2, GETDATE()) AS DATE), 15, 234, 45, 123, 8, 567, 2500000, 12),
 (CAST(DATEADD(DAY, -1, GETDATE()) AS DATE), 23, 345, 67, 189, 12, 678, 3200000, 18),
 (CAST(GETDATE() AS DATE), 18, 289, 52, 145, 10, 589, 2800000, 15);
@@ -524,8 +991,13 @@ VALUES
 INSERT INTO FeaturedContent (ContentType, ContentId, Title, Description, ImageUrl, DisplayOrder, StartDate, EndDate, IsActive, CreatedBy)
 VALUES
 ('game', @Game1, N'Valorant - Featured Game', N'Tactical shooter of the month', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 1, DATEADD(DAY, -5, GETDATE()), DATEADD(DAY, 25, GETDATE()), 1, @User5),
-('tournament', @Tour1, N'Vietnam Championship', N'Join the biggest tournament', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 2, GETDATE(), DATEADD(DAY, 10, GETDATE()), 1, @User5),
-('video', @Video1, N'Featured Tutorial', N'Learn from the best', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 3, DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, 5, GETDATE()), 1, @User5);
+('game', @Game4, N'Dota 2 - MOBA Classic', N'The ultimate competitive MOBA', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 2, DATEADD(DAY, -3, GETDATE()), DATEADD(DAY, 27, GETDATE()), 1, @User5),
+('tournament', @Tour1, N'Vietnam Championship', N'Join the biggest tournament', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 3, GETDATE(), DATEADD(DAY, 10, GETDATE()), 1, @User5),
+('tournament', @Tour4, N'Dota 2 International Qualifiers', N'Path to the International', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 4, DATEADD(DAY, 14, GETDATE()), DATEADD(DAY, 21, GETDATE()), 1, @User5),
+('video', @Video1, N'Featured Tutorial', N'Learn from the best', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 5, DATEADD(DAY, -2, GETDATE()), DATEADD(DAY, 5, GETDATE()), 1, @User5),
+('video', @Video5, N'Speedrun World Record', N'Amazing speedrun achievement', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 6, DATEADD(DAY, -1, GETDATE()), DATEADD(DAY, 6, GETDATE()), 1, @User5),
+('marketplace', @Market1, N'Premium Valorant Account', N'High-rank account with skins', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 7, DATEADD(DAY, -4, GETDATE()), DATEADD(DAY, 26, GETDATE()), 1, @User5),
+('marketplace', @Market6, N'Rare CS2 Souvenir', N'Legendary collectible item', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 8, DATEADD(DAY, -1, GETDATE()), DATEADD(DAY, 29, GETDATE()), 1, @User5);
 
 -- ================================================
 -- INSERT ANNOUNCEMENTS
@@ -534,7 +1006,12 @@ INSERT INTO Announcements (Title, Content, Type, Priority, TargetAudience, IsAct
 VALUES
 (N'Welcome to GGZone!', N'Thank you for joining our gaming community. Explore features and connect with gamers!', 'info', 'normal', 'all', 1, DATEADD(DAY, -30, GETDATE()), NULL, @User5),
 (N'Server Maintenance', N'Scheduled maintenance on Sunday 2AM-4AM. Services will be temporarily unavailable.', 'maintenance', 'high', 'all', 1, GETDATE(), DATEADD(DAY, 7, GETDATE()), @User5),
-(N'New Tournament Starting!', N'Vietnam Valorant Championship registration is now open. Join now!', 'event', 'high', 'users', 1, GETDATE(), DATEADD(DAY, 10, GETDATE()), @User5);
+(N'New Tournament Starting!', N'Vietnam Valorant Championship registration is now open. Join now!', 'event', 'high', 'users', 1, GETDATE(), DATEADD(DAY, 10, GETDATE()), @User5),
+(N'New Features Released', N'Check out our latest features: improved profiles, better search, and more!', 'info', 'normal', 'all', 1, DATEADD(DAY, -5, GETDATE()), NULL, @User5),
+(N'Marketplace Update', N'New verification system for marketplace sellers. Ensure your account is verified!', 'info', 'normal', 'users', 1, DATEADD(DAY, -3, GETDATE()), NULL, @User5),
+(N'Community Guidelines Update', N'Please review our updated community guidelines for a better experience.', 'info', 'high', 'all', 1, DATEADD(DAY, -2, GETDATE()), NULL, @User5),
+(N'Dota 2 International Qualifiers', N'Registration for Dota 2 International Qualifiers is now open!', 'event', 'high', 'users', 1, DATEADD(DAY, 14, GETDATE()), DATEADD(DAY, 21, GETDATE()), @User5),
+(N'Holiday Special Event', N'Join our holiday event with special rewards and exclusive items!', 'event', 'high', 'all', 1, DATEADD(DAY, 20, GETDATE()), DATEADD(DAY, 35, GETDATE()), @User5);
 
 -- ================================================
 -- INSERT EMAIL TEMPLATES
@@ -543,45 +1020,74 @@ INSERT INTO EmailTemplates (TemplateName, Subject, HtmlBody, TextBody, Category,
 VALUES
 ('welcome_email', N'Welcome to GGZone!', N'<h1>Welcome {{username}}!</h1><p>Thank you for joining GGZone.</p>', N'Welcome {{username}}! Thank you for joining GGZone.', 'user', '["username", "email"]', 1, @User5),
 ('password_reset', N'Reset Your Password', N'<h1>Password Reset</h1><p>Click here to reset: {{reset_link}}</p>', N'Password Reset. Click here: {{reset_link}}', 'security', '["username", "reset_link"]', 1, @User5),
-('order_confirmation', N'Order Confirmed', N'<h1>Order #{{order_id}}</h1><p>Total: {{total_amount}}</p>', N'Order #{{order_id}} confirmed. Total: {{total_amount}}', 'transaction', '["order_id", "total_amount", "items"]', 1, @User5);
+('order_confirmation', N'Order Confirmed', N'<h1>Order #{{order_id}}</h1><p>Total: {{total_amount}}</p>', N'Order #{{order_id}} confirmed. Total: {{total_amount}}', 'transaction', '["order_id", "total_amount", "items"]', 1, @User5),
+('tournament_invitation', N'You''re Invited to {{tournament_name}}!', N'<h1>Tournament Invitation</h1><p>Join {{tournament_name}} and compete!</p>', N'You''re invited to {{tournament_name}}!', 'event', '["username", "tournament_name", "tournament_link"]', 1, @User5),
+('marketplace_seller_notification', N'New Buyer Interest', N'<h1>Buyer Interest</h1><p>Someone is interested in your item: {{item_name}}</p>', N'Buyer interest in {{item_name}}', 'marketplace', '["seller_name", "item_name", "buyer_name"]', 1, @User5),
+('video_upload_confirmation', N'Video Upload Successful', N'<h1>Upload Confirmed</h1><p>Your video {{video_title}} has been uploaded!</p>', N'Video {{video_title}} uploaded successfully', 'content', '["username", "video_title", "video_link"]', 1, @User5),
+('friend_request_notification', N'New Friend Request', N'<h1>Friend Request</h1><p>{{friend_name}} sent you a friend request!</p>', N'{{friend_name}} sent you a friend request', 'social', '["username", "friend_name", "friend_link"]', 1, @User5),
+('achievement_unlocked', N'Achievement Unlocked!', N'<h1>Congratulations!</h1><p>You unlocked: {{achievement_name}}</p>', N'You unlocked {{achievement_name}}!', 'gamification', '["username", "achievement_name", "achievement_icon"]', 1, @User5);
 
 PRINT '================================================';
 PRINT 'GGZone Database - Seed Data Insertion Complete!';
 PRINT '================================================';
 PRINT '';
 PRINT 'Data Summary:';
-PRINT '- Users: 5 accounts created';
-PRINT '- Games: 4 popular games added';
-PRINT '- Groups: 3 communities created';
-PRINT '- Posts: 5 social posts with likes and comments';
-PRINT '- Friendships: Multiple friend connections';
-PRINT '- Marketplace: 3 items for sale';
-PRINT '- Store Products: 4 digital products';
-PRINT '- Tournaments: 3 tournaments (upcoming, ongoing, completed)';
-PRINT '- Videos: 3 uploaded videos with engagement';
-PRINT '- Forums: 3 categories with topics and replies';
+PRINT '- Users: 15 accounts created';
+PRINT '- Games: 6 popular games added';
+PRINT '- Groups: 5 communities created';
+PRINT '- Group Members: 23 memberships';
+PRINT '- Posts: 15 social posts with likes and comments';
+PRINT '- Post Media: 8 media attachments';
+PRINT '- Post Likes: 70+ likes distributed';
+PRINT '- Comments: 50+ comments on posts';
+PRINT '- Photos: 15 user photos';
+PRINT '- Friendships: 22 friend connections';
+PRINT '- Marketplace: 6 items for sale';
+PRINT '- Marketplace Reviews: 13 reviews';
+PRINT '- Store Products: 8 digital products';
+PRINT '- Store Orders: 5 orders (completed/pending)';
+PRINT '- Order Items: 5 order line items';
+PRINT '- Tournaments: 5 tournaments (various statuses)';
+PRINT '- Tournament Participants: 24 participations';
+PRINT '- Videos: 9 uploaded videos with engagement';
+PRINT '- Video Comments: 30+ comments';
+PRINT '- Video Likes: 43+ likes';
+PRINT '- Forums: 4 categories with 8 topics';
+PRINT '- Forum Replies: 30+ replies';
 PRINT '- Notifications: 7 user notifications';
 PRINT '- Messages: Direct messaging between users';
-PRINT '- Trending: Games, players, and videos rankings';
-PRINT '- Shopping Cart: User cart items';
-PRINT '- Orders: Completed and pending orders';
-PRINT '- User Game Library: 7 library entries';
-PRINT '- Game Launch Logs: 5 play sessions';
-PRINT '- Admin Audit Logs: 3 admin actions';
-PRINT '- Daily Statistics: 3 days of stats';
-PRINT '- Featured Content: 3 featured items';
-PRINT '- Announcements: 3 active announcements';
-PRINT '- Email Templates: 3 email templates';
+PRINT '- Trending Items: 18 trending entries';
+PRINT '- Trending Players: 8 top players';
+PRINT '- Shopping Cart: 10 cart items';
+PRINT '- User Game Library: 20 library entries';
+PRINT '- Game Launch Logs: 13 play sessions';
+PRINT '- Game Reviews: 15 game reviews';
+PRINT '- User Activity Log: 25 activity entries';
+PRINT '- Admin Audit Logs: 10 admin actions';
+PRINT '- Daily Statistics: 8 days of stats';
+PRINT '- Featured Content: 8 featured items';
+PRINT '- Announcements: 8 active announcements';
+PRINT '- Email Templates: 8 email templates';
 PRINT '';
-PRINT 'Test Accounts:';
+PRINT 'Test Accounts (15 users):';
 PRINT '- alice_gamer (Radiant Valorant player)';
 PRINT '- bob_fps (CS2 veteran)';
 PRINT '- charlie_moba (LoL Diamond player, Moderator)';
 PRINT '- diana_streamer (Content creator)';
 PRINT '- admin_ggzone (Admin account)';
+PRINT '- evan_pro (Dota 2 pro player)';
+PRINT '- fiona_casual (Casual gamer)';
+PRINT '- grace_speedrun (Speedrunner)';
+PRINT '- henry_analyst (Game analyst)';
+PRINT '- iris_artist (Game artist)';
+PRINT '- jack_competitive (Competitive player)';
+PRINT '- kate_casual (Social gamer)';
+PRINT '- leo_streamer (Twitch streamer)';
+PRINT '- mia_moderator (Community moderator)';
+PRINT '- noah_developer (Game developer)';
 PRINT '';
 PRINT 'Note: Livestream, Achievements, GameScreenshots, and GameVideos modules have been removed';
-PRINT 'Database is ready for testing!';
+PRINT 'Database is ready for comprehensive testing!';
 
 GO
 
