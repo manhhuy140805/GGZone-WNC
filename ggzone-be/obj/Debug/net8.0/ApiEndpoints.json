@@ -1115,6 +1115,83 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.GameController",
+    "Method": "FilterGames",
+    "RelativePath": "api/games/filter",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "genre",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "platform",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.GameController",
+    "Method": "GetGenres",
+    "RelativePath": "api/games/genres",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.GameController",
+    "Method": "GetPlatforms",
+    "RelativePath": "api/games/platforms",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.GameController",
+    "Method": "SearchGames",
+    "RelativePath": "api/games/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.GameController",
     "Method": "GetGameBySlug",
     "RelativePath": "api/games/slug/{slug}",
     "HttpMethod": "GET",
@@ -1957,16 +2034,6 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.PostController",
-    "Method": "GetAllPosts",
-    "RelativePath": "api/posts",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ggzone_be.Controllers.PostController",
     "Method": "CreatePost",
     "RelativePath": "api/posts",
     "HttpMethod": "POST",
@@ -1975,7 +2042,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "ggzone_be.Dtos.Post.CreatePostDto",
+        "Type": "ggzone_be.Controllers.CreatePostDto",
         "IsRequired": true
       }
     ],
@@ -1992,6 +2059,27 @@
       {
         "Name": "id",
         "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.PostController",
+    "Method": "UpdatePost",
+    "RelativePath": "api/posts/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "ggzone_be.Controllers.UpdatePostDto",
         "IsRequired": true
       }
     ],
@@ -2047,12 +2135,84 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.PostController",
-    "Method": "GetUserFeed",
+    "Method": "GetFeed",
     "RelativePath": "api/posts/feed",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "groupId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.PostController",
+    "Method": "FilterPosts",
+    "RelativePath": "api/posts/filter",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "groupId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "sortBy",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.PostController",
+    "Method": "SearchPosts",
+    "RelativePath": "api/posts/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      },
       {
         "Name": "page",
         "Type": "System.Int32",

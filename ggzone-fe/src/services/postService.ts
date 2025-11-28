@@ -1,10 +1,30 @@
 import { HttpClient, ApiError } from '../utils/httpClient';
 import { API_CONFIG } from '../config/api';
-import { Post } from '../types';
 
-export interface PostsResponse {
+export interface Post {
+  id: string;
+  content: string;
+  createdAt: string;
+  likeCount: number;
+  commentCount: number;
+  author: {
+    id: string;
+    username: string;
+    avatarUrl?: string;
+  };
+  gameId?: string;
+  groupId?: string;
+}
+
+export interface PaginatedPostsResponse {
   success: boolean;
-  data?: Post[];
+  data?: {
+    posts: Post[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   message?: string;
 }
 
@@ -15,52 +35,103 @@ export interface PostResponse {
 }
 
 class PostService {
-  // Lấy feed posts của user hiện tại
-  async getUserFeed(page: number = 1, pageSize: number = 20): Promise<PostsResponse> {
+  // Lấy feed posts (cho user đã login)
+  async getFeed(
+    page: number = 1,
+    pageSize: number = 10,
+    sortBy: string = 'latest',
+    groupId?: string
+  ): Promise<PaginatedPostsResponse> {
     try {
-      const token = localStorage.getItem('ggzone_auth_token');
-      if (!token) {
-        return {
-          success: false,
-          message: 'Vui lòng đăng nhập',
-        };
-      }
-
       const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.POSTS.FEED + `?page=${page}&pageSize=${pageSize}`,
+        API_CONFIG.ENDPOINTS.POSTS.FEED(page, pageSize, sortBy, groupId),
         true
       );
-      const posts = response.data || response;
+      const data = response.data || response;
+
       return {
         success: true,
-        data: Array.isArray(posts) ? posts : posts.data || [],
+        data: {
+          posts: Array.isArray(data.posts) ? data.posts : [],
+          total: data.total || 0,
+          page: data.page || page,
+          pageSize: data.pageSize || pageSize,
+          pageSize: data.pageSize || pageSize,
+          totalPages: data.totalPages || Math.ceil((data.total || 0) / pageSize),
+        },
       };
     } catch (error) {
       const apiError = error as ApiError;
       return {
         success: false,
-        message: apiError.message || 'Lỗi khi lấy feed posts',
+        message: apiError.message || 'Lỗi khi tải feed',
       };
     }
   }
 
-  // Lấy tất cả posts
-  async getAllPosts(): Promise<PostsResponse> {
+  // Lọc posts theo game, group, user
+  async filterPosts(
+    page: number = 1,
+    pageSize: number = 10,
+    gameId?: string,
+    groupId?: string,
+    userId?: string,
+    sortBy: string = 'latest'
+  ): Promise<PaginatedPostsResponse> {
     try {
       const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.POSTS.BASE,
+        API_CONFIG.ENDPOINTS.POSTS.FILTER(page, pageSize, gameId, groupId, userId, sortBy),
         false
       );
-      const posts = response.data || response;
+      const data = response.data || response;
+
       return {
         success: true,
-        data: Array.isArray(posts) ? posts : posts.data || [],
+        data: {
+          posts: Array.isArray(data.posts) ? data.posts : [],
+          total: data.total || 0,
+          page: data.page || page,
+          pageSize: data.pageSize || pageSize,
+          totalPages: data.totalPages || Math.ceil((data.total || 0) / pageSize),
+        },
       };
     } catch (error) {
       const apiError = error as ApiError;
       return {
         success: false,
-        message: apiError.message || 'Lỗi khi lấy posts',
+        message: apiError.message || 'Lỗi khi lọc posts',
+      };
+    }
+  }
+
+  // Tìm kiếm posts
+  async searchPosts(
+    query: string,
+    page: number = 1,
+    pageSize: number = 10
+  ): Promise<PaginatedPostsResponse> {
+    try {
+      const response = await HttpClient.get<any>(
+        API_CONFIG.ENDPOINTS.POSTS.SEARCH(query, page, pageSize),
+        false
+      );
+      const data = response.data || response;
+
+      return {
+        success: true,
+        data: {
+          posts: Array.isArray(data.posts) ? data.posts : [],
+          total: data.total || 0,
+          page: data.page || page,
+          pageSize: data.pageSize || pageSize,
+          totalPages: data.totalPages || Math.ceil((data.total || 0) / pageSize),
+        },
+      };
+    } catch (error) {
+      const apiError = error as ApiError;
+      return {
+        success: false,
+        message: apiError.message || 'Lỗi khi tìm kiếm posts',
       };
     }
   }
@@ -73,6 +144,7 @@ class PostService {
         false
       );
       const post = response.data || response;
+
       return {
         success: true,
         data: post,
@@ -87,31 +159,23 @@ class PostService {
   }
 
   // Tạo post mới
-  async createPost(content: string, groupId?: string, postType: string = 'text', videoUrl?: string): Promise<PostResponse> {
+  async createPost(
+    content: string,
+    gameId?: string,
+    groupId?: string
+  ): Promise<PostResponse> {
     try {
-      const token = localStorage.getItem('ggzone_auth_token');
-      if (!token) {
-        return {
-          success: false,
-          message: 'Vui lòng đăng nhập',
-        };
-      }
-
       const response = await HttpClient.post<any>(
         API_CONFIG.ENDPOINTS.POSTS.BASE,
-        {
-          content,
-          groupId,
-          postType,
-          videoUrl,
-        },
+        { content, gameId, groupId },
         true
       );
       const post = response.data || response;
+
       return {
         success: true,
         data: post,
-        message: 'Tạo post thành công',
+        message: 'Post created successfully',
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -122,25 +186,65 @@ class PostService {
     }
   }
 
-  // Like post
-  async likePost(postId: string): Promise<{ success: boolean; message?: string }> {
+  // Cập nhật post
+  async updatePost(id: string, content: string): Promise<PostResponse> {
     try {
-      const token = localStorage.getItem('ggzone_auth_token');
-      if (!token) {
-        return {
-          success: false,
-          message: 'Vui lòng đăng nhập',
-        };
-      }
+      const response = await HttpClient.put<any>(
+        API_CONFIG.ENDPOINTS.POSTS.BY_ID(id),
+        { content },
+        true
+      );
+      const post = response.data || response;
 
-      await HttpClient.post(
-        API_CONFIG.ENDPOINTS.POSTS.LIKE(postId),
+      return {
+        success: true,
+        data: post,
+        message: 'Post updated successfully',
+      };
+    } catch (error) {
+      const apiError = error as ApiError;
+      return {
+        success: false,
+        message: apiError.message || 'Lỗi khi cập nhật post',
+      };
+    }
+  }
+
+  // Xóa post
+  async deletePost(id: string): Promise<{ success: boolean; message?: string }> {
+    try {
+      await HttpClient.delete(
+        API_CONFIG.ENDPOINTS.POSTS.DELETE(id),
+        true
+      );
+
+      return {
+        success: true,
+        message: 'Post deleted successfully',
+      };
+    } catch (error) {
+      const apiError = error as ApiError;
+      return {
+        success: false,
+        message: apiError.message || 'Lỗi khi xóa post',
+      };
+    }
+  }
+
+  // Like post
+  async likePost(id: string): Promise<{ success: boolean; likeCount?: number; message?: string }> {
+    try {
+      const response = await HttpClient.post<any>(
+        API_CONFIG.ENDPOINTS.POSTS.LIKE(id),
         {},
         true
       );
+      const data = response.data || response;
+
       return {
         success: true,
-        message: 'Like post thành công',
+        likeCount: data.likeCount,
+        message: 'Post liked',
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -152,57 +256,24 @@ class PostService {
   }
 
   // Unlike post
-  async unlikePost(postId: string): Promise<{ success: boolean; message?: string }> {
+  async unlikePost(id: string): Promise<{ success: boolean; likeCount?: number; message?: string }> {
     try {
-      const token = localStorage.getItem('ggzone_auth_token');
-      if (!token) {
-        return {
-          success: false,
-          message: 'Vui lòng đăng nhập',
-        };
-      }
-
-      await HttpClient.delete(
-        API_CONFIG.ENDPOINTS.POSTS.UNLIKE(postId),
+      const response = await HttpClient.delete<any>(
+        API_CONFIG.ENDPOINTS.POSTS.UNLIKE(id),
         true
       );
+      const data = response.data || response;
+
       return {
         success: true,
-        message: 'Unlike post thành công',
+        likeCount: data.likeCount,
+        message: 'Post unliked',
       };
     } catch (error) {
       const apiError = error as ApiError;
       return {
         success: false,
         message: apiError.message || 'Lỗi khi unlike post',
-      };
-    }
-  }
-
-  // Xóa post
-  async deletePost(postId: string): Promise<{ success: boolean; message?: string }> {
-    try {
-      const token = localStorage.getItem('ggzone_auth_token');
-      if (!token) {
-        return {
-          success: false,
-          message: 'Vui lòng đăng nhập',
-        };
-      }
-
-      await HttpClient.delete(
-        API_CONFIG.ENDPOINTS.POSTS.DELETE(postId),
-        true
-      );
-      return {
-        success: true,
-        message: 'Xóa post thành công',
-      };
-    } catch (error) {
-      const apiError = error as ApiError;
-      return {
-        success: false,
-        message: apiError.message || 'Lỗi khi xóa post',
       };
     }
   }

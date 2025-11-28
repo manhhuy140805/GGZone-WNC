@@ -6,38 +6,31 @@ import {
   ChevronRight,
   Zap,
   Loader,
+  MessageCircle,
+  Crown,
 } from "lucide-react";
 import {
   GameCard,
   CommunityCard,
-  MarketplaceCard,
 } from "../components/cards";
-import { homeService } from "../services/homeService";
-import { Game } from "../types";
-
-interface Group {
-  id: string;
-  name: string;
-  description?: string;
-  image?: string;
-  memberCount?: number;
-}
+import { homeService, Post, User } from "../services/homeService";
+import { Game, Group } from "../types";
 
 interface HomeProps {
   onNavigate?: (page: string) => void;
-  onViewProduct?: (productId: string) => void;
   onViewGame?: (gameId: string) => void;
   onViewGroup?: (groupId: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ 
   onNavigate, 
-  onViewProduct, 
   onViewGame,
   onViewGroup
 }) => {
   const [trendingGames, setTrendingGames] = useState<Game[]>([]);
   const [popularGroups, setPopularGroups] = useState<Group[]>([]);
+  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
+  const [trendingPlayers, setTrendingPlayers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +44,8 @@ export const Home: React.FC<HomeProps> = ({
         if (response.success && response.data) {
           setTrendingGames(response.data.trendingGames || []);
           setPopularGroups(response.data.popularGroups || []);
+          setTrendingPosts(response.data.trendingPosts || []);
+          setTrendingPlayers(response.data.trendingPlayers || []);
         } else {
           setError(response.message || 'Lỗi khi tải dữ liệu');
         }
@@ -67,10 +62,6 @@ export const Home: React.FC<HomeProps> = ({
 
   const handleMarketplaceClick = () => {
     onNavigate?.("MARKETPLACE");
-  };
-
-  const handleProductClick = (productId: string) => {
-    onViewProduct?.(productId);
   };
 
   const handleGameClick = (gameId: string) => {
@@ -160,7 +151,7 @@ export const Home: React.FC<HomeProps> = ({
               <GameCard
                 key={game.id}
                 game={game}
-                onClick={() => handleGameClick(game.id)}
+                onViewGame={() => handleGameClick(game.id)}
               />
             ))}
           </div>
@@ -200,13 +191,142 @@ export const Home: React.FC<HomeProps> = ({
               <CommunityCard
                 key={group.id}
                 group={group}
-                onClick={() => handleGroupClick(group.id)}
+                onJoin={() => handleGroupClick(group.id)}
               />
             ))}
           </div>
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
             <p className="text-gray-500">Không có cộng đồng nào</p>
+          </div>
+        )}
+      </section>
+
+      {/* Trending Posts */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <MessageCircle size={28} className="text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900">Trending Posts</h2>
+          </div>
+          <a
+            href="#"
+            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
+          >
+            View All <ChevronRight size={18} />
+          </a>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
+            <Loader className="animate-spin text-blue-600" size={32} />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 bg-red-50 rounded-lg">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : trendingPosts.length > 0 ? (
+          <div className="grid grid-cols-2 gap-6">
+            {trendingPosts.map((post) => (
+              <div
+                key={post.id}
+                className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  {post.author?.avatar && (
+                    <img
+                      src={post.author.avatar}
+                      alt={post.author.username}
+                      className="w-10 h-10 rounded-full"
+                    />
+                  )}
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {post.author?.username || 'Anonymous'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {post.createdAt
+                        ? new Date(post.createdAt).toLocaleDateString('vi-VN')
+                        : 'Recently'}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-gray-700 line-clamp-3 mb-4">{post.content}</p>
+                <div className="flex gap-4 text-sm text-gray-500">
+                  <span>❤️ {post.likes || 0} Likes</span>
+                  <span>💬 {post.comments || 0} Comments</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Không có bài viết nào</p>
+          </div>
+        )}
+      </section>
+
+      {/* Trending Players */}
+      <section>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <Crown size={28} className="text-yellow-600" />
+            <h2 className="text-3xl font-bold text-gray-900">Top Players</h2>
+          </div>
+          <a
+            href="#"
+            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
+          >
+            View All <ChevronRight size={18} />
+          </a>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
+            <Loader className="animate-spin text-yellow-600" size={32} />
+          </div>
+        ) : error ? (
+          <div className="text-center py-12 bg-red-50 rounded-lg">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : trendingPlayers.length > 0 ? (
+          <div className="grid grid-cols-2 gap-6">
+            {trendingPlayers.map((player, index) => (
+              <div
+                key={player.id}
+                className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    {player.avatar && (
+                      <img
+                        src={player.avatar}
+                        alt={player.username}
+                        className="w-16 h-16 rounded-full"
+                      />
+                    )}
+                    <div className="absolute -top-2 -right-2 bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
+                      #{index + 1}
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900 text-lg">
+                      {player.username}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Level {player.level || 1}
+                    </p>
+                    <p className="text-sm text-orange-600 font-semibold">
+                      {player.followers || 0} Followers
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Không có người chơi nào</p>
           </div>
         )}
       </section>

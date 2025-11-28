@@ -7,7 +7,6 @@ import {
   Heart,
   MessageCircle,
   Share2,
-  Play,
   TrendingUp,
   PlusCircle,
   Filter,
@@ -17,10 +16,12 @@ import {
   X,
   Calendar,
   MapPin,
+  Loader,
 } from "lucide-react";
+import { postService } from "../services/postService";
 
 type FeedTab = "all" | "posts" | "videos" | "photos" | "moments";
-type SortType = "recent" | "popular" | "trending";
+type SortType = "latest" | "trending" | "oldest";
 
 interface User {
   id: string;
@@ -31,15 +32,15 @@ interface User {
 
 interface Post {
   id: string;
-  userId: string;
   content: string;
   createdAt: string;
-  likesCount: number;
-  commentsCount: number;
-  sharesCount: number;
-  postType: string;
-  videoUrl?: string;
-  isPinned?: boolean;
+  likeCount: number;
+  commentCount: number;
+  author: {
+    id: string;
+    username: string;
+    avatarUrl?: string;
+  };
   groupId?: string;
 }
 
@@ -60,21 +61,42 @@ interface Comment {
   user?: User;
 }
 
-interface PostMedia {
-  postId: string;
-  mediaUrl: string;
-}
-
 export const Feed: React.FC = () => {
   const [activeTab, setActiveTab] = useState<FeedTab>("all");
-  const [sortBy, setSortBy] = useState<SortType>("recent");
+  const [sortBy, setSortBy] = useState<SortType>("latest");
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [newPostContent, setNewPostContent] = useState("");
   const [expandedComments, setExpandedComments] = useState<string | null>(null);
   const [newComment, setNewComment] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState(false);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // Fetch posts from API
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await postService.getFeed(1, 10, sortBy);
+        if (response.success && response.data) {
+          setPosts(response.data.posts);
+        } else {
+          setError(response.message || 'Lỗi khi tải posts');
+        }
+      } catch (err) {
+        setError('Lỗi khi tải dữ liệu');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, [sortBy]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,16 +136,11 @@ export const Feed: React.FC = () => {
     };
   }, []);
 
-  // TODO: Fetch data from API
-  const posts: Post[] = [];
   const photos: Photo[] = [];
-  const users: User[] = [];
   const comments: Comment[] = [];
-  const postMedia: PostMedia[] = [];
+  const users: User[] = [];
 
-  const allPosts = [...posts].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  const allPosts = posts;
 
   const getUserInfo = (userId: string) => {
     return users.find((u) => u.id === userId);
@@ -140,40 +157,7 @@ export const Feed: React.FC = () => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
-  const filteredContent = () => {
-    let content = allPosts;
 
-    switch (activeTab) {
-      case "posts":
-        content = allPosts.filter((p) => p.postType === "text");
-        break;
-      case "videos":
-        content = allPosts.filter((p) => p.postType === "video");
-        break;
-      case "photos":
-        content = allPosts.filter((p) => p.postType === "image");
-        break;
-      case "moments":
-        return photos;
-      default:
-        content = allPosts;
-    }
-
-    // Apply sorting
-    if (sortBy === "popular") {
-      return [...content].sort((a, b) => b.likesCount - a.likesCount);
-    } else if (sortBy === "trending") {
-      return [...content].sort(
-        (a, b) =>
-          b.likesCount +
-          b.commentsCount +
-          b.sharesCount -
-          (a.likesCount + a.commentsCount + a.sharesCount)
-      );
-    }
-
-    return content;
-  };
 
   const handleCreatePost = () => {
     if (newPostContent.trim()) {
@@ -189,9 +173,6 @@ export const Feed: React.FC = () => {
       setNewComment("");
     }
   };
-
-  // Removed livestream feature
-  const liveStreams: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -333,9 +314,9 @@ export const Feed: React.FC = () => {
             onChange={(e) => setSortBy(e.target.value as SortType)}
             className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-orange-500"
           >
-            <option value="recent">Most Recent</option>
-            <option value="popular">Most Popular</option>
+            <option value="latest">Most Recent</option>
             <option value="trending">Trending</option>
+            <option value="oldest">Oldest</option>
           </select>
         </div>
       </div>
@@ -344,7 +325,19 @@ export const Feed: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Feed */}
         <div className="lg:col-span-2 space-y-4">
-          {activeTab === "moments" ? (
+          {loading && (
+            <div className="flex justify-center items-center py-12 bg-white rounded-xl shadow-md border border-gray-200">
+              <Loader className="animate-spin text-orange-600" size={32} />
+            </div>
+          )}
+
+          {error && (
+            <div className="text-center py-12 bg-red-50 rounded-xl border border-red-200">
+              <p className="text-red-500 font-medium">{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && activeTab === "moments" ? (
             <>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {photos.map((photo) => {
@@ -404,13 +397,9 @@ export const Feed: React.FC = () => {
                 </div>
               )}
             </>
-          ) : (
-            filteredContent().map((post: any) => {
-              const user = getUserInfo(post.userId);
-              const media = postMedia.find((m) => m.postId === post.id);
-
-              return (
-                <div
+          ) : !loading && !error && allPosts.length > 0 ? (
+            allPosts.map((post: Post) => (
+              <div
                   key={post.id}
                   className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
                 >
@@ -418,24 +407,19 @@ export const Feed: React.FC = () => {
                   <div className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <img
-                        src={user?.avatarUrl}
-                        alt={user?.username}
+                        src={post.author?.avatarUrl || 'https://via.placeholder.com/48'}
+                        alt={post.author?.username}
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div>
                         <h3 className="font-bold text-gray-900">
-                          {user?.username}
+                          {post.author?.username}
                         </h3>
                         <p className="text-xs text-gray-500">
                           {getTimeAgo(post.createdAt)}
                         </p>
                       </div>
                     </div>
-                    {post.isPinned && (
-                      <span className="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-bold rounded-full">
-                        Pinned
-                      </span>
-                    )}
                   </div>
 
                   {/* Post Content */}
@@ -445,33 +429,10 @@ export const Feed: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* Media */}
-                  {post.postType === "video" && post.videoUrl && (
-                    <div className="relative aspect-video bg-gray-900">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <button className="w-16 h-16 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center transition-colors shadow-lg">
-                          <Play
-                            size={24}
-                            className="text-white ml-1"
-                            fill="white"
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {post.postType === "image" && media && (
-                    <img
-                      src={media.mediaUrl}
-                      alt="Post media"
-                      className="w-full object-cover max-h-96"
-                    />
-                  )}
-
                   {/* Post Actions */}
                   <div className="px-4 py-3 border-t border-gray-200">
                     <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-                      <span>{post.likesCount} likes</span>
+                      <span>{post.likeCount} likes</span>
                       <div className="flex gap-3">
                         <button
                           onClick={() =>
@@ -481,9 +442,8 @@ export const Feed: React.FC = () => {
                           }
                           className="hover:text-orange-600 transition-colors"
                         >
-                          {post.commentsCount} comments
+                          {post.commentCount} comments
                         </button>
-                        <span>{post.sharesCount} shares</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -551,13 +511,6 @@ export const Feed: React.FC = () => {
 
                       {/* Add Comment */}
                       <div className="flex gap-3">
-                        {users[0] && (
-                          <img
-                            src={users[0].avatarUrl}
-                            alt="You"
-                            className="w-8 h-8 rounded-full object-cover flex-shrink-0"
-                          />
-                        )}
                         <div className="flex-1 flex gap-2">
                           <input
                             type="text"
@@ -581,9 +534,14 @@ export const Feed: React.FC = () => {
                       </div>
                     </div>
                   )}
-                </div>
-              );
-            })
+              </div>
+            ))
+          ) : (
+            !loading && !error && (
+              <div className="text-center py-12 bg-white rounded-xl shadow-md border border-gray-200">
+                <p className="text-gray-500">Không có posts nào</p>
+              </div>
+            )
           )}
         </div>
 

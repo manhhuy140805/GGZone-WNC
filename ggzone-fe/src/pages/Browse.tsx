@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GameCard } from "../components/cards";
 import {
   Search,
@@ -9,17 +9,10 @@ import {
   Clock,
   Zap,
   ChevronRight,
+  Loader,
 } from "lucide-react";
-
-interface Game {
-  id: string;
-  name: string;
-  description: string;
-  coverImageUrl: string;
-  genre: string;
-  platform: string;
-  releaseDate: string;
-}
+import { gameService } from "../services/gameService";
+import { Game } from "../types";
 
 interface BrowseProps {
   onViewGame?: (gameId: string) => void;
@@ -33,21 +26,95 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
     "trending"
   );
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [games, setGames] = useState<Game[]>([]);
+  const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize] = useState(12);
+  const [genres, setGenres] = useState<string[]>([]);
+  const [platforms, setPlatforms] = useState<string[]>([]);
 
-  // TODO: Fetch data from API
-  const games: Game[] = [];
+  // Load genres and platforms on component mount
+  useEffect(() => {
+    loadFilters();
+    loadFeaturedGames();
+  }, []);
 
-  const filteredGames = games.filter((game) => {
-    const matchesSearch =
-      game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      game.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = !selectedGenre || game.genre === selectedGenre;
-    const matchesPlatform =
-      !selectedPlatform || game.platform === selectedPlatform;
-    return matchesSearch && matchesGenre && matchesPlatform;
-  });
+  // Fetch games on component mount and when filters change
+  useEffect(() => {
+    loadGames();
+  }, [currentPage, selectedGenre, selectedPlatform]);
 
-  const sortedGames = [...filteredGames].sort((a, b) => {
+  const loadFilters = async () => {
+    try {
+      const [genresRes, platformsRes] = await Promise.all([
+        gameService.getGenres(),
+        gameService.getPlatforms(),
+      ]);
+
+      if (genresRes.success && genresRes.data) {
+        setGenres(genresRes.data);
+      }
+      if (platformsRes.success && platformsRes.data) {
+        setPlatforms(platformsRes.data);
+      }
+    } catch (err) {
+      console.error('Lỗi khi tải filters:', err);
+    }
+  };
+
+  const loadFeaturedGames = async () => {
+    try {
+      const response = await gameService.getTrendingGames(3);
+      if (response.success && response.data) {
+        setFeaturedGames(response.data);
+      }
+    } catch (err) {
+      console.error('Lỗi khi tải featured games:', err);
+    }
+  };
+
+  const loadGames = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      let response;
+      if (searchTerm.trim()) {
+        response = await gameService.searchGames(searchTerm, currentPage, pageSize);
+      } else {
+        response = await gameService.getGamesPaginated(
+          currentPage,
+          pageSize,
+          selectedGenre || undefined,
+          selectedPlatform || undefined
+        );
+      }
+
+      if (response.success && response.data) {
+        setGames(response.data.games);
+        setTotalPages(response.data.totalPages);
+      } else {
+        setError(response.message || 'Lỗi khi tải games');
+      }
+    } catch (err) {
+      setError('Lỗi khi tải dữ liệu');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    loadGames();
+  };
+
+  // Sort games based on sortBy
+  const sortedGames = [...games].sort((a, b) => {
     if (sortBy === "newest") {
       return (
         new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
@@ -58,12 +125,6 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
     }
     return 0;
   });
-
-  const genres = Array.from(new Set(games.map((g) => g.genre)));
-  const platforms = Array.from(new Set(games.map((g) => g.platform)));
-
-  // Featured games (first 3)
-  const featuredGames = games.slice(0, 3);
 
   return (
     <div className="space-y-8 bg-gradient-to-b from-white via-gray-50 to-gray-100 min-h-screen pb-12">
@@ -106,15 +167,21 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
             View All <ChevronRight size={18} />
           </a>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {featuredGames.map((game, idx) => (
-            <GameCard key={game.id} game={game} rank={idx} onViewGame={onViewGame} />
-          ))}
-        </div>
+        {featuredGames.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {featuredGames.map((game, idx) => (
+              <GameCard key={game.id} game={game} rank={idx} onViewGame={onViewGame} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Đang tải featured games...</p>
+          </div>
+        )}
       </section>
 
       {/* Search Bar */}
-      <div className="relative">
+      <form onSubmit={handleSearch} className="relative">
         <Search
           size={20}
           className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -126,7 +193,7 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
         />
-      </div>
+      </form>
 
       {/* Filters Section */}
       <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
@@ -260,8 +327,22 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-16">
+          <Loader className="animate-spin text-orange-600" size={40} />
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !loading && (
+        <div className="text-center py-12 bg-red-50 rounded-lg">
+          <p className="text-red-500 font-medium">{error}</p>
+        </div>
+      )}
+
       {/* Games Display */}
-      {sortedGames.length > 0 ? (
+      {!loading && !error && sortedGames.length > 0 ? (
         <div
           className={
             viewMode === "grid"
@@ -319,14 +400,53 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">🎮</div>
-          <p className="text-gray-600 text-lg font-medium mb-2">
-            No games found
-          </p>
-          <p className="text-gray-500">
-            Try adjusting your search or filters to find what you're looking for
-          </p>
+        !loading && (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">🎮</div>
+            <p className="text-gray-600 text-lg font-medium mb-2">
+              No games found
+            </p>
+            <p className="text-gray-500">
+              Try adjusting your search or filters to find what you're looking for
+            </p>
+          </div>
+        )
+      )}
+
+      {/* Pagination */}
+      {!loading && !error && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-8">
+          <button
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            Previous
+          </button>
+          
+          <div className="flex gap-1">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-2 rounded-lg transition-all ${
+                  currentPage === page
+                    ? 'bg-orange-600 text-white'
+                    : 'border border-gray-300 hover:bg-gray-50'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
