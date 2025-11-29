@@ -80,6 +80,18 @@ DECLARE @Game3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game5 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game15 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game16 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game17 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game18 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Group1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Group2 UNIQUEIDENTIFIER = NEWID();
@@ -109,6 +121,20 @@ DECLARE @Market3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market5 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Market6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market10 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market11 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market15 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market16 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market17 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market18 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market19 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Market20 UNIQUEIDENTIFIER = NEWID();
 
 DECLARE @Prod1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod2 UNIQUEIDENTIFIER = NEWID();
@@ -202,12 +228,42 @@ VALUES
 -- ================================================
 INSERT INTO Games (Id, Name, Slug, Description, CoverImageUrl, IconUrl, Genre, Platform, ReleaseDate, Publisher, IsActive)
 VALUES
-(@Game1, 'Valorant', 'valorant', N'Tactical 5v5 character-based shooter', 'https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt5c61c0d3b6c5c5e9/valorant-cover.jpg', 'https://i.imgur.com/valorant-icon.png', 'FPS', 'PC', '2020-06-02', 'Riot Games', 1),
-(@Game2, 'League of Legends', 'league-of-legends', N'5v5 MOBA strategy game', 'https://images.contentstack.io/v3/assets/blt731023b3d1c6b189/lol-cover.jpg', 'https://i.imgur.com/lol-icon.png', 'MOBA', 'PC', '2009-10-27', 'Riot Games', 1),
+(@Game1, 'Valorant', 'valorant', N'Tactical 5v5 character-based shooter', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416649/1e2d548c8da2ffbc1fa17ed77c99d450_o2zz4o.jpg', 'https://i.imgur.com/valorant-icon.png', 'FPS', 'PC', '2020-06-02', 'Riot Games', 1),
+(@Game2, 'League of Legends', 'league-of-legends', N'5v5 MOBA strategy game', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416649/29013e2bd20d257b75d506c002abac05_pm2uxs.jpg', 'https://i.imgur.com/lol-icon.png', 'MOBA', 'PC', '2009-10-27', 'Riot Games', 1),
 (@Game3, 'Counter-Strike 2', 'cs2', N'The legendary tactical shooter reborn', 'https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg', 'https://i.imgur.com/cs2-icon.png', 'FPS', 'PC', '2023-09-27', 'Valve', 1),
 (@Game4, 'Dota 2', 'dota-2', N'The ultimate MOBA experience', 'https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg', 'https://i.imgur.com/dota2-icon.png', 'MOBA', 'PC', '2013-07-09', 'Valve', 1),
-(@Game5, 'Overwatch 2', 'overwatch-2', N'Team-based first-person shooter', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'https://i.imgur.com/ow2-icon.png', 'FPS', 'PC', '2022-10-04', 'Blizzard', 1),
-(@Game6, 'Apex Legends', 'apex-legends', N'Battle royale hero shooter', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'https://i.imgur.com/apex-icon.png', 'Battle Royale', 'PC', '2019-02-04', 'Respawn Entertainment', 1);
+(@Game5, 'Overwatch 2', 'overwatch-2', N'Team-based first-person shooter', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764419768/d7a51c66b861834eca7ec4f552f3b607_s4jdl4.jpg', 'https://i.imgur.com/ow2-icon.png', 'FPS', 'PC', '2022-10-04', 'Blizzard', 1),
+(@Game6, 'Apex Legends', 'apex-legends', N'Battle royale hero shooter', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764419830/03cb5fb764120591c4351557c48b0922_evgdib.jpg', 'https://i.imgur.com/apex-icon.png', 'Battle Royale', 'PC', '2019-02-04', 'Respawn Entertainment', 1),
+(@Game7, 'Fortnite', 'fortnite', N'Build, battle, and be the last one standing', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/81357e9216a646cc3e2ab6d5af5025eb_j8iaas.jpg', 'https://i.imgur.com/fortnite-icon.png', 'Battle Royale', 'PC', '2017-07-25', 'Epic Games', 1),
+(@Game8, 'PUBG: Battlegrounds', 'pubg', N'The original battle royale experience', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/751b3316d34c1684ea875ed122f9c1bd_i6w57m.jpg', 'https://i.imgur.com/pubg-icon.png', 'Battle Royale', 'PC', '2017-12-21', 'PUBG Corporation', 1),
+(@Game9, 'Minecraft', 'minecraft', N'Build, explore, and survive in infinite worlds', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/5934d69b127766232a174dcbde14a658_wnsyjr.jpg', 'https://i.imgur.com/minecraft-icon.png', 'Sandbox', 'PC', '2011-11-18', 'Mojang Studios', 1),
+(@Game10, 'Genshin Impact', 'genshin-impact', N'Open-world action RPG adventure', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/ddb4c8dcba9c22dede8ac9c3c8760f82_buomh5.jpg', 'https://i.imgur.com/genshin-icon.png', 'RPG', 'PC', '2020-09-28', 'HoYoverse', 1),
+(@Game11, 'Rocket League', 'rocket-league', N'Soccer meets racing in this hybrid game', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/bf50c3cf3b3b13e50ae7801e602df8dc_korxvl.jpg', 'https://i.imgur.com/rocket-icon.png', 'Sports', 'PC', '2015-07-07', 'Psyonix', 1),
+(@Game12, 'Among Us', 'among-us', N'Social deduction party game', 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764416479/42f9baf307e53e5cb4087258eeaf70de_c47fcs.jpg', 'https://i.imgur.com/amongus-icon.png', 'Party', 'PC', '2018-06-15', 'Innersloth', 1),
+(@Game13, 'Elden Ring', 'elden-ring', N'Open-world action RPG in the Lands Between', 
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/9797130116fa5b9d18d6b09db4c70cca_ndmhrp.jpg',
+'https://i.imgur.com/eldenring-icon.png', 'RPG', 'PC', '2022-02-25', 'FromSoftware', 1),
+
+(@Game14, 'Call of Duty: Warzone', 'cod-warzone', N'Free-to-play battle royale in the CoD universe',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/38ef3716bda5f47a5e27fc8a0fe4657b_ycokot.jpg',
+'https://i.imgur.com/warzone-icon.png', 'Battle Royale', 'PC', '2020-03-10', 'Activision', 1),
+
+(@Game15, 'Cyberpunk 2077', 'cyberpunk-2077', N'Open-world futuristic action RPG in Night City',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/9564659d37f7dd92ed463124fc7153fd_rcmgsk.jpg',
+'https://i.imgur.com/cyberpunk-icon.png', 'RPG', 'PC', '2020-12-10', 'CD Projekt Red', 1),
+
+(@Game16, 'Dead by Daylight', 'dead-by-daylight', N'4v1 multiplayer survival horror game',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/cf3f0d1e109168c33a7ffd6353f250c5_qfcgsz.jpg',
+'https://i.imgur.com/dbd-icon.png', 'Horror', 'PC', '2016-06-14', 'Behaviour Interactive', 1),
+
+(@Game17, 'The Witcher 3: Wild Hunt', 'witcher-3', N'Award-winning open-world fantasy RPG',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/05ea1cc05811a647e4904733c7a30834_brhkpu.jpg',
+'https://i.imgur.com/witcher3-icon.png', 'RPG', 'PC', '2015-05-19', 'CD Projekt Red', 1),
+
+(@Game18, 'Rainbow Six Siege', 'rainbow-six-siege', N'Tactical 5v5 competitive shooter',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/1c0815bc9c7445a0d98b7e171811daab_hgueua.jpg',
+'https://i.imgur.com/r6-icon.png', 'FPS', 'PC', '2015-12-01', 'Ubisoft', 1);
+
 
 -- ================================================
 -- INSERT GROUPS
@@ -475,12 +531,26 @@ VALUES
 -- ================================================
 INSERT INTO MarketplaceItems (Id, SellerId, GameId, Title, Description, CoverImageUrl, Category, Price, Rating, ReviewsCount, Status)
 VALUES
-(@Market1, @User1, @Game1, N'Valorant Account - Radiant Rank', N'High-level account with rare skins', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Accounts', 5000.00, 4.8, 12, 'online'),
-(@Market2, @User2, @Game3, N'CS2 Knife - Karambit Fade', N'Factory New condition, rare pattern', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 1500.00, 4.9, 8, 'online'),
+(@Market1, @User1, @Game1, N'Valorant Account - Radiant Rank', N'High-level account with rare skins', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Accounts', 5000000, 4.8, 12, 'online'),
+(@Market2, @User2, @Game3, N'CS2 Knife - Karambit Fade', N'Factory New condition, rare pattern', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 1500000, 4.9, 8, 'online'),
 (@Market3, @User3, @Game2, N'LoL Account - Diamond 1', N'All champions unlocked, many skins', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 3500000, 4.5, 15, 'online'),
 (@Market4, @User6, @Game4, N'Dota 2 Account - Immortal Rank', N'Fully leveled with cosmetics', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'Accounts', 4200000, 4.7, 18, 'online'),
 (@Market5, @User13, @Game1, N'Valorant Skins Bundle', N'5 premium skins collection', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'Skins', 2800000, 4.6, 22, 'online'),
-(@Market6, @User11, @Game3, N'CS2 Dragon Lore Souvenir', N'Rare souvenir from Major', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Skins', 25000000, 5.0, 5, 'online');
+(@Market6, @User11, @Game3, N'CS2 Dragon Lore Souvenir', N'Rare souvenir from Major', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Skins', 25000000, 5.0, 5, 'online'),
+(@Market7, @User1, @Game2, N'League of Legends - Platinum Account', N'150+ champions, 50+ skins, Honor Level 5', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 2500000, 4.6, 10, 'online'),
+(@Market8, @User4, @Game1, N'Valorant Prime Collection', N'Full Prime weapon set', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Skins', 1800000, 4.7, 15, 'online'),
+(@Market9, @User6, @Game3, N'CS2 AWP Asiimov', N'Field-Tested, clean look', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 850000, 4.8, 20, 'online'),
+(@Market10, @User8, @Game4, N'Dota 2 Arcana Bundle', N'5 Arcana skins included', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'Skins', 3200000, 4.9, 12, 'online'),
+(@Market11, @User9, @Game1, N'Valorant Elderflame Set', N'Complete Elderflame collection', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'Skins', 2100000, 4.5, 18, 'online'),
+(@Market12, @User11, @Game2, N'LoL Prestige Skins Account', N'Multiple prestige skins, Gold rank', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 1900000, 4.4, 8, 'online'),
+(@Market13, @User13, @Game3, N'CS2 Glove Case Hardened', N'Blue gem pattern, rare', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Skins', 8500000, 5.0, 6, 'online'),
+(@Market14, @User2, @Game6, N'Apex Legends Heirloom Account', N'Multiple heirlooms, Diamond rank', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Accounts', 3800000, 4.7, 14, 'online'),
+(@Market15, @User4, @Game5, N'Overwatch 2 Golden Weapons', N'10+ golden weapons unlocked', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'Accounts', 1500000, 4.3, 9, 'online'),
+(@Market16, @User7, @Game9, N'Minecraft Premium Account', N'Full access, Java & Bedrock', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 'Accounts', 250000, 4.9, 45, 'online'),
+(@Market17, @User10, @Game10, N'Genshin Impact - AR 58', N'Multiple 5-star characters, well-built', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 'Accounts', 2800000, 4.6, 11, 'online'),
+(@Market18, @User12, @Game7, N'Fortnite Rare Skins Account', N'OG skins, Black Knight included', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 'Accounts', 4500000, 4.8, 16, 'online'),
+(@Market19, @User14, @Game8, N'PUBG Rare Outfit Collection', N'Limited edition outfits', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 'Skins', 950000, 4.4, 7, 'online'),
+(@Market20, @User15, @Game11, N'Rocket League Titanium White Octane', N'Most sought-after car', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 'Skins', 1200000, 4.9, 13, 'online');
 
 -- ================================================
 -- INSERT MARKETPLACE REVIEWS
@@ -1033,7 +1103,7 @@ PRINT '================================================';
 PRINT '';
 PRINT 'Data Summary:';
 PRINT '- Users: 15 accounts created';
-PRINT '- Games: 6 popular games added';
+PRINT '- Games: 12 popular games added';
 PRINT '- Groups: 5 communities created';
 PRINT '- Group Members: 23 memberships';
 PRINT '- Posts: 15 social posts with likes and comments';
@@ -1042,7 +1112,7 @@ PRINT '- Post Likes: 70+ likes distributed';
 PRINT '- Comments: 50+ comments on posts';
 PRINT '- Photos: 15 user photos';
 PRINT '- Friendships: 22 friend connections';
-PRINT '- Marketplace: 6 items for sale';
+PRINT '- Marketplace: 20 items for sale';
 PRINT '- Marketplace Reviews: 13 reviews';
 PRINT '- Store Products: 8 digital products';
 PRINT '- Store Orders: 5 orders (completed/pending)';

@@ -1,0 +1,307 @@
+Changed database context to 'GGZone'.
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(0 rows affected)
+
+(1 rows affected)
+
+(1 rows affected)
+
+(0 rows affected)
+
+(15 rows affected)
+
+(15 rows affected)
+
+(6 rows affected)
+
+(5 rows affected)
+
+(5 rows affected)
+
+(23 rows affected)
+
+(22 rows affected)
+
+(15 rows affected)
+
+(15 rows affected)
+
+(8 rows affected)
+
+(15 rows affected)
+
+(15 rows affected)
+
+(71 rows affected)
+
+(15 rows affected)
+
+(15 rows affected)
+
+(49 rows affected)
+
+(15 rows affected)
+
+(6 rows affected)
+
+(13 rows affected)
+
+(8 rows affected)
+
+(5 rows affected)
+
+(24 rows affected)
+
+(9 rows affected)
+
+(9 rows affected)
+
+(9 rows affected)
+
+(9 rows affected)
+
+(29 rows affected)
+
+(9 rows affected)
+
+(43 rows affected)
+
+(4 rows affected)
+
+(8 rows affected)
+
+(8 rows affected)
+
+(4 rows affected)
+
+(29 rows affected)
+
+(7 rows affected)
+
+(7 rows affected)
+
+(18 rows affected)
+
+(8 rows affected)
+
+(10 rows affected)
+
+(5 rows affected)
+
+(5 rows affected)
+
+(5 rows affected)
+
+(4 rows affected)
+
+(20 rows affected)
+
+(13 rows affected)
+
+(15 rows affected)
+
+(4 rows affected)
+
+(26 rows affected)
+
+(10 rows affected)
+
+(8 rows affected)
+
+(8 rows affected)
+
+(8 rows affected)
+
+(8 rows affected)
+================================================
+GGZone Database - Seed Data Insertion Complete!
+================================================
+ 
+Data Summary:
+- Users: 15 accounts created
+- Games: 6 popular games added
+- Groups: 5 communities created
+- Group Members: 23 memberships
+- Posts: 15 social posts with likes and comments
+- Post Media: 8 media attachments
+- Post Likes: 70+ likes distributed
+- Comments: 50+ comments on posts
+- Photos: 15 user photos
+- Friendships: 22 friend connections
+- Marketplace: 6 items for sale
+- Marketplace Reviews: 13 reviews
+- Store Products: 8 digital products
+- Store Orders: 5 orders (completed/pending)
+- Order Items: 5 order line items
+- Tournaments: 5 tournaments (various statuses)
+- Tournament Participants: 24 participations
+- Videos: 9 uploaded videos with engagement
+- Video Comments: 30+ comments
+- Video Likes: 43+ likes
+- Forums: 4 categories with 8 topics
+- Forum Replies: 30+ replies
+- Notifications: 7 user notifications
+- Messages: Direct messaging between users
+- Trending Items: 18 trending entries
+- Trending Players: 8 top players
+- Shopping Cart: 10 cart items
+- User Game Library: 20 library entries
+- Game Launch Logs: 13 play sessions
+- Game Reviews: 15 game reviews
+- User Activity Log: 25 activity entries
+- Admin Audit Logs: 10 admin actions
+- Daily Statistics: 8 days of stats
+- Featured Content: 8 featured items
+- Announcements: 8 active announcements
+- Email Templates: 8 email templates
+ 
+Test Accounts (15 users):
+- alice_gamer (Radiant Valorant player)
+- bob_fps (CS2 veteran)
+- charlie_moba (LoL Diamond player, Moderator)
+- diana_streamer (Content creator)
+- admin_ggzone (Admin account)
+- evan_pro (Dota 2 pro player)
+- fiona_casual (Casual gamer)
+- grace_speedrun (Speedrunner)
+- henry_analyst (Game analyst)
+- iris_artist (Game artist)
+- jack_competitive (Competitive player)
+- kate_casual (Social gamer)
+- leo_streamer (Twitch streamer)
+- mia_moderator (Community moderator)
+- noah_developer (Game developer)
+ 
+Note: Livestream, Achievements, GameScreenshots, and GameVideos modules have been removed
+Database is ready for comprehensive testing!
+TableName              RecordCount
+---------------------- -----------
+AdminAuditLogs                  10
+Announcements                    8
+Comments                        49
+DailyStatistics                  8
+EmailTemplates                   8
+FeaturedContent                  8
+ForumCategories                  4
+ForumReplies                    29
+ForumTopics                      8
+Friendships                     22
+FriendSuggestions                4
+GameLaunchLogs                  13
+GameReviews                     15
+Games                            6
+GroupMembers                    23
+Groups                           5
+MarketplaceItems                 6
+MarketplaceReviews              13
+Messages                         7
+Notifications                    7
+OrderItems                       5
+Photos                          15
+PostLikes                       71
+PostMedia                        8
+Posts                           15
+ShoppingCart                    10
+StoreOrders                      5
+StoreProducts                    8
+TournamentParticipants          24
+Tournaments                      5
+TrendingItems                   18
+TrendingPlayers                  8
+UserActivityLog                 50
+UserBadges                       4
+UserGameLibrary                 20
+UserPreferences                  5
+Users                           15
+UserStats                       15
+VideoComments                   29
+VideoLikes                      43
+Videos                           9
+
+(41 rows affected)
+ 
+================================================
+Verification complete! All data inserted successfully.
+================================================

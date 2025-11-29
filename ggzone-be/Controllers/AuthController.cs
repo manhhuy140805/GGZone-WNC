@@ -37,5 +37,20 @@ namespace ggzone_be.Controllers
 
             return Ok(new { token });
         }
+
+        // TEMPORARY: Generate BCrypt hash for testing
+        [HttpGet("generate-hash")]
+        public IActionResult GenerateHash([FromQuery] string password = "password123")
+        {
+            var hash = BCrypt.Net.BCrypt.HashPassword(password);
+            var verify = BCrypt.Net.BCrypt.Verify(password, hash);
+            
+            return Ok(new 
+            { 
+                password = password,
+                hash = hash,
+                verificationTest = verify
+            });
+        }
     }
 }

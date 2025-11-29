@@ -238,7 +238,6 @@ D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.bui
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.build.json.cache
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.development.json
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.Up2Date
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.dll
 D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\obj\Debug\net8.0\refint\ggzone-be.dll
@@ -413,3 +412,5 @@ D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ref
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\CloudinaryDotNet.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\bin\Debug\net8.0\CloudinaryDotNet.dll
+D:\1HK125\WEB_NANG_CAO\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Newtonsoft.Json.dll

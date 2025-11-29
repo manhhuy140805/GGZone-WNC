@@ -420,6 +420,22 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.AuthController",
+    "Method": "GenerateHash",
+    "RelativePath": "api/auth/generate-hash",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AuthController",
     "Method": "Login",
     "RelativePath": "api/auth/login",
     "HttpMethod": "POST",

@@ -804,6 +804,28 @@
         }
       }
     },
+    "/api/auth/generate-hash": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "password",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": "password123"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Badge/{userId}": {
       "get": {
         "tags": [
