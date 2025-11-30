@@ -24,9 +24,9 @@ namespace ggzone_be.Models
         public decimal EngagementScore { get; set; } = 0.0m;
 
         [Column(TypeName = "date")]
-        public DateTime TrendingDate { get; set; } = DateTime.UtcNow.Date;
+        public DateTime TrendingDate { get; set; } = DateTime.Now.Date;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("GameId")]

@@ -60,7 +60,7 @@ namespace ggzone_be.Models
         [MaxLength(50)]
         public string? LauncherType { get; set; } // steam, epic, origin, custom, web
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         public virtual ICollection<Photo> Photos { get; set; } = new List<Photo>();

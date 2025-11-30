@@ -10,7 +10,7 @@ namespace ggzone_be.Models
         public Guid VideoId { get; set; }
         public Guid UserId { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         public virtual Video Video { get; set; }

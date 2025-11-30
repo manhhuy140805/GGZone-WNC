@@ -16,7 +16,7 @@ namespace ggzone_be.Models
 
         public Guid? GroupId { get; set; }
 
-        public string? Content { get; set; }
+        public required string Content { get; set; }
 
         [MaxLength(20)]
         public string PostType { get; set; } = "text";
@@ -32,9 +32,9 @@ namespace ggzone_be.Models
 
         public bool IsPinned { get; set; } = false;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("UserId")]

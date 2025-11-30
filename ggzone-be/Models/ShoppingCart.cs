@@ -18,7 +18,7 @@ namespace ggzone_be.Models
 
         public int Quantity { get; set; } = 1;
 
-        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AddedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("UserId")]

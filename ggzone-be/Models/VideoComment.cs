@@ -15,7 +15,7 @@ namespace ggzone_be.Models
 
         public int LikesCount { get; set; } = 0;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         public virtual Video Video { get; set; }

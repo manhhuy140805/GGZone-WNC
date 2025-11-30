@@ -60,7 +60,7 @@ namespace ggzone_be.Repositorys
 
         public async Task<User> UpdateAsync(User user)
         {
-            user.UpdatedAt = DateTime.UtcNow;
+            user.UpdatedAt = DateTime.Now;
             
             // Detach any existing tracked instance to avoid conflicts
             var existingUser = _context.Users.Local.FirstOrDefault(u => u.Id == user.Id);

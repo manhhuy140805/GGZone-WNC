@@ -35,7 +35,7 @@ namespace ggzone_be.Models
         [MaxLength(20)]
         public string Status { get; set; } = "online";
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("GameId")]

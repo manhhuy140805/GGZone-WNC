@@ -115,7 +115,7 @@ namespace ggzone_be.Controllers
 
             friendship.Id = Guid.NewGuid();
             friendship.Status = "pending";
-            friendship.CreatedAt = DateTime.UtcNow;
+            friendship.CreatedAt = DateTime.Now;
 
             _context.Friendships.Add(friendship);
             await _context.SaveChangesAsync();

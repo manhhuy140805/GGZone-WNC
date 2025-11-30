@@ -20,7 +20,7 @@ namespace ggzone_be.Models
 
         public bool IsRead { get; set; } = false;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("SenderId")]

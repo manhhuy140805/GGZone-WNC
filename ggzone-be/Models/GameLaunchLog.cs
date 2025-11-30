@@ -18,7 +18,7 @@ namespace ggzone_be.Models
         [MaxLength(50)]
         public string? LaunchMethod { get; set; } // desktop, web, mobile
 
-        public DateTime LaunchedAt { get; set; } = DateTime.UtcNow;
+        public DateTime LaunchedAt { get; set; } = DateTime.Now;
 
         public int? SessionDuration { get; set; } // in minutes
 

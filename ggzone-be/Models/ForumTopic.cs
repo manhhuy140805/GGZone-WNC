@@ -25,8 +25,8 @@ namespace ggzone_be.Models
         public DateTime? LastReplyAt { get; set; }
         public Guid? LastReplyBy { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         public virtual ForumCategory Category { get; set; }

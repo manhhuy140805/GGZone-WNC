@@ -38,7 +38,7 @@ namespace ggzone_be.Services
                     RelatedId = relatedId,
                     RelatedType = relatedType,
                     IsRead = false,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.Notifications.Add(notification);
@@ -84,7 +84,7 @@ namespace ggzone_be.Services
 
         public async Task DeleteOldNotificationsAsync(int daysOld = 30)
         {
-            var cutoffDate = DateTime.UtcNow.AddDays(-daysOld);
+            var cutoffDate = DateTime.Now.AddDays(-daysOld);
             var oldNotifications = await _context.Notifications
                 .Where(n => n.CreatedAt < cutoffDate && n.IsRead)
                 .ToListAsync();

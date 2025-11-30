@@ -121,8 +121,8 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<MarketplaceItem>> CreateMarketplaceItem([FromBody] MarketplaceItem item)
         {
             item.Id = Guid.NewGuid();
-            item.CreatedAt = DateTime.UtcNow;
-            item.UpdatedAt = DateTime.UtcNow;
+            item.CreatedAt = DateTime.Now;
+            item.UpdatedAt = DateTime.Now;
 
             _context.MarketplaceItems.Add(item);
             await _context.SaveChangesAsync();
@@ -147,7 +147,7 @@ namespace ggzone_be.Controllers
             existing.Price = item.Price;
             existing.Category = item.Category;
             existing.Status = item.Status;
-            existing.UpdatedAt = DateTime.UtcNow;
+            existing.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -202,7 +202,7 @@ namespace ggzone_be.Controllers
         {
             review.Id = Guid.NewGuid();
             review.ItemId = id;
-            review.CreatedAt = DateTime.UtcNow;
+            review.CreatedAt = DateTime.Now;
 
             _context.MarketplaceReviews.Add(review);
             await _context.SaveChangesAsync();

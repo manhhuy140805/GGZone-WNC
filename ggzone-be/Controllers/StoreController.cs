@@ -84,7 +84,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<StoreProduct>> CreateProduct([FromBody] StoreProduct product)
         {
             product.Id = Guid.NewGuid();
-            product.CreatedAt = DateTime.UtcNow;
+            product.CreatedAt = DateTime.Now;
 
             _context.StoreProducts.Add(product);
             await _context.SaveChangesAsync();

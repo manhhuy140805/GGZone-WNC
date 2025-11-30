@@ -55,7 +55,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<UserBadge>> AwardBadge([FromBody] UserBadge badge)
         {
             badge.Id = Guid.NewGuid();
-            badge.AwardedAt = DateTime.UtcNow;
+            badge.AwardedAt = DateTime.Now;
 
             _context.UserBadges.Add(badge);
             await _context.SaveChangesAsync();

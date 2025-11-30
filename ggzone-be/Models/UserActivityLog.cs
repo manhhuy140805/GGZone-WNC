@@ -23,7 +23,7 @@ namespace ggzone_be.Models
 
         public string? Metadata { get; set; } // JSON string
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation property
         [ForeignKey("UserId")]

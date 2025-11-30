@@ -76,6 +76,7 @@ export interface Post {
   videoUrl?: string;
   isPinned?: boolean;
   groupId?: string;
+  isLiked?: boolean;
 }
 
 export interface Photo {

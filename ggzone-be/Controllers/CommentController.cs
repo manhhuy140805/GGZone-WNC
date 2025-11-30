@@ -54,7 +54,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Comment>> CreateComment([FromBody] Comment comment)
         {
             comment.Id = Guid.NewGuid();
-            comment.CreatedAt = DateTime.UtcNow;
+            comment.CreatedAt = DateTime.Now;
 
             _context.Comments.Add(comment);
 
@@ -80,7 +80,7 @@ namespace ggzone_be.Controllers
                     IsRead = false,
                     RelatedEntityId = comment.Id,
                     RelatedEntityType = "Comment",
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.Notifications.Add(notification);

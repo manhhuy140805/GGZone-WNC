@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "@/app/providers/AuthContext";
 import { Search, Send, MessageCircle, ArrowLeft } from "lucide-react";
 
 interface User {

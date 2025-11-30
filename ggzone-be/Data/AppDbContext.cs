@@ -23,7 +23,7 @@ namespace ggzone_be.Data
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
-        public DbSet<PostMedia> PostMedias { get; set; }
+        public DbSet<PostMedia> PostMedia { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Photo> Photos { get; set; }
@@ -77,6 +77,13 @@ namespace ggzone_be.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Disable OUTPUT clause for tables with triggers
+            // This fixes: "Could not save changes because the target table has database triggers"
+            modelBuilder.Entity<Post>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<PostLike>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<PostMedia>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Comment>().ToTable(tb => tb.UseSqlOutputClause(false));
 
             // Friendship (User → Friend)
             modelBuilder.Entity<Friendship>()

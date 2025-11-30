@@ -16,10 +16,10 @@ import {
   Messages,
   Cart,
   Settings,
-} from "../pages";
-import { CloudinaryTest } from "../pages/CloudinaryTest";
-import { useAuth } from "../context/AuthContext";
-import AdminPage from "../admin/admin";
+  CloudinaryTest,
+  Admin as AdminPage,
+} from "@/pages";
+import { useAuth } from "@/app/providers/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -44,7 +44,7 @@ const GroupDetail: React.FC = () => {
     <GroupDetailPage
       groupId={groupId || ""}
       onBack={() => navigate("/groups")}
-      onOpenChat={(id) => navigate("/messages")}
+      onOpenChat={() => navigate("/messages")}
     />
   );
 };
@@ -88,9 +88,8 @@ const HomeWrapper: React.FC = () => {
         };
         navigate(routes[page] || "/");
       }}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
-      onViewGame={(id) => navigate(`/browse/${id}`)}
-      onViewGroup={(id) => navigate(`/groups/${id}`)}
+      onViewGame={(id: string) => navigate(`/browse/${id}`)}
+      onViewGroup={(id: string) => navigate(`/groups/${id}`)}
     />
   );
 };

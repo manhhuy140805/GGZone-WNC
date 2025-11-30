@@ -47,7 +47,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult> LogActivity([FromBody] UserActivityLog activity)
         {
             activity.Id = Guid.NewGuid();
-            activity.CreatedAt = DateTime.UtcNow;
+            activity.CreatedAt = DateTime.Now;
 
             _context.UserActivityLogs.Add(activity);
             await _context.SaveChangesAsync();

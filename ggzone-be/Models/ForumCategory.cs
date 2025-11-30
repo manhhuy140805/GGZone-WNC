@@ -21,7 +21,7 @@ namespace ggzone_be.Models
         public int TopicsCount { get; set; } = 0;
         public int PostsCount { get; set; } = 0;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         public virtual Game? Game { get; set; }

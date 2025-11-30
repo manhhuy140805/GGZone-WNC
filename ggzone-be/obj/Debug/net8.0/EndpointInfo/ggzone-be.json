@@ -3372,6 +3372,18 @@
         }
       }
     },
+    "/api/posts/debug-user": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/posts/feed": {
       "get": {
         "tags": [
@@ -5627,6 +5639,9 @@
         "additionalProperties": false
       },
       "CreatePostDto": {
+        "required": [
+          "content"
+        ],
         "type": "object",
         "properties": {
           "content": {
@@ -5636,6 +5651,13 @@
           "groupId": {
             "type": "string",
             "format": "uuid",
+            "nullable": true
+          },
+          "mediaUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MediaUrlDto"
+            },
             "nullable": true
           }
         },
@@ -6514,6 +6536,23 @@
         },
         "additionalProperties": false
       },
+      "MediaUrlDto": {
+        "required": [
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Message": {
         "required": [
           "content",
@@ -6682,6 +6721,7 @@
       },
       "Post": {
         "required": [
+          "content",
           "userId"
         ],
         "type": "object",
@@ -7249,6 +7289,9 @@
         "additionalProperties": false
       },
       "UpdatePostDto": {
+        "required": [
+          "content"
+        ],
         "type": "object",
         "properties": {
           "content": {

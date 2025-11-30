@@ -2042,7 +2042,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "ggzone_be.Controllers.CreatePostDto",
+        "Type": "ggzone_be.Dtos.Post.CreatePostDto",
         "IsRequired": true
       }
     ],
@@ -2079,7 +2079,7 @@
       },
       {
         "Name": "dto",
-        "Type": "ggzone_be.Controllers.UpdatePostDto",
+        "Type": "ggzone_be.Dtos.Post.UpdatePostDto",
         "IsRequired": true
       }
     ],
@@ -2131,6 +2131,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.PostController",
+    "Method": "DebugUser",
+    "RelativePath": "api/posts/debug-user",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
