@@ -6,33 +6,35 @@ import {
   ChevronRight,
   Zap,
   Loader,
-  MessageCircle,
-  Crown,
 } from "lucide-react";
 import {
   GameCard,
   CommunityCard,
 } from "@/components/shared/cards";
-import { homeService, Post, User } from "@/services/api/homeService";
+import { homeService } from "@/services/api/homeService";
 import { Game, Group } from "@/types";
 
 interface HomeProps {
   onNavigate?: (page: string) => void;
   onViewGame?: (gameId: string) => void;
   onViewGroup?: (groupId: string) => void;
+  onViewProduct?: (productId: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({ 
   onNavigate, 
   onViewGame,
-  onViewGroup
+  onViewGroup,
+  onViewProduct
 }) => {
   const [trendingGames, setTrendingGames] = useState<Game[]>([]);
   const [popularGroups, setPopularGroups] = useState<Group[]>([]);
-  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
-  const [trendingPlayers, setTrendingPlayers] = useState<User[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
+  const [subscribeLoading, setSubscribeLoading] = useState(false);
+  const [subscribeMessage, setSubscribeMessage] = useState('');
 
   useEffect(() => {
     const loadHomeData = async () => {
@@ -44,8 +46,54 @@ export const Home: React.FC<HomeProps> = ({
         if (response.success && response.data) {
           setTrendingGames(response.data.trendingGames || []);
           setPopularGroups(response.data.popularGroups || []);
-          setTrendingPosts(response.data.trendingPosts || []);
-          setTrendingPlayers(response.data.trendingPlayers || []);
+          
+          // Mock featured products data
+          setFeaturedProducts([
+            {
+              id: '1',
+              title: 'Gaming Headset Pro X',
+              price: 129.99,
+              originalPrice: 159.99,
+              image: 'https://images.unsplash.com/photo-1599669454699-248893623440?w=400',
+              category: 'Audio',
+              rating: 4.8,
+              reviews: 1234,
+              discount: 19,
+            },
+            {
+              id: '2',
+              title: 'Mechanical Keyboard RGB',
+              price: 89.99,
+              originalPrice: 119.99,
+              image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400',
+              category: 'Keyboard',
+              rating: 4.9,
+              reviews: 2156,
+              discount: 25,
+            },
+            {
+              id: '3',
+              title: 'Gaming Mouse Ultra',
+              price: 59.99,
+              originalPrice: 79.99,
+              image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=400',
+              category: 'Mouse',
+              rating: 4.7,
+              reviews: 987,
+              discount: 25,
+            },
+            {
+              id: '4',
+              title: 'Gaming Chair Deluxe',
+              price: 299.99,
+              originalPrice: 399.99,
+              image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=400',
+              category: 'Furniture',
+              rating: 4.6,
+              reviews: 543,
+              discount: 25,
+            },
+          ]);
         } else {
           setError(response.message || 'Lỗi khi tải dữ liệu');
         }
@@ -64,6 +112,14 @@ export const Home: React.FC<HomeProps> = ({
     onNavigate?.("MARKETPLACE");
   };
 
+  const handleProductClick = (productId: string) => {
+    if (onViewProduct) {
+      onViewProduct(productId);
+    } else {
+      onNavigate?.("MARKETPLACE");
+    }
+  };
+
   const handleGameClick = (gameId: string) => {
     onViewGame?.(gameId);
   };
@@ -74,6 +130,51 @@ export const Home: React.FC<HomeProps> = ({
     } else {
       onNavigate?.("GROUPS");
     }
+  };
+
+  const handleBrowseGames = () => {
+    onNavigate?.("BROWSE");
+  };
+
+  const handleBrowseGroups = () => {
+    onNavigate?.("GROUPS");
+  };
+
+  const handlePlayNow = () => {
+    // Navigate to browse games or specific game
+    onNavigate?.("BROWSE");
+  };
+
+  const handleLearnMore = () => {
+    // Scroll to games section or navigate
+    const gamesSection = document.getElementById('games-section');
+    if (gamesSection) {
+      gamesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !email.includes('@')) {
+      setSubscribeMessage('Please enter a valid email address');
+      return;
+    }
+
+    setSubscribeLoading(true);
+    setSubscribeMessage('');
+
+    // Simulate API call
+    setTimeout(() => {
+      setSubscribeMessage('Thank you for subscribing! 🎉');
+      setEmail('');
+      setSubscribeLoading(false);
+      
+      // Clear message after 3 seconds
+      setTimeout(() => {
+        setSubscribeMessage('');
+      }, 3000);
+    }, 1000);
   };
 
   return (
@@ -108,10 +209,16 @@ export const Home: React.FC<HomeProps> = ({
             </p>
 
             <div className="flex gap-4">
-              <button className="px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl">
-                <span></span> Play Now
+              <button 
+                onClick={handlePlayNow}
+                className="px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold rounded-lg transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
+              >
+                <Flame size={20} /> Play Now
               </button>
-              <button className="px-8 py-3 bg-white/20 hover:bg-white/30 text-white font-bold rounded-lg border border-white/40 transition-all duration-200 backdrop-blur-sm">
+              <button 
+                onClick={handleLearnMore}
+                className="px-8 py-3 bg-white/20 hover:bg-white/30 text-white font-bold rounded-lg border border-white/40 transition-all duration-200 backdrop-blur-sm hover:scale-105"
+              >
                 Learn More
               </button>
             </div>
@@ -123,18 +230,18 @@ export const Home: React.FC<HomeProps> = ({
       </section>
 
       {/* Games */}
-      <section>
+      <section id="games-section">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <TrendingUp size={28} className="text-orange-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Games</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Trending Games</h2>
           </div>
-          <a
-            href="#"
-            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
+          <button
+            onClick={handleBrowseGames}
+            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors hover:gap-2"
           >
             View All <ChevronRight size={18} />
-          </a>
+          </button>
         </div>
 
         {loading ? (
@@ -167,14 +274,14 @@ export const Home: React.FC<HomeProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Users size={28} className="text-purple-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Communities</h2>
+            <h2 className="text-3xl font-bold text-gray-900">Popular Communities</h2>
           </div>
-          <a
-            href="#"
-            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
+          <button
+            onClick={handleBrowseGroups}
+            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors hover:gap-2"
           >
             View All <ChevronRight size={18} />
-          </a>
+          </button>
         </div>
 
         {loading ? (
@@ -191,6 +298,7 @@ export const Home: React.FC<HomeProps> = ({
               <CommunityCard
                 key={group.id}
                 group={group}
+                onClick={() => handleGroupClick(group.id)}
                 onJoin={() => handleGroupClick(group.id)}
               />
             ))}
@@ -198,135 +306,6 @@ export const Home: React.FC<HomeProps> = ({
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
             <p className="text-gray-500">Không có cộng đồng nào</p>
-          </div>
-        )}
-      </section>
-
-      {/* Trending Posts */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <MessageCircle size={28} className="text-blue-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Trending Posts</h2>
-          </div>
-          <a
-            href="#"
-            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
-          >
-            View All <ChevronRight size={18} />
-          </a>
-        </div>
-
-        {loading ? (
-          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
-            <Loader className="animate-spin text-blue-600" size={32} />
-          </div>
-        ) : error ? (
-          <div className="text-center py-12 bg-red-50 rounded-lg">
-            <p className="text-red-500">{error}</p>
-          </div>
-        ) : trendingPosts.length > 0 ? (
-          <div className="grid grid-cols-2 gap-6">
-            {trendingPosts.map((post) => (
-              <div
-                key={post.id}
-                className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  {post.author?.avatar && (
-                    <img
-                      src={post.author.avatar}
-                      alt={post.author.username}
-                      className="w-10 h-10 rounded-full"
-                    />
-                  )}
-                  <div>
-                    <p className="font-semibold text-gray-900">
-                      {post.author?.username || 'Anonymous'}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      {post.createdAt
-                        ? new Date(post.createdAt).toLocaleDateString('vi-VN')
-                        : 'Recently'}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-gray-700 line-clamp-3 mb-4">{post.content}</p>
-                <div className="flex gap-4 text-sm text-gray-500">
-                  <span>👍 {post.likes || 0} Likes</span>
-                  <span>💬 {post.comments || 0} Comments</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-lg">
-            <p className="text-gray-500">Không có bài viết nào</p>
-          </div>
-        )}
-      </section>
-
-      {/* Trending Players */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Crown size={28} className="text-yellow-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Top Players</h2>
-          </div>
-          <a
-            href="#"
-            className="text-orange-600 hover:text-orange-700 font-semibold flex items-center gap-1 transition-colors"
-          >
-            View All <ChevronRight size={18} />
-          </a>
-        </div>
-
-        {loading ? (
-          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
-            <Loader className="animate-spin text-yellow-600" size={32} />
-          </div>
-        ) : error ? (
-          <div className="text-center py-12 bg-red-50 rounded-lg">
-            <p className="text-red-500">{error}</p>
-          </div>
-        ) : trendingPlayers.length > 0 ? (
-          <div className="grid grid-cols-2 gap-6">
-            {trendingPlayers.map((player, index) => (
-              <div
-                key={player.id}
-                className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    {player.avatar && (
-                      <img
-                        src={player.avatar}
-                        alt={player.username}
-                        className="w-16 h-16 rounded-full"
-                      />
-                    )}
-                    <div className="absolute -top-2 -right-2 bg-orange-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm">
-                      #{index + 1}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-gray-900 text-lg">
-                      {player.username}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Level {player.level || 1}
-                    </p>
-                    <p className="text-sm text-orange-600 font-semibold">
-                      {player.followers || 0} Followers
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-lg">
-            <p className="text-gray-500">Không có người chơi nào</p>
           </div>
         )}
       </section>
@@ -346,9 +325,68 @@ export const Home: React.FC<HomeProps> = ({
           </button>
         </div>
 
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">Dữ liệu sẽ được tải từ API</p>
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
+            <Loader className="animate-spin text-yellow-600" size={32} />
+          </div>
+        ) : featuredProducts.length > 0 ? (
+          <div className="grid grid-cols-4 gap-6">
+            {featuredProducts.map((product) => (
+              <div
+                key={product.id}
+                onClick={() => handleProductClick(product.id)}
+                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              >
+                <div className="relative overflow-hidden aspect-square">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  {product.discount && (
+                    <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                      -{product.discount}%
+                    </div>
+                  )}
+                  <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    {product.category}
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    ⭐ {product.rating} ({product.reviews} reviews)
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
+                    {product.title}
+                  </h3>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-2xl font-bold text-orange-600">
+                      ${product.price}
+                    </span>
+                    {product.originalPrice && (
+                      <span className="text-sm text-gray-400 line-through">
+                        ${product.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleProductClick(product.id);
+                    }}
+                    className="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                  >
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Không có sản phẩm nào</p>
+          </div>
+        )}
       </section>
 
       {/* Newsletter CTA */}
@@ -362,16 +400,34 @@ export const Home: React.FC<HomeProps> = ({
             delivered to your inbox.
           </p>
 
-          <div className="flex gap-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/30 backdrop-blur-sm"
-            />
-            <button className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors shadow-md hover:shadow-lg">
-              Subscribe
-            </button>
-          </div>
+          <form onSubmit={handleSubscribe} className="space-y-3">
+            <div className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/60 focus:outline-none focus:border-white focus:ring-2 focus:ring-white/30 backdrop-blur-sm"
+                disabled={subscribeLoading}
+              />
+              <button 
+                type="submit"
+                disabled={subscribeLoading}
+                className="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
+              >
+                {subscribeLoading ? (
+                  <Loader className="animate-spin" size={20} />
+                ) : (
+                  'Subscribe'
+                )}
+              </button>
+            </div>
+            {subscribeMessage && (
+              <p className={`text-sm ${subscribeMessage.includes('Thank you') ? 'text-green-200' : 'text-red-200'}`}>
+                {subscribeMessage}
+              </p>
+            )}
+          </form>
         </div>
       </section>
     </div>

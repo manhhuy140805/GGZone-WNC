@@ -90,6 +90,7 @@ const HomeWrapper: React.FC = () => {
       }}
       onViewGame={(id: string) => navigate(`/browse/${id}`)}
       onViewGroup={(id: string) => navigate(`/groups/${id}`)}
+      onViewProduct={(id: string) => navigate(`/marketplace/${id}`)}
     />
   );
 };
