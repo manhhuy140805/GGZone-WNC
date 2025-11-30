@@ -1,4 +1,4 @@
-﻿using ggzone_be.Data;
+using ggzone_be.Data;
 using ggzone_be.Dtos.Auth;
 using ggzone_be.Dtos.User;
 using ggzone_be.Interfaces;
@@ -27,11 +27,11 @@ namespace ggzone_be.Services
 
         public async Task<User> RegisterAsync(RegisterDto dto)
         {
-            // Kiểm tra email tồn tại
+            // Ki?m tra email t?n t?i
             if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
                 throw new Exception("Email already exists");
 
-            // Kiểm tra username tồn tại
+            // Ki?m tra username t?n t?i
             if (await _context.Users.AnyAsync(u => u.Username == dto.Username))
                 throw new Exception("Username already exists");
 
@@ -47,14 +47,14 @@ namespace ggzone_be.Services
                 FullName = dto.FullName,
                 Status = "offline",
                 Role = "user",
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Tạo UserStats mặc định cho user mới
+            // T?o UserStats m?c d?nh cho user m?i
             var userStats = new UserStats
             {
                 UserId = user.Id,
@@ -128,7 +128,7 @@ namespace ggzone_be.Services
             user.Location = dto.Location ?? user.Location;
             user.AvatarUrl = dto.AvatarUrl ?? user.AvatarUrl;
             user.CoverImageUrl = dto.CoverImageUrl ?? user.CoverImageUrl;
-            user.UpdatedAt = DateTime.UtcNow;
+            user.UpdatedAt = DateTime.Now;
 
             try
             {
@@ -208,7 +208,7 @@ namespace ggzone_be.Services
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: creds
             );
 

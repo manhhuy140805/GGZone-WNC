@@ -84,7 +84,7 @@ namespace ggzone_be.Controllers
         [HttpGet("daily")]
         public async Task<ActionResult<IEnumerable<object>>> GetDailyStats([FromQuery] int days = 7)
         {
-            var startDate = DateTime.UtcNow.AddDays(-days);
+            var startDate = DateTime.Now.AddDays(-days);
 
             var stats = await _context.DailyStatistics
                 .Where(ds => ds.StatDate >= startDate)

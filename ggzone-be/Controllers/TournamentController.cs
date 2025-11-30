@@ -115,7 +115,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Tournament>> CreateTournament([FromBody] Tournament tournament)
         {
             tournament.Id = Guid.NewGuid();
-            tournament.CreatedAt = DateTime.UtcNow;
+            tournament.CreatedAt = DateTime.Now;
             tournament.CurrentParticipants = 0;
 
             _context.Tournaments.Add(tournament);
@@ -175,7 +175,7 @@ namespace ggzone_be.Controllers
 
             participant.Id = Guid.NewGuid();
             participant.TournamentId = id;
-            participant.JoinedAt = DateTime.UtcNow;
+            participant.JoinedAt = DateTime.Now;
             participant.Score = 0;
 
             _context.TournamentParticipants.Add(participant);

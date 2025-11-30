@@ -17,14 +17,14 @@ namespace ggzone_be.Models
 
         [Required]
         [MaxLength(500)]
-        public string MediaUrl { get; set; }
+        public required string MediaUrl { get; set; }
 
         [MaxLength(20)]
         public string? MediaType { get; set; }
 
         public int OrderIndex { get; set; } = 0;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("PostId")]

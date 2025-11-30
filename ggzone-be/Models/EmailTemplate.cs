@@ -31,9 +31,9 @@ namespace ggzone_be.Models
 
         public Guid? UpdatedBy { get; set; }
 
-        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation property
         [ForeignKey("UpdatedBy")]

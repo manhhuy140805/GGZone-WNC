@@ -20,7 +20,7 @@ namespace ggzone_be.Models
         [MaxLength(20)]
         public string Role { get; set; } = "member";
 
-        public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
+        public DateTime JoinedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("GroupId")]

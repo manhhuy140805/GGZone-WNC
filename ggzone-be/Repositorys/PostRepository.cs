@@ -65,7 +65,7 @@ namespace ggzone_be.Repositorys
 
         public async Task<Post> UpdatePostAsync(Post post)
         {
-            post.UpdatedAt = DateTime.UtcNow;
+            post.UpdatedAt = DateTime.Now;
             _context.Posts.Update(post);
             await _context.SaveChangesAsync();
             return post;

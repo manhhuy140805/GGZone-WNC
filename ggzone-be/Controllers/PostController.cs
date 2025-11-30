@@ -1,4 +1,5 @@
 using ggzone_be.Data;
+using ggzone_be.Dtos.Post;
 using ggzone_be.Helpers;
 using ggzone_be.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,59 @@ namespace ggzone_be.Controllers
         public PostController(AppDbContext context)
         {
             _context = context;
+        }
+
+        private object MapPostToDto(Post? p, Guid? currentUserId = null)
+        {
+            if (p == null)
+                throw new ArgumentNullException(nameof(p));
+
+            bool isLiked = false;
+            if (currentUserId.HasValue)
+            {
+                isLiked = _context.PostLikes.Any(pl => pl.PostId == p.Id && pl.UserId == currentUserId.Value);
+            }
+
+            return new
+            {
+                id = p.Id,
+                content = p.Content,
+                createdAt = p.CreatedAt,
+                likesCount = p.LikesCount,
+                commentsCount = p.CommentsCount,
+                author = new
+                {
+                    id = p.User!.Id,
+                    username = p.User.Username,
+                    avatarUrl = p.User.AvatarUrl
+                },
+                media = p.Media.OrderBy(m => m.OrderIndex).Select(m => new
+                {
+                    id = m.Id,
+                    mediaUrl = m.MediaUrl,
+                    mediaType = m.MediaType
+                }).ToList(),
+                groupId = p.GroupId,
+                isLiked = isLiked
+            };
+        }
+
+        // GET: api/posts/debug-user - Debug current user
+        [HttpGet("debug-user")]
+        [Authorize]
+        public IActionResult DebugUser()
+        {
+            var userId = User.FindFirst("id")?.Value;
+            var username = User.FindFirst("username")?.Value;
+            var email = User.FindFirst("email")?.Value;
+            
+            return Ok(new
+            {
+                userId,
+                username,
+                email,
+                claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList()
+            });
         }
 
         // GET: api/posts/feed - Lấy feed posts (có phân trang)
@@ -42,12 +96,16 @@ namespace ggzone_be.Controllers
                     query = query.Where(p => p.GroupId == groupParsed);
                 }
 
-                // Sort
+                // Sort - Always use Id as tiebreaker for consistent ordering
                 query = sortBy?.ToLower() switch
                 {
-                    "trending" => query.OrderByDescending(p => p.LikesCount).ThenByDescending(p => p.CreatedAt),
-                    "oldest" => query.OrderBy(p => p.CreatedAt),
-                    _ => query.OrderByDescending(p => p.CreatedAt) // latest
+                    "trending" => query.OrderByDescending(p => p.LikesCount)
+                                      .ThenByDescending(p => p.CreatedAt)
+                                      .ThenByDescending(p => p.Id),
+                    "oldest" => query.OrderBy(p => p.CreatedAt)
+                                    .ThenBy(p => p.Id),
+                    _ => query.OrderByDescending(p => p.CreatedAt)
+                              .ThenByDescending(p => p.Id) // latest - newest first
                 };
 
                 var total = await query.CountAsync();
@@ -55,29 +113,18 @@ namespace ggzone_be.Controllers
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .Include(p => p.User)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Content,
-                        p.CreatedAt,
-                        p.LikesCount,
-                        p.CommentsCount,
-                        Author = new
-                        {
-                            p.User.Id,
-                            p.User.Username,
-                            p.User.AvatarUrl
-                        },
-                        p.GroupId
-                    })
+                    .Include(p => p.Media)
                     .ToListAsync();
+
+                var currentUserId = Guid.Parse(userId);
+                var postsDto = posts.Select(p => MapPostToDto(p, currentUserId)).ToList();
 
                 return Ok(new
                 {
                     success = true,
                     data = new
                     {
-                        posts,
+                        posts = postsDto,
                         total,
                         page,
                         pageSize,
@@ -129,29 +176,17 @@ namespace ggzone_be.Controllers
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .Include(p => p.User)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Content,
-                        p.CreatedAt,
-                        p.LikesCount,
-                        p.CommentsCount,
-                        Author = new
-                        {
-                            p.User.Id,
-                            p.User.Username,
-                            p.User.AvatarUrl
-                        },
-                        p.GroupId
-                    })
+                    .Include(p => p.Media)
                     .ToListAsync();
+
+                var postsDto = posts.Select(p => MapPostToDto(p)).ToList();
 
                 return Ok(new
                 {
                     success = true,
                     data = new
                     {
-                        posts,
+                        posts = postsDto,
                         total,
                         page,
                         pageSize,
@@ -186,28 +221,17 @@ namespace ggzone_be.Controllers
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .Include(p => p.User)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Content,
-                        p.CreatedAt,
-                        p.LikesCount,
-                        p.CommentsCount,
-                        Author = new
-                        {
-                            p.User.Id,
-                            p.User.Username,
-                            p.User.AvatarUrl
-                        }
-                    })
+                    .Include(p => p.Media)
                     .ToListAsync();
+
+                var postsDto = posts.Select(p => MapPostToDto(p)).ToList();
 
                 return Ok(new
                 {
                     success = true,
                     data = new
                     {
-                        posts,
+                        posts = postsDto,
                         total,
                         page,
                         pageSize,
@@ -253,21 +277,53 @@ namespace ggzone_be.Controllers
                 if (string.IsNullOrEmpty(userId))
                     return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
+                var utcNow = DateTime.Now;
+                Console.WriteLine($"Creating post at UTC: {utcNow:O}"); // ISO 8601 format
+                
                 var post = new Post
                 {
                     Id = Guid.NewGuid(),
                     Content = dto.Content,
                     UserId = Guid.Parse(userId),
                     GroupId = dto.GroupId,
-                    CreatedAt = DateTime.UtcNow,
+                    CreatedAt = utcNow,
                     LikesCount = 0,
                     CommentsCount = 0
                 };
 
                 _context.Posts.Add(post);
                 await _context.SaveChangesAsync();
+                
+                Console.WriteLine($"Post saved with CreatedAt: {post.CreatedAt:O}");
 
-                return Ok(ApiResponse<Post>.SuccessResponse(post, "Post created successfully"));
+                // Add media if provided
+                if (dto.MediaUrls != null && dto.MediaUrls.Count > 0)
+                {
+                    var mediaList = new List<PostMedia>();
+                    for (int i = 0; i < dto.MediaUrls.Count; i++)
+                    {
+                        var media = new PostMedia
+                        {
+                            Id = Guid.NewGuid(),
+                            PostId = post.Id,
+                            MediaUrl = dto.MediaUrls[i].Url,
+                            MediaType = dto.MediaUrls[i].Type,
+                            OrderIndex = i,
+                            CreatedAt = DateTime.Now
+                        };
+                        mediaList.Add(media);
+                    }
+                    _context.PostMedia.AddRange(mediaList);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Reload post with media
+                var createdPost = await _context.Posts
+                    .Include(p => p.User)
+                    .Include(p => p.Media)
+                    .FirstOrDefaultAsync(p => p.Id == post.Id);
+
+                return Ok(ApiResponse<object>.SuccessResponse(MapPostToDto(createdPost), "Post created successfully"));
             }
             catch (Exception ex)
             {
@@ -294,7 +350,7 @@ namespace ggzone_be.Controllers
                     return Forbid();
 
                 post.Content = dto.Content;
-                post.UpdatedAt = DateTime.UtcNow;
+                post.UpdatedAt = DateTime.Now;
 
                 _context.Posts.Update(post);
                 await _context.SaveChangesAsync();
@@ -347,11 +403,18 @@ namespace ggzone_be.Controllers
                 if (string.IsNullOrEmpty(userId))
                     return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
+                var userGuid = Guid.Parse(userId);
+                
+                // Verify user exists
+                var userExists = await _context.Users.AnyAsync(u => u.Id == userGuid);
+                if (!userExists)
+                    return Unauthorized(ApiResponse.ErrorResponse("User not found"));
+
                 var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
                 if (post == null)
                     return NotFound(ApiResponse.ErrorResponse("Post not found"));
 
-                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == Guid.Parse(userId));
+                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == userGuid);
                 if (like != null)
                     return BadRequest(ApiResponse.ErrorResponse("Already liked"));
 
@@ -359,20 +422,25 @@ namespace ggzone_be.Controllers
                 {
                     Id = Guid.NewGuid(),
                     PostId = id,
-                    UserId = Guid.Parse(userId),
-                    CreatedAt = DateTime.UtcNow
+                    UserId = userGuid,
+                    CreatedAt = DateTime.Now
                 };
 
-                post.LikesCount++;
+                var oldCount = post.LikesCount;
                 _context.PostLikes.Add(newLike);
-                _context.Posts.Update(post);
                 await _context.SaveChangesAsync();
 
-                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = post.LikesCount }, "Post liked"));
+                // Reload post to get updated LikesCount from trigger
+                await _context.Entry(post).ReloadAsync();
+                var newCount = post.LikesCount;
+                
+                Console.WriteLine($"Like: Old count = {oldCount}, New count = {newCount}");
+
+                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post liked"));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+                return BadRequest(ApiResponse.ErrorResponse($"Error: {ex.Message}. Inner: {ex.InnerException?.Message}"));
             }
         }
 
@@ -387,37 +455,37 @@ namespace ggzone_be.Controllers
                 if (string.IsNullOrEmpty(userId))
                     return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
+                var userGuid = Guid.Parse(userId);
+                
+                // Verify user exists
+                var userExists = await _context.Users.AnyAsync(u => u.Id == userGuid);
+                if (!userExists)
+                    return Unauthorized(ApiResponse.ErrorResponse("User not found"));
+
                 var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
                 if (post == null)
                     return NotFound(ApiResponse.ErrorResponse("Post not found"));
 
-                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == Guid.Parse(userId));
+                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == userGuid);
                 if (like == null)
                     return BadRequest(ApiResponse.ErrorResponse("Not liked yet"));
 
-                post.LikesCount--;
+                var oldCount = post.LikesCount;
                 _context.PostLikes.Remove(like);
-                _context.Posts.Update(post);
                 await _context.SaveChangesAsync();
 
-                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = post.LikesCount }, "Post unliked"));
+                // Reload post to get updated LikesCount from trigger
+                await _context.Entry(post).ReloadAsync();
+                var newCount = post.LikesCount;
+                
+                Console.WriteLine($"Unlike: Old count = {oldCount}, New count = {newCount}");
+
+                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post unliked"));
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+                return BadRequest(ApiResponse.ErrorResponse($"Error: {ex.Message}. Inner: {ex.InnerException?.Message}"));
             }
         }
-    }
-
-    // DTOs
-    public class CreatePostDto
-    {
-        public string Content { get; set; }
-        public Guid? GroupId { get; set; }
-    }
-
-    public class UpdatePostDto
-    {
-        public string Content { get; set; }
     }
 }

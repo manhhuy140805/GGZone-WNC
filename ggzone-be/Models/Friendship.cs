@@ -18,7 +18,7 @@ namespace ggzone_be.Models
         [MaxLength(20)]
         public string Status { get; set; } = "pending";
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("UserId")]

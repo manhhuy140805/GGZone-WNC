@@ -1,128 +1,232 @@
-# 🎮 GGZone Frontend
+# GGZone Frontend
 
-GGZone là ứng dụng web về game được phát triển với **ReactJS + Vite + TailwindCSS**.  
-Đây là phần **Frontend (FE)** trong hệ thống **GGZone** gồm 2 phần:
+Gaming social network platform - Frontend application built with React, TypeScript, and Vite.
 
-- **Frontend:** ReactJS (hiển thị giao diện người dùng)
-- **Backend:** ASP.NET Core API (xử lý logic và dữ liệu)
+## 🏗️ Architecture
 
----
+This project follows a **feature-based architecture** for better organization and scalability.
 
-## 🚀 Công nghệ sử dụng
+```
+src/
+├── app/                    # Application configuration & providers
+│   ├── App.tsx            # Root component
+│   ├── main.tsx           # Entry point
+│   └── providers/         # Context providers (Auth, Cart)
+│
+├── assets/                # Static assets (images, icons)
+│
+├── components/            # Shared/reusable components
+│   ├── ui/               # Base UI components (Button, Input, Avatar, Badge)
+│   ├── shared/           # Shared business components (Cards)
+│   └── layout/           # Layout components (Header, Sidebar)
+│
+├── features/             # Feature-based modules
+│   ├── auth/            # Authentication (Login, Register)
+│   ├── feed/            # Social feed
+│   ├── profile/         # User profiles
+│   ├── marketplace/     # Game marketplace
+│   ├── groups/          # Gaming groups
+│   ├── friends/         # Friends management
+│   ├── games/           # Games browsing
+│   ├── home/            # Home page
+│   ├── trending/        # Trending content
+│   └── admin/           # Admin panel
+│
+├── lib/                  # Utilities & helpers
+│   ├── utils/           # Utility functions
+│   ├── hooks/           # Custom React hooks
+│   └── constants/       # Constants & configuration
+│
+├── services/             # API services
+│   └── api/             # API service modules
+│
+├── types/                # TypeScript type definitions
+│
+├── routes/              # Routing configuration
+│
+└── pages/               # Page components (re-exports from features)
+```
 
-| Công nghệ               | Mục đích                                   |
-| ----------------------- | ------------------------------------------ |
-| **ReactJS (Vite)**      | Framework frontend nhanh và hiện đại       |
-| **TailwindCSS**         | Thiết kế giao diện nhanh, gọn, tùy biến dễ |
-| **Axios**               | Gọi API từ backend                         |
-| **React Router DOM**    | Quản lý điều hướng giữa các trang          |
-| **Context API / Hooks** | Quản lý state toàn cục, logic tái sử dụng  |
+## 🚀 Getting Started
 
----
+### Prerequisites
 
-## 🛠️ Cài đặt & Khởi chạy dự án
+- Node.js 18+ 
+- npm or yarn
 
-### 1️⃣ Cài đặt Node.js
-
-Tải và cài [Node.js LTS](https://nodejs.org/).
-
-### 2️⃣ Clone project
+### Installation
 
 ```bash
-git clone https://github.com/your-username/ggzone-fe.git
-cd ggzone-fe
-3️⃣ Cài đặt dependencies
-bash
-Copy code
+# Install dependencies
 npm install
-4️⃣ Chạy project
-bash
-Copy code
+
+# Start development server
 npm run dev
-Truy cập tại: http://localhost:5173
 
-🧩 Cấu trúc thư mục
-csharp
-Copy code
-ggzone-fe/
-├── public/
-│   ├── favicon.ico
-│   └── index.html
-│
-├── src/
-│   ├── assets/                # Hình ảnh, icon, fonts, video
-│   │   ├── images/
-│   │   └── icons/
-│   │
-│   ├── components/            # Các component dùng chung (Button, Navbar, ...)
-│   │   ├── common/
-│   │   └── layout/
-│   │
-│   ├── pages/                 # Các trang chính (Home, Login, Register, ...)
-│   │   ├── Home/
-│   │   │   └── Home.jsx
-│   │   ├── Auth/
-│   │   │   ├── Login.jsx
-│   │   │   └── Register.jsx
-│   │   └── Game/
-│   │       └── GameList.jsx
-│   │
-│   ├── layouts/               # Khung giao diện (Header, Footer, Sidebar)
-│   │   ├── MainLayout.jsx
-│   │   └── AdminLayout.jsx
-│   │
-│   ├── hooks/                 # Custom hooks (useAuth, useFetch, useTheme)
-│   │   └── useAuth.js
-│   │
-│   ├── context/               # React Contexts (AuthContext, ThemeContext)
-│   │   └── AuthContext.jsx
-│   │
-│   ├── services/              # Gọi API (axios)
-│   │   ├── api.js
-│   │   └── gameService.js
-│   │
-│   ├── utils/                 # Hàm tiện ích (formatDate, validateEmail, ...)
-│   │   └── helpers.js
-│   │
-│   ├── routes/                # Quản lý định tuyến
-│   │   ├── AppRouter.jsx
-│   │   └── ProtectedRoute.jsx
-│   │
-│   ├── styles/                # CSS toàn cục
-│   │   └── global.css
-│   │
-│   ├── App.jsx                # Component gốc
-│   ├── main.jsx               # Điểm khởi động React
-│   └── index.css              # Import Tailwind
-│
-├── .gitignore
-├── package.json
-├── tailwind.config.js
-├── postcss.config.js
-└── vite.config.js
-📦 Scripts hữu ích
-Lệnh	Mô tả
-npm run dev	Chạy môi trường phát triển
-npm run build	Build dự án cho production
-npm run preview	Xem bản build trước khi deploy
-npm install	Cài đặt tất cả dependencies
+# Build for production
+npm run build
 
-🌈 Hướng phát triển tiếp theo
- Kết nối với Backend ASP.NET Core API
-
- Thêm trang Trang chủ (Home) hiển thị danh sách game
-
- Tích hợp đăng nhập / đăng ký người dùng
-
- Giao diện Admin quản lý game
-
- Thêm dark mode với Tailwind theme
-
-🧑‍💻 Tác giả
-GGZone Team
-📍 Đại học — Khoa CNTT
-🌐 Dự án môn học: Web nâng cao (WNC)
-🕹️ Frontend: ReactJS — Backend: ASP.NET Core
-
-© 2025 GGZone. All rights reserved.
+# Preview production build
+npm run preview
 ```
+
+## 📝 Import Conventions
+
+This project uses path aliases for cleaner imports:
+
+```typescript
+// ✅ Good - Using path aliases
+import { Button } from '@/components/ui';
+import { userService } from '@/services';
+import { formatTime } from '@/lib/utils';
+import { Feed } from '@/features/feed';
+
+// ❌ Avoid - Relative paths
+import { Button } from '../../../components/ui/Button';
+import { userService } from '../../../services/api/userService';
+```
+
+### Available Path Aliases
+
+- `@/app/*` → Application core
+- `@/components/*` → Shared components
+- `@/features/*` → Feature modules
+- `@/lib/*` → Utilities & helpers
+- `@/services/*` → API services
+- `@/types/*` → Type definitions
+- `@/pages/*` → Page components
+
+## 🎨 Tech Stack
+
+- **Framework**: React 18
+- **Language**: TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **Routing**: React Router v6
+- **Icons**: Lucide React
+- **HTTP Client**: Fetch API (custom wrapper)
+
+## 📦 Project Structure Details
+
+### Features
+
+Each feature is a self-contained module with:
+- Page components
+- Feature-specific components
+- Business logic
+- Optional services
+
+Example feature structure:
+```
+features/feed/
+├── Feed.tsx              # Main page component
+├── components/           # Feature-specific components
+│   ├── PostCard.tsx
+│   ├── CreatePostModal.tsx
+│   └── index.ts
+└── index.ts             # Feature exports
+```
+
+### Components
+
+- **ui/**: Presentational components without business logic
+- **shared/**: Reusable components with business logic
+- **layout/**: App layout components (Header, Sidebar)
+
+### Services
+
+All API calls are centralized in `services/api/`:
+- `authService.ts` - Authentication
+- `userService.ts` - User management
+- `postService.ts` - Posts & feed
+- `gameService.ts` - Games
+- etc.
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+VITE_API_BASE_URL=http://localhost:7009
+```
+
+### TypeScript
+
+Path aliases are configured in `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/app/*": ["src/app/*"],
+      // ... other aliases
+    }
+  }
+}
+```
+
+### Vite
+
+Aliases are also configured in `vite.config.js` for build:
+
+```javascript
+export default defineConfig({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      // ... other aliases
+    },
+  },
+});
+```
+
+## 📚 Documentation
+
+- `ARCHITECTURE.md` - Detailed architecture documentation
+- `REFACTOR_COMPLETE.md` - Refactoring summary and completion notes
+
+## 🧪 Development Guidelines
+
+### Adding a New Feature
+
+1. Create feature folder in `src/features/`
+2. Add page component and feature-specific components
+3. Create `index.ts` to export public API
+4. Add route in `src/routes/index.tsx`
+5. Export from `src/pages/index.ts` if needed
+
+### Creating Components
+
+- **UI Components**: Add to `src/components/ui/`
+- **Shared Components**: Add to `src/components/shared/`
+- **Feature Components**: Add to `src/features/[feature]/components/`
+
+### API Services
+
+- Add new services to `src/services/api/`
+- Export from `src/services/api/index.ts`
+- Use the `HttpClient` wrapper for consistency
+
+## 🔗 Backend Integration
+
+This frontend connects to the GGZone backend API:
+- Base URL: `http://localhost:7009` (development)
+- Authentication: JWT Bearer tokens
+- API documentation: See backend `ggzone-be/README.md`
+
+## 📄 License
+
+[Your License Here]
+
+## 👥 Team
+
+[Your Team Information]
+
+---
+
+**Last Updated**: November 30, 2025
+**Status**: ✅ Production Ready

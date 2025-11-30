@@ -34,7 +34,7 @@ namespace ggzone_be.Helpers
                 issuer: _configuration["JwtSettings:Issuer"] ?? "GGZone",
                 audience: _configuration["JwtSettings:Audience"] ?? "GGZone-Users",
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(
+                expires: DateTime.Now.AddMinutes(
                     int.Parse(_configuration["JwtSettings:ExpirationMinutes"] ?? "60")),
                 signingCredentials: credentials
             );

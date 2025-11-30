@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings, User, Lock, Heart } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import { useCart } from "../../context/CartContext";
+import { useAuth } from "@/app/providers/AuthContext";
+import { useCart } from "@/app/providers/CartContext";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {

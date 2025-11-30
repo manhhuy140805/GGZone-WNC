@@ -52,7 +52,7 @@ namespace ggzone_be.Controllers
         public async Task<IActionResult> GetTrendingGames([FromQuery] int limit = 10)
         {
             var trendingGames = await _context.TrendingItems
-                .Where(t => t.ContentType == "game" && t.TrendingDate >= DateTime.UtcNow.AddDays(-7))
+                .Where(t => t.ContentType == "game" && t.TrendingDate >= DateTime.Now.AddDays(-7))
                 .OrderByDescending(t => t.EngagementScore)
                 .Take(limit)
                 .Select(t => t.GameId)

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { EditProfileModal } from '../components/profile/EditProfileModal';
-import { ChangePasswordModal } from '../components/profile/ChangePasswordModal';
-import { User } from '../types';
+import { useAuth } from '@/app/providers/AuthContext';
+import { EditProfileModal } from '@/features/profile/components/';
+import { ChangePasswordModal } from '@/features/profile/components/';
+import { User } from "@/types";
 
 export const Settings: React.FC = () => {
   const { user, setUser } = useAuth();

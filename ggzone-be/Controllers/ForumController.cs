@@ -152,7 +152,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<ForumTopic>> CreateTopic([FromBody] ForumTopic topic)
         {
             topic.Id = Guid.NewGuid();
-            topic.CreatedAt = DateTime.UtcNow;
+            topic.CreatedAt = DateTime.Now;
             topic.ViewsCount = 0;
             topic.RepliesCount = 0;
 
@@ -219,13 +219,13 @@ namespace ggzone_be.Controllers
 
             reply.Id = Guid.NewGuid();
             reply.TopicId = id;
-            reply.CreatedAt = DateTime.UtcNow;
+            reply.CreatedAt = DateTime.Now;
 
             _context.ForumReplies.Add(reply);
 
             // Update topic
             topic.RepliesCount++;
-            topic.LastReplyAt = DateTime.UtcNow;
+            topic.LastReplyAt = DateTime.Now;
 
             // Update category
             var category = await _context.ForumCategories.FindAsync(topic.CategoryId);
@@ -249,7 +249,7 @@ namespace ggzone_be.Controllers
                 return NotFound();
 
             reply.Content = updatedReply.Content;
-            reply.UpdatedAt = DateTime.UtcNow;
+            reply.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

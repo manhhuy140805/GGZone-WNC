@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { uploadService } from '../services/uploadService';
+import { uploadService } from '@/services/api/uploadService';
 
 export const CloudinaryTest: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);

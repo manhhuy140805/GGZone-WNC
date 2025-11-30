@@ -98,7 +98,7 @@ namespace ggzone_be.Controllers
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 TotalAmount = request.TotalAmount,
                 Status = "pending"
             };

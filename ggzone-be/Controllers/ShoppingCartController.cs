@@ -84,7 +84,7 @@ namespace ggzone_be.Controllers
 
             // Add new item
             cartItem.Id = Guid.NewGuid();
-            cartItem.AddedAt = DateTime.UtcNow;
+            cartItem.AddedAt = DateTime.Now;
 
             _context.ShoppingCarts.Add(cartItem);
             await _context.SaveChangesAsync();

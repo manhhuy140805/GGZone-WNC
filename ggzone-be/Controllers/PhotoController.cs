@@ -82,7 +82,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Photo>> UploadPhoto([FromBody] Photo photo)
         {
             photo.Id = Guid.NewGuid();
-            photo.CreatedAt = DateTime.UtcNow;
+            photo.CreatedAt = DateTime.Now;
 
             _context.Photos.Add(photo);
             await _context.SaveChangesAsync();

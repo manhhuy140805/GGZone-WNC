@@ -22,7 +22,7 @@ namespace ggzone_be.Models
         [MaxLength(500)]
         public string? IconUrl { get; set; }
 
-        public DateTime AwardedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AwardedAt { get; set; } = DateTime.Now;
 
         // Navigation property
         [ForeignKey("UserId")]

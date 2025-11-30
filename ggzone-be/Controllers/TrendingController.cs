@@ -21,7 +21,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetTrendingGames([FromQuery] int limit = 10)
         {
             var trendingGames = await _context.TrendingItems
-                .Where(t => t.ContentType == "game" && t.TrendingDate >= DateTime.UtcNow.Date.AddDays(-7))
+                .Where(t => t.ContentType == "game" && t.TrendingDate >= DateTime.Now.Date.AddDays(-7))
                 .OrderByDescending(t => t.EngagementScore)
                 .Take(limit)
                 .Select(t => new
@@ -54,7 +54,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetTrendingPlayers([FromQuery] int limit = 10)
         {
             var trendingPlayers = await _context.TrendingPlayers
-                .Where(tp => tp.TrendingDate >= DateTime.UtcNow.Date.AddDays(-7))
+                .Where(tp => tp.TrendingDate >= DateTime.Now.Date.AddDays(-7))
                 .OrderByDescending(tp => tp.Score)
                 .Take(limit)
                 .Include(tp => tp.User)
@@ -89,7 +89,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetTrendingVideos([FromQuery] int limit = 10)
         {
             var trendingVideos = await _context.TrendingItems
-                .Where(t => t.ContentType == "video" && t.TrendingDate >= DateTime.UtcNow.Date.AddDays(-7))
+                .Where(t => t.ContentType == "video" && t.TrendingDate >= DateTime.Now.Date.AddDays(-7))
                 .OrderByDescending(t => t.EngagementScore)
                 .Take(limit)
                 .Select(t => new
@@ -126,7 +126,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetTrendingPosts([FromQuery] int limit = 10)
         {
             var trendingPosts = await _context.TrendingItems
-                .Where(t => t.ContentType == "post" && t.TrendingDate >= DateTime.UtcNow.Date.AddDays(-7))
+                .Where(t => t.ContentType == "post" && t.TrendingDate >= DateTime.Now.Date.AddDays(-7))
                 .OrderByDescending(t => t.EngagementScore)
                 .Take(limit)
                 .Select(t => new

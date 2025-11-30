@@ -21,13 +21,13 @@ namespace ggzone_be.Models
         [Required]
         public string Reason { get; set; } = string.Empty;
 
-        public DateTime StartDate { get; set; } = DateTime.UtcNow;
+        public DateTime StartDate { get; set; } = DateTime.Now;
 
         public DateTime? EndDate { get; set; }
 
         public bool IsActive { get; set; } = true;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("UserId")]
