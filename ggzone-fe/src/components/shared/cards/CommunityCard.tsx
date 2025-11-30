@@ -5,14 +5,32 @@ import type { Group } from "@/types";
 interface CommunityCardProps {
   group: Group;
   onJoin?: () => void;
+  onClick?: () => void;
 }
 
 export const CommunityCard: React.FC<CommunityCardProps> = ({
   group,
   onJoin,
+  onClick,
 }) => {
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  const handleJoinClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click when clicking Join button
+    if (onJoin) {
+      onJoin();
+    }
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300 group cursor-pointer">
+    <div 
+      onClick={handleCardClick}
+      className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300 hover:shadow-lg transition-all duration-300 group cursor-pointer"
+    >
       <div className="flex items-stretch h-40">
         {/* Image Section */}
         <div className="w-38 flex-shrink-0 overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 relative">
@@ -53,7 +71,7 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({
             </div>
             
             <button
-              onClick={onJoin}
+              onClick={handleJoinClick}
               className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-all active:scale-95 flex items-center gap-2 shadow-sm hover:shadow-md"
             >
               <Heart size={14} />
