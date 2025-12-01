@@ -10,8 +10,8 @@ export { Profile } from '@/features/profile';
 // Friends
 export { Friends } from '@/features/friends';
 
-// Marketplace
-export { Marketplace, ProductDetail, Cart } from '@/features/marketplace';
+// Store
+export { ProductDetail, Cart, MyOrders } from '@/features/store';
 
 // Groups
 export { Groups, GroupDetail } from '@/features/groups';

@@ -328,6 +328,15 @@ D:\BTNHOMLTWNC125\ggzone-be\obj\Debug\net8.0\refint\ggzone-be.dll
 D:\BTNHOMLTWNC125\ggzone-be\obj\Debug\net8.0\ggzone-be.pdb
 D:\BTNHOMLTWNC125\ggzone-be\obj\Debug\net8.0\ggzone-be.genruntimeconfig.cache
 D:\BTNHOMLTWNC125\ggzone-be\obj\Debug\net8.0\ref\ggzone-be.dll
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.AssemblyReference.cache
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\rpswa.dswa.cache.json
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.GeneratedMSBuildEditorConfig.editorconfig
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.AssemblyInfoInputs.cache
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.AssemblyInfo.cs
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.CoreCompileInputs.cache
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.MvcApplicationPartsAssemblyInfo.cs
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.MvcApplicationPartsAssemblyInfo.cache
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.sourcelink.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\appsettings.Development.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\appsettings.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\ggzone-be.staticwebassets.endpoints.json
@@ -339,6 +348,7 @@ D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\ggz
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Azure.Core.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Azure.Identity.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\CloudinaryDotNet.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
@@ -363,6 +373,7 @@ D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Mic
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -387,15 +398,6 @@ D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\run
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.AssemblyReference.cache
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\rpswa.dswa.cache.json
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.GeneratedMSBuildEditorConfig.editorconfig
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.AssemblyInfoInputs.cache
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.AssemblyInfo.cs
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.csproj.CoreCompileInputs.cache
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.MvcApplicationPartsAssemblyInfo.cs
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.MvcApplicationPartsAssemblyInfo.cache
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.sourcelink.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\rjimswa.dswa.cache.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
@@ -410,6 +412,4 @@ D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ref
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.pdb
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ggzone-be.genruntimeconfig.cache
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\ref\ggzone-be.dll
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\CloudinaryDotNet.dll
-D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\bin\Debug\net8.0\Newtonsoft.Json.dll
 D:\1.University\1.HK125\5.2.WNC\GGZone\GGZone-WNC\ggzone-be\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

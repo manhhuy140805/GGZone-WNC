@@ -47,6 +47,27 @@ class GroupService {
     }
   }
 
+  // Lấy groups mà user đã tham gia
+  async getUserGroups(userId: string): Promise<GroupsResponse> {
+    try {
+      const response = await HttpClient.get<any>(
+        `/api/groups/my-groups/${userId}`,
+        false
+      );
+      const groups = response.data || response;
+      return {
+        success: true,
+        data: Array.isArray(groups) ? groups : groups.data || [],
+      };
+    } catch (error) {
+      const apiError = error as ApiError;
+      return {
+        success: false,
+        message: apiError.message || 'Lỗi khi lấy groups của user',
+      };
+    }
+  }
+
   // Lấy group theo ID
   async getGroupById(id: string): Promise<GroupResponse> {
     try {

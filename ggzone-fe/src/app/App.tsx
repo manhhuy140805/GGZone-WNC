@@ -21,7 +21,7 @@ function AppContent() {
       BROWSE: "/browse",
       FEED: "/feed",
       GROUPS: "/groups",
-      MARKETPLACE: "/marketplace",
+      MARKETPLACE: "/store",
       PROFILE: "/profile",
       FRIENDS: "/friends",
       MESSAGES: "/messages",
@@ -44,7 +44,7 @@ function AppContent() {
     if (path.startsWith("/browse")) return "BROWSE";
     if (path.startsWith("/feed")) return "FEED";
     if (path.startsWith("/groups")) return "GROUPS";
-    if (path.startsWith("/marketplace")) return "MARKETPLACE";
+    if (path.startsWith("/store")) return "MARKETPLACE";
     if (path.startsWith("/profile")) return "PROFILE";
     if (path.startsWith("/friends")) return "FRIENDS";
     if (path.startsWith("/messages")) return "MESSAGES";

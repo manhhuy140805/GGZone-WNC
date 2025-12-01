@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/app/providers/AuthContext";
 import { userService } from "@/services/api/userService";
 import { postService } from "@/services/api/postService";
@@ -28,6 +29,7 @@ export interface GameStats extends Game {
 
 export const Profile: React.FC = () => {
   const { user, setUser } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<ProfileTab>("posts");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(user || null);
@@ -36,6 +38,7 @@ export const Profile: React.FC = () => {
   const [userFriends, setUserFriends] = useState<User[]>([]);
   const [userGroups, setUserGroups] = useState<Group[]>([]);
   const [userBadges, setUserBadges] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // Load user data from API on mount
   useEffect(() => {
@@ -49,17 +52,18 @@ export const Profile: React.FC = () => {
       }
     };
 
-    if (user) {
+    if (user && !currentUser) {
       loadUserData();
     }
-  }, [user, setUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load posts data when activeTab is "posts"
   useEffect(() => {
-    if (activeTab === "posts") {
+    if (activeTab === "posts" && currentUser?.id) {
       loadUserPosts();
     }
-  }, [activeTab]);
+  }, [activeTab, currentUser?.id]);
 
   // Load games data when activeTab is "stats"
   useEffect(() => {
@@ -75,30 +79,58 @@ export const Profile: React.FC = () => {
     }
   }, [activeTab, currentUser?.id]);
 
+  // Load groups data when activeTab is "groups"
+  useEffect(() => {
+    if (activeTab === "groups" && currentUser?.id) {
+      loadUserGroupsData();
+    }
+  }, [activeTab, currentUser?.id]);
+
   const loadUserPosts = async () => {
     try {
-      const response = await postService.getUserFeed(1, 20);
+      if (!currentUser?.id) return;
+      
+      setLoading(true);
+      // Lấy posts của user hiện tại
+      const response = await postService.filterPosts(1, 20, undefined, currentUser.id);
       if (response.success && response.data) {
-        setUserPosts(response.data);
+        setUserPosts(response.data.posts as any || []);
       }
     } catch (error) {
       console.error("Error loading posts:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const loadGames = async () => {
     try {
-      const response = await gameService.getAllGames();
+      // Lấy danh sách games phổ biến
+      const response = await gameService.getFeaturedGames(6);
       if (response.success && response.data) {
         // Add stable hours played data to each game
         const gamesWithStats: GameStats[] = response.data.map((game) => ({
           ...game,
-          hoursPlayed: Math.floor(Math.random() * 50) + 10,
+          hoursPlayed: Math.floor(Math.random() * 100) + 20,
         }));
         setGames(gamesWithStats);
       }
     } catch (error) {
       console.error("Error loading games:", error);
+    }
+  };
+
+  const loadUserGroupsData = async () => {
+    try {
+      if (!currentUser?.id) return;
+
+      // Load groups - chỉ lấy groups mà user đã tham gia
+      const groupsResponse = await groupService.getUserGroups(currentUser.id);
+      if (groupsResponse.success && groupsResponse.data) {
+        setUserGroups(groupsResponse.data);
+      }
+    } catch (error) {
+      console.error("Error loading user groups:", error);
     }
   };
 
@@ -120,8 +152,8 @@ export const Profile: React.FC = () => {
         }
       }
 
-      // Load groups
-      const groupsResponse = await groupService.getAllGroups();
+      // Load groups - chỉ lấy groups mà user đã tham gia
+      const groupsResponse = await groupService.getUserGroups(currentUser.id);
       if (groupsResponse.success && groupsResponse.data) {
         setUserGroups(groupsResponse.data);
       }
@@ -198,7 +230,12 @@ export const Profile: React.FC = () => {
 
       {activeTab === "teams" && <TeamsTab />}
 
-      {activeTab === "groups" && <GroupsTab userGroups={userGroups} />}
+      {activeTab === "groups" && (
+        <GroupsTab 
+          userGroups={userGroups} 
+          onViewGroup={(groupId) => navigate(`/groups/${groupId}`)}
+        />
+      )}
 
       {activeTab === "forums" && (
         <ForumsTab user={currentUser} userPosts={userPosts} comments={comments} />

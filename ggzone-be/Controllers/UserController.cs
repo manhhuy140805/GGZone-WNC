@@ -1,4 +1,4 @@
-﻿using ggzone_be.Dtos.User;
+using ggzone_be.Dtos.User;
 using ggzone_be.Helpers;
 using ggzone_be.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +18,7 @@ namespace ggzone_be.Controllers
             _userService = userService;
         }
 
-        // GET: api/user/me - Lấy thông tin user hiện tại
+        // GET: api/user/me - L?y th�ng tin user hi?n t?i
         [HttpGet("me")]
         [Authorize]
         public async Task<IActionResult> GetCurrentUser()
@@ -55,7 +55,6 @@ namespace ggzone_be.Controllers
                         PostsCount = user.UserStats.PostsCount,
                         PhotosCount = user.UserStats.PhotosCount,
                         VideosCount = user.UserStats.VideosCount,
-                        ForumsCount = user.UserStats.ForumsCount,
                         GroupsCount = user.UserStats.GroupsCount,
                         TotalPoints = user.UserStats.TotalPoints,
                         Level = user.UserStats.Level
@@ -70,7 +69,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // GET: api/user/{id} - Lấy thông tin user theo ID
+        // GET: api/user/{id} - L?y th�ng tin user theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(Guid id)
         {
@@ -102,7 +101,6 @@ namespace ggzone_be.Controllers
                         PostsCount = user.UserStats.PostsCount,
                         PhotosCount = user.UserStats.PhotosCount,
                         VideosCount = user.UserStats.VideosCount,
-                        ForumsCount = user.UserStats.ForumsCount,
                         GroupsCount = user.UserStats.GroupsCount,
                         TotalPoints = user.UserStats.TotalPoints,
                         Level = user.UserStats.Level
@@ -117,7 +115,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // GET: api/user/username/{username} - Lấy thông tin user theo username
+        // GET: api/user/username/{username} - L?y th�ng tin user theo username
         [HttpGet("username/{username}")]
         public async Task<IActionResult> GetUserByUsername(string username)
         {
@@ -149,7 +147,6 @@ namespace ggzone_be.Controllers
                         PostsCount = user.UserStats.PostsCount,
                         PhotosCount = user.UserStats.PhotosCount,
                         VideosCount = user.UserStats.VideosCount,
-                        ForumsCount = user.UserStats.ForumsCount,
                         GroupsCount = user.UserStats.GroupsCount,
                         TotalPoints = user.UserStats.TotalPoints,
                         Level = user.UserStats.Level
@@ -164,7 +161,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // GET: api/user - Lấy danh sách users (có phân trang)
+        // GET: api/user - L?y danh s�ch users (c� ph�n trang)
         [HttpGet]
         public async Task<IActionResult> GetAllUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
@@ -193,7 +190,6 @@ namespace ggzone_be.Controllers
                         PostsCount = user.UserStats.PostsCount,
                         PhotosCount = user.UserStats.PhotosCount,
                         VideosCount = user.UserStats.VideosCount,
-                        ForumsCount = user.UserStats.ForumsCount,
                         GroupsCount = user.UserStats.GroupsCount,
                         TotalPoints = user.UserStats.TotalPoints,
                         Level = user.UserStats.Level
@@ -208,7 +204,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // GET: api/user/search?q=keyword - Tìm kiếm users
+        // GET: api/user/search?q=keyword - T�m ki?m users
         [HttpGet("search")]
         public async Task<IActionResult> SearchUsers([FromQuery] string q, [FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
@@ -242,7 +238,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // PUT: api/user/profile - Cập nhật profile
+        // PUT: api/user/profile - C?p nh?t profile
         [HttpPut("profile")]
         [Authorize]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
@@ -285,7 +281,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // PUT: api/user/password - Đổi mật khẩu
+        // PUT: api/user/password - �?i m?t kh?u
         [HttpPut("password")]
         [Authorize]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
@@ -305,7 +301,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // PUT: api/user/status - Cập nhật trạng thái online/offline
+        // PUT: api/user/status - C?p nh?t tr?ng th�i online/offline
         [HttpPut("status")]
         [Authorize]
         public async Task<IActionResult> UpdateStatus([FromBody] UpdateStatusDto dto)
@@ -325,7 +321,7 @@ namespace ggzone_be.Controllers
             }
         }
 
-        // DELETE: api/user - Xóa tài khoản
+        // DELETE: api/user - X�a t�i kho?n
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeleteAccount()
@@ -349,3 +345,4 @@ namespace ggzone_be.Controllers
         }
     }
 }
+

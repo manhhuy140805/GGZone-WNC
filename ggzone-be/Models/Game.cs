@@ -64,7 +64,6 @@ namespace ggzone_be.Models
 
         // Navigation Properties
         public virtual ICollection<Photo> Photos { get; set; } = new List<Photo>();
-        public virtual ICollection<MarketplaceItem> MarketplaceItems { get; set; } = new List<MarketplaceItem>();
         public virtual ICollection<StoreProduct> StoreProducts { get; set; } = new List<StoreProduct>();
         public virtual ICollection<Tournament> Tournaments { get; set; } = new List<Tournament>();
         public virtual ICollection<TrendingItem> TrendingItems { get; set; } = new List<TrendingItem>();
@@ -72,7 +71,6 @@ namespace ggzone_be.Models
         public virtual ICollection<GameLaunchLog> GameLaunchLogs { get; set; } = new List<GameLaunchLog>();
         public virtual ICollection<GameReview> GameReviews { get; set; } = new List<GameReview>();
         public virtual ICollection<Video> Videos { get; set; } = new List<Video>();
-        public virtual ICollection<ForumCategory> ForumCategories { get; set; } = new List<ForumCategory>();
         public virtual ICollection<TrendingPlayer> TrendingPlayers { get; set; } = new List<TrendingPlayer>();
     }
 }

@@ -25,7 +25,6 @@ namespace ggzone_be.Dtos.User
         public int PostsCount { get; set; }
         public int PhotosCount { get; set; }
         public int VideosCount { get; set; }
-        public int ForumsCount { get; set; }
         public int GroupsCount { get; set; }
         public int TotalPoints { get; set; }
         public int Level { get; set; }

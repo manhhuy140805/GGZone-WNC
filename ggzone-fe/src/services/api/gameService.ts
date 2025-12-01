@@ -34,16 +34,32 @@ export interface PaginatedGamesResponse {
 
 class GameService {
   // Lấy tất cả games
-  async getAllGames(): Promise<GamesResponse> {
+  async getAllGames(page?: number, pageSize?: number): Promise<GamesResponse> {
     try {
-      const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.GAMES.BASE,
-        false
-      );
-      const games = response.data || response;
+      let url: string;
+      
+      // Nếu có page và pageSize, sử dụng endpoint filter
+      if (page && pageSize) {
+        url = API_CONFIG.ENDPOINTS.GAMES.FILTER(undefined, undefined, page, pageSize);
+      } else {
+        url = API_CONFIG.ENDPOINTS.GAMES.BASE;
+      }
+      
+      const response = await HttpClient.get<any>(url, false);
+      const data = response.data || response;
+      
+      // Nếu có phân trang, trả về games từ data.games
+      if (data.games) {
+        return {
+          success: true,
+          data: Array.isArray(data.games) ? data.games : [],
+        };
+      }
+      
+      // Nếu không có phân trang, trả về toàn bộ data
       return {
         success: true,
-        data: Array.isArray(games) ? games : games.data || [],
+        data: Array.isArray(data) ? data : [],
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -52,6 +68,11 @@ class GameService {
         message: apiError.message || 'Lỗi khi lấy danh sách games',
       };
     }
+  }
+
+  // Lấy số lượng games giới hạn (dùng cho featured games)
+  async getFeaturedGames(limit: number = 3): Promise<GamesResponse> {
+    return this.getAllGames(1, limit);
   }
 
   // Lấy game theo ID
@@ -95,28 +116,7 @@ class GameService {
       };
     }
   }
-
-  // Lấy trending games
-  async getTrendingGames(limit: number = 10): Promise<TrendingGamesResponse> {
-    try {
-      const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.GAMES.TRENDING(limit),
-        false
-      );
-      const games = response.data || response;
-      return {
-        success: true,
-        data: Array.isArray(games) ? games : games.data || [],
-      };
-    } catch (error) {
-      const apiError = error as ApiError;
-      return {
-        success: false,
-        message: apiError.message || 'Lỗi khi lấy trending games',
-      };
-    }
-  }
-
+  
   // Lấy games với phân trang
   async getGamesPaginated(
     page: number = 1,

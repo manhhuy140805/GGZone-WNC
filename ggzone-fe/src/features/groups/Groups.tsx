@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CommunityCard } from "@/components/shared/cards";
+import { groupService } from "@/services/api/groupService";
+import { uploadService } from "@/services/api/uploadService";
+import { useAuth } from "@/app/providers/AuthContext";
 import {
   Search,
   Plus,
@@ -7,6 +10,7 @@ import {
   TrendingUp,
   ChevronRight,
   Filter,
+  Loader,
 } from "lucide-react";
 
 interface Group {
@@ -26,17 +30,72 @@ interface GroupsProps {
 }
 
 export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
+  const [groups, setGroups] = useState<Group[]>([]);
   const [joinedGroups, setJoinedGroups] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"members" | "newest" | "trending">(
     "members"
   );
   const [filterType, setFilterType] = useState<"all" | "joined" | "recommended">(
     "all"
   );
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newGroupData, setNewGroupData] = useState({
+    name: "",
+    description: "",
+    visibility: "public",
+    coverImageUrl: "",
+    iconUrl: "",
+  });
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [uploadingIcon, setUploadingIcon] = useState(false);
 
-  // TODO: Fetch data from API
-  const groups: Group[] = [];
+  // Load groups from API
+  useEffect(() => {
+    loadGroups();
+    if (user?.id) {
+      loadUserGroups();
+    }
+  }, [user?.id]);
+
+  const loadGroups = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await groupService.getAllGroups();
+      
+      if (response.success && response.data) {
+        setGroups(response.data);
+      } else {
+        setError(response.message || 'Không thể tải danh sách groups');
+      }
+    } catch (err) {
+      setError('Lỗi khi tải dữ liệu');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUserGroups = async () => {
+    if (!user?.id) return;
+    
+    try {
+      const response = await groupService.getUserGroups(user.id);
+      
+      if (response.success && response.data) {
+        // Lưu IDs của groups mà user đã join
+        const joinedGroupIds = response.data.map(g => g.id);
+        setJoinedGroups(joinedGroupIds);
+      }
+    } catch (err) {
+      console.error('Error loading user groups:', err);
+    }
+  };
 
   const filteredGroups = groups.filter((group) => {
     const matchesSearch =
@@ -64,11 +123,112 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
     return 0;
   });
 
-  const handleJoinGroup = (groupId: string) => {
-    if (joinedGroups.includes(groupId)) {
-      setJoinedGroups(joinedGroups.filter((id) => id !== groupId));
-    } else {
-      setJoinedGroups([...joinedGroups, groupId]);
+  const handleJoinGroup = async (groupId: string) => {
+    if (!user) {
+      alert('Vui lòng đăng nhập để tham gia group');
+      return;
+    }
+
+    try {
+      if (joinedGroups.includes(groupId)) {
+        // Leave group
+        const response = await groupService.leaveGroup(groupId);
+        if (response.success) {
+          setJoinedGroups(joinedGroups.filter((id) => id !== groupId));
+          // Update members count
+          setGroups(groups.map(g => 
+            g.id === groupId ? { ...g, membersCount: g.membersCount - 1 } : g
+          ));
+          // Reload user groups
+          await loadUserGroups();
+        } else {
+          alert(response.message || 'Không thể rời khỏi group');
+        }
+      } else {
+        // Join group
+        const response = await groupService.joinGroup(groupId);
+        if (response.success) {
+          setJoinedGroups([...joinedGroups, groupId]);
+          // Update members count
+          setGroups(groups.map(g => 
+            g.id === groupId ? { ...g, membersCount: g.membersCount + 1 } : g
+          ));
+          // Reload user groups
+          await loadUserGroups();
+        } else {
+          alert(response.message || 'Không thể tham gia group');
+        }
+      }
+    } catch (err) {
+      console.error('Error joining/leaving group:', err);
+      alert('Có lỗi xảy ra');
+    }
+  };
+
+  const handleUploadCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingCover(true);
+    try {
+      const response = await uploadService.uploadImage(file, 'ggzone/groups');
+      if (response.success && response.data?.url) {
+        setNewGroupData({ ...newGroupData, coverImageUrl: response.data.url });
+      } else {
+        alert(response.message || 'Upload failed');
+      }
+    } catch (err) {
+      alert('Error uploading image');
+    } finally {
+      setUploadingCover(false);
+    }
+  };
+
+  const handleUploadIcon = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingIcon(true);
+    try {
+      const response = await uploadService.uploadImage(file, 'ggzone/groups/icons');
+      if (response.success && response.data?.url) {
+        setNewGroupData({ ...newGroupData, iconUrl: response.data.url });
+      } else {
+        alert(response.message || 'Upload failed');
+      }
+    } catch (err) {
+      alert('Error uploading image');
+    } finally {
+      setUploadingIcon(false);
+    }
+  };
+
+  const handleCreateGroup = async () => {
+    if (!user) {
+      return;
+    }
+
+    if (!newGroupData.name.trim()) {
+      return;
+    }
+
+    try {
+      const response = await groupService.createGroup(
+        newGroupData.name,
+        newGroupData.description,
+        newGroupData.coverImageUrl || undefined,
+        newGroupData.iconUrl || undefined,
+        newGroupData.visibility
+      );
+
+      if (response.success) {
+        setIsCreateModalOpen(false);
+        setNewGroupData({ name: "", description: "", visibility: "public", coverImageUrl: "", iconUrl: "" });
+        await loadGroups();
+        if (user?.id) await loadUserGroups();
+      }
+    } catch (err) {
+      console.error('Error creating group:', err);
     }
   };
 
@@ -103,7 +263,10 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
             Join communities and play with friends
           </p>
         </div>
-        <button className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg whitespace-nowrap">
+        <button 
+          onClick={() => setIsCreateModalOpen(true)}
+          className="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold rounded-lg transition-all duration-200 flex items-center gap-2 shadow-md hover:shadow-lg whitespace-nowrap"
+        >
           <Plus size={20} />
           Create Group
         </button>
@@ -125,6 +288,8 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
                 key={group.id}
                 group={group}
                 onJoin={() => handleJoinGroup(group.id)}
+                onClick={() => onViewGroup?.(group.id)}
+                isJoined={true}
               />
             ))}
           </div>
@@ -151,6 +316,8 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
               key={group.id}
               group={group}
               onJoin={() => handleJoinGroup(group.id)}
+              onClick={() => onViewGroup?.(group.id)}
+              isJoined={joinedGroups.includes(group.id)}
             />
           ))}
         </div>
@@ -232,29 +399,52 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="flex justify-center items-center py-16">
+          <Loader className="animate-spin text-orange-600" size={40} />
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && !loading && (
+        <div className="text-center py-12 bg-red-50 rounded-lg">
+          <p className="text-red-500 font-medium">{error}</p>
+          <button
+            onClick={loadGroups}
+            className="mt-4 px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg transition-colors"
+          >
+            Thử lại
+          </button>
+        </div>
+      )}
+
       {/* Groups Grid */}
-      {sortedGroups.length > 0 ? (
+      {!loading && !error && sortedGroups.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {sortedGroups.map((group) => (
-            <div key={group.id} onClick={() => onViewGroup?.(group.id)} className="cursor-pointer">
-              <CommunityCard
-                group={group}
-                onJoin={() => handleJoinGroup(group.id)}
-              />
-            </div>
+            <CommunityCard
+              key={group.id}
+              group={group}
+              onJoin={() => handleJoinGroup(group.id)}
+              onClick={() => onViewGroup?.(group.id)}
+              isJoined={joinedGroups.includes(group.id)}
+            />
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">👥</div>
-          <p className="text-gray-600 text-lg font-medium mb-2">
-            No groups found
-          </p>
-          <p className="text-gray-500">
-            Try adjusting your search or filters to find communities you're
-            interested in
-          </p>
-        </div>
+        !loading && !error && (
+          <div className="text-center py-16">
+            <div className="text-6xl mb-4">👥</div>
+            <p className="text-gray-600 text-lg font-medium mb-2">
+              No groups found
+            </p>
+            <p className="text-gray-500">
+              Try adjusting your search or filters to find communities you're
+              interested in
+            </p>
+          </div>
+        )
       )}
 
       {/* Newsletter CTA */}
@@ -280,6 +470,105 @@ export const Groups: React.FC<GroupsProps> = ({ onViewGroup }) => {
           </div>
         </div>
       </section>
+
+      {/* Create Group Modal */}
+      {isCreateModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl max-w-md w-full p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Create New Group</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Group Name *
+                </label>
+                <input
+                  type="text"
+                  value={newGroupData.name}
+                  onChange={(e) => setNewGroupData({ ...newGroupData, name: e.target.value })}
+                  placeholder="Enter group name"
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Description
+                </label>
+                <textarea
+                  value={newGroupData.description}
+                  onChange={(e) => setNewGroupData({ ...newGroupData, description: e.target.value })}
+                  placeholder="Describe your group"
+                  rows={3}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Cover Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUploadCover}
+                  disabled={uploadingCover}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+                {uploadingCover && <p className="text-sm text-orange-600 mt-1">Uploading...</p>}
+                {newGroupData.coverImageUrl && <p className="text-sm text-green-600 mt-1">✓ Uploaded</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Icon
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUploadIcon}
+                  disabled={uploadingIcon}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                />
+                {uploadingIcon && <p className="text-sm text-orange-600 mt-1">Uploading...</p>}
+                {newGroupData.iconUrl && <p className="text-sm text-green-600 mt-1">✓ Uploaded</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Visibility
+                </label>
+                <select
+                  value={newGroupData.visibility}
+                  onChange={(e) => setNewGroupData({ ...newGroupData, visibility: e.target.value })}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-orange-500"
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setIsCreateModalOpen(false);
+                  setNewGroupData({ name: "", description: "", visibility: "public", coverImageUrl: "", iconUrl: "" });
+                }}
+                className="flex-1 px-4 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateGroup}
+                className="flex-1 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
