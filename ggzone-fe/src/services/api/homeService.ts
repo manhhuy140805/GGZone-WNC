@@ -39,20 +39,18 @@ class HomeService {
   // Lấy dữ liệu cho trang Home
   async getHomeData(): Promise<HomeDataResponse> {
     try {
-      const [gamesRes, groupsRes, postsRes, playersRes] = await Promise.all([
+      const [gamesRes, groupsRes] = await Promise.all([
         this.getAllGames(6),
         this.getAllGroups(4),
-        this.getTrendingPosts(4),
-        this.getTrendingPlayers(4),
       ]);
 
       return {
-        success: gamesRes.success && groupsRes.success && postsRes.success && playersRes.success,
+        success: gamesRes.success && groupsRes.success,
         data: {
           trendingGames: gamesRes.data,
           popularGroups: groupsRes.data,
-          trendingPosts: postsRes.data,
-          trendingPlayers: playersRes.data,
+          trendingPosts: [],
+          trendingPlayers: [],
         },
       };
     } catch (error) {
@@ -112,53 +110,7 @@ class HomeService {
     }
   }
 
-  // Lấy trending posts
-  async getTrendingPosts(limit: number = 4): Promise<{ success: boolean; data?: Post[] }> {
-    try {
-      const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.TRENDING.POSTS(limit),
-        false
-      );
-      const posts = response.data || response;
-      const postsArray = Array.isArray(posts) ? posts : posts.data || [];
-      
-      return {
-        success: true,
-        data: postsArray.slice(0, limit),
-      };
-    } catch (error) {
-      const apiError = error as ApiError;
-      console.error('Lỗi khi lấy trending posts:', apiError);
-      return {
-        success: false,
-        data: [],
-      };
-    }
-  }
 
-  // Lấy trending players
-  async getTrendingPlayers(limit: number = 4): Promise<{ success: boolean; data?: User[] }> {
-    try {
-      const response = await HttpClient.get<any>(
-        API_CONFIG.ENDPOINTS.TRENDING.PLAYERS(limit),
-        false
-      );
-      const players = response.data || response;
-      const playersArray = Array.isArray(players) ? players : players.data || [];
-      
-      return {
-        success: true,
-        data: playersArray.slice(0, limit),
-      };
-    } catch (error) {
-      const apiError = error as ApiError;
-      console.error('Lỗi khi lấy trending players:', apiError);
-      return {
-        success: false,
-        data: [],
-      };
-    }
-  }
 }
 
 export const homeService = new HomeService();

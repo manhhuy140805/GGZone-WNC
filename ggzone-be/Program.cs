@@ -34,7 +34,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
-            )
+            ),
+            ClockSkew = TimeSpan.Zero // Loại bỏ clock skew mặc định 5 phút
+        };
+        
+        // Log authentication failures for debugging
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"[JWT] Authentication failed: {context.Exception.Message}");
+                if (context.Exception is SecurityTokenExpiredException)
+                {
+                    Console.WriteLine($"[JWT] Token expired at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                }
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine($"[JWT] Token validated successfully at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                return Task.CompletedTask;
+            }
         };
     });
 

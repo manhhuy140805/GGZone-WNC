@@ -25,35 +25,24 @@ namespace ggzone_be.Controllers
             var cartItems = await _context.ShoppingCarts
                 .Where(sc => sc.UserId == userId)
                 .Include(sc => sc.Product)
-                .Include(sc => sc.MarketplaceItem)
                 .Select(sc => new
                 {
                     sc.Id,
                     sc.Quantity,
                     sc.AddedAt,
-                    Product = sc.Product != null ? new
+                    Product = new
                     {
                         sc.Product.Id,
                         sc.Product.Name,
                         sc.Product.CoverImageUrl,
                         sc.Product.Price,
                         sc.Product.Category,
-                        Type = "product"
-                    } : null,
-                    MarketplaceItem = sc.MarketplaceItem != null ? new
-                    {
-                        sc.MarketplaceItem.Id,
-                        sc.MarketplaceItem.Title,
-                        sc.MarketplaceItem.CoverImageUrl,
-                        sc.MarketplaceItem.Price,
-                        sc.MarketplaceItem.Category,
-                        Type = "marketplace"
-                    } : null
+                        sc.Product.GameId
+                    }
                 })
                 .ToListAsync();
 
-            var total = cartItems.Sum(item =>
-                (item.Product?.Price ?? item.MarketplaceItem?.Price ?? 0) * item.Quantity);
+            var total = cartItems.Sum(item => item.Product.Price * item.Quantity);
 
             return Ok(new
             {
@@ -67,12 +56,16 @@ namespace ggzone_be.Controllers
         [HttpPost]
         public async Task<ActionResult> AddToCart([FromBody] ShoppingCart cartItem)
         {
+            // Validate product exists
+            var product = await _context.StoreProducts.FindAsync(cartItem.ProductId);
+            if (product == null)
+                return BadRequest("Product not found");
+
             // Check if item already in cart
             var existing = await _context.ShoppingCarts
                 .FirstOrDefaultAsync(sc =>
                     sc.UserId == cartItem.UserId &&
-                    ((sc.ProductId.HasValue && sc.ProductId == cartItem.ProductId) ||
-                     (sc.MarketplaceItemId.HasValue && sc.MarketplaceItemId == cartItem.MarketplaceItemId)));
+                    sc.ProductId == cartItem.ProductId);
 
             if (existing != null)
             {

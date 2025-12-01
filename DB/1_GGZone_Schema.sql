@@ -4,13 +4,12 @@
 -- Date: 2024
 -- ================================================
 -- Features:
--- - Core Social Platform (Users, Posts, Groups, Forums)
--- - Gaming Features (Games, Tournaments, Videos)
--- - Marketplace & Store (Shopping, Orders)
--- - Play Now Feature (Game Launching & Tracking)
+-- - Core Social Platform (Users, Posts, Groups)
+-- - Gaming Features (Games, Videos, Play Now)
+-- - Store (Shopping, Orders)
 -- - Admin Panel (Moderation, Reports, Analytics)
 -- ================================================
--- Total: 40 Tables, 50+ Indexes, 10 Procedures, 14 Triggers
+-- Total: 30 Tables, 35+ Indexes, 10 Procedures, 11 Triggers
 -- ================================================
 
 USE MASTER
@@ -63,7 +62,6 @@ CREATE TABLE UserStats (
     PostsCount INT DEFAULT 0,
     PhotosCount INT DEFAULT 0,
     VideosCount INT DEFAULT 0,
-    ForumsCount INT DEFAULT 0,
     GroupsCount INT DEFAULT 0,
     TotalPoints INT DEFAULT 0,
     Level INT DEFAULT 1,
@@ -290,38 +288,8 @@ CREATE TABLE Photos (
 );
 
 -- ================================================
--- SECTION 6: MARKETPLACE & STORE
+-- SECTION 6: STORE
 -- ================================================
-
-CREATE TABLE MarketplaceItems (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    SellerId UNIQUEIDENTIFIER NOT NULL,
-    GameId UNIQUEIDENTIFIER,
-    Title NVARCHAR(200) NOT NULL,
-    Description NVARCHAR(MAX),
-    CoverImageUrl NVARCHAR(500),
-    Category NVARCHAR(50),
-    Price DECIMAL(10, 2) NOT NULL,
-    Rating DECIMAL(3, 2) DEFAULT 0.0,
-    ReviewsCount INT DEFAULT 0,
-    Status NVARCHAR(20) DEFAULT 'online' CHECK (Status IN ('online', 'offline', 'sold')),
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    UpdatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (SellerId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
-);
-
-CREATE TABLE MarketplaceReviews (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    ItemId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Rating INT NOT NULL CHECK (Rating >= 1 AND Rating <= 5),
-    Comment NVARCHAR(MAX),
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (ItemId) REFERENCES MarketplaceItems(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
-    CONSTRAINT UQ_MarketplaceReview UNIQUE (ItemId, UserId)
-);
 
 CREATE TABLE StoreProducts (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
@@ -365,51 +333,15 @@ CREATE TABLE OrderItems (
 CREATE TABLE ShoppingCart (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
     UserId UNIQUEIDENTIFIER NOT NULL,
-    ProductId UNIQUEIDENTIFIER,
-    MarketplaceItemId UNIQUEIDENTIFIER,
+    ProductId UNIQUEIDENTIFIER NOT NULL,
     Quantity INT DEFAULT 1,
     AddedAt DATETIME2 DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id),
-    FOREIGN KEY (MarketplaceItemId) REFERENCES MarketplaceItems(Id)
+    FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id) ON DELETE CASCADE
 );
 
 -- ================================================
--- SECTION 7: TOURNAMENTS
--- ================================================
-
-CREATE TABLE Tournaments (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    GameId UNIQUEIDENTIFIER,
-    Name NVARCHAR(200) NOT NULL,
-    Description NVARCHAR(MAX),
-    CoverImageUrl NVARCHAR(500),
-    StartDate DATETIME2 NOT NULL,
-    EndDate DATETIME2 NOT NULL,
-    MaxParticipants INT,
-    CurrentParticipants INT DEFAULT 0,
-    PrizePool DECIMAL(10, 2),
-    Status NVARCHAR(20) DEFAULT 'upcoming' CHECK (Status IN ('upcoming', 'ongoing', 'completed')),
-    CreatedBy UNIQUEIDENTIFIER,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id),
-    FOREIGN KEY (CreatedBy) REFERENCES Users(Id)
-);
-
-CREATE TABLE TournamentParticipants (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    TournamentId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Rank INT,
-    Score INT DEFAULT 0,
-    JoinedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (TournamentId) REFERENCES Tournaments(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
-    CONSTRAINT UQ_TournamentParticipant UNIQUE (TournamentId, UserId)
-);
-
--- ================================================
--- SECTION 8: NOTIFICATIONS & MESSAGES
+-- SECTION 7: NOTIFICATIONS & MESSAGES
 -- ================================================
 
 CREATE TABLE Notifications (
@@ -437,85 +369,7 @@ CREATE TABLE Messages (
 );
 
 -- ================================================
--- SECTION 9: TRENDING
--- ================================================
-
-CREATE TABLE TrendingItems (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    ContentType NVARCHAR(50) NOT NULL CHECK (ContentType IN ('game', 'post', 'video', 'player')),
-    ContentId UNIQUEIDENTIFIER NOT NULL,
-    GameId UNIQUEIDENTIFIER,
-    ViewsCount INT DEFAULT 0,
-    EngagementScore DECIMAL(10, 2) DEFAULT 0.0,
-    Rank INT DEFAULT 0,
-    TrendingDate DATE DEFAULT CAST(GETDATE() AS DATE),
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
-);
-
-CREATE TABLE TrendingPlayers (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    GameId UNIQUEIDENTIFIER,
-    Rank INT DEFAULT 0,
-    Score INT DEFAULT 0,
-    WinRate DECIMAL(5, 2) DEFAULT 0.0,
-    TotalMatches INT DEFAULT 0,
-    TrendingDate DATE DEFAULT CAST(GETDATE() AS DATE),
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
-);
-
--- ================================================
--- SECTION 10: FORUMS & DISCUSSIONS
--- ================================================
-
-CREATE TABLE ForumCategories (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    Name NVARCHAR(100) NOT NULL,
-    Description NVARCHAR(MAX),
-    IconUrl NVARCHAR(500),
-    GameId UNIQUEIDENTIFIER,
-    TopicsCount INT DEFAULT 0,
-    PostsCount INT DEFAULT 0,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (GameId) REFERENCES Games(Id)
-);
-
-CREATE TABLE ForumTopics (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    CategoryId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Title NVARCHAR(200) NOT NULL,
-    Content NVARCHAR(MAX),
-    ViewsCount INT DEFAULT 0,
-    RepliesCount INT DEFAULT 0,
-    IsPinned BIT DEFAULT 0,
-    IsLocked BIT DEFAULT 0,
-    LastReplyAt DATETIME2,
-    LastReplyBy UNIQUEIDENTIFIER,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    UpdatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (CategoryId) REFERENCES ForumCategories(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION,
-    FOREIGN KEY (LastReplyBy) REFERENCES Users(Id) ON DELETE NO ACTION
-);
-
-CREATE TABLE ForumReplies (
-    Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
-    TopicId UNIQUEIDENTIFIER NOT NULL,
-    UserId UNIQUEIDENTIFIER NOT NULL,
-    Content NVARCHAR(MAX) NOT NULL,
-    LikesCount INT DEFAULT 0,
-    CreatedAt DATETIME2 DEFAULT GETDATE(),
-    UpdatedAt DATETIME2 DEFAULT GETDATE(),
-    FOREIGN KEY (TopicId) REFERENCES ForumTopics(Id) ON DELETE CASCADE,
-    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE NO ACTION
-);
-
--- ================================================
--- SECTION 11: VIDEOS & MEDIA
+-- SECTION 8: VIDEOS & MEDIA
 -- ================================================
 
 CREATE TABLE Videos (
@@ -560,7 +414,7 @@ CREATE TABLE VideoLikes (
 );
 
 -- ================================================
--- SECTION 12: USER ACTIVITY
+-- SECTION 10: USER ACTIVITY
 -- ================================================
 
 CREATE TABLE UserActivityLog (
@@ -575,7 +429,7 @@ CREATE TABLE UserActivityLog (
 );
 
 -- ================================================
--- SECTION 13: ADMIN PANEL
+-- SECTION 11: ADMIN PANEL
 -- ================================================
 
 CREATE TABLE AdminAuditLogs (
@@ -712,12 +566,6 @@ CREATE NONCLUSTERED INDEX IX_Friendships_Status ON Friendships(Status);
 CREATE NONCLUSTERED INDEX IX_GroupMembers_GroupId ON GroupMembers(GroupId);
 CREATE NONCLUSTERED INDEX IX_GroupMembers_UserId ON GroupMembers(UserId);
 
--- Marketplace Indexes
-CREATE NONCLUSTERED INDEX IX_MarketplaceItems_SellerId ON MarketplaceItems(SellerId);
-CREATE NONCLUSTERED INDEX IX_MarketplaceItems_GameId ON MarketplaceItems(GameId);
-CREATE NONCLUSTERED INDEX IX_MarketplaceItems_Category ON MarketplaceItems(Category);
-CREATE NONCLUSTERED INDEX IX_MarketplaceItems_Status ON MarketplaceItems(Status);
-
 -- Notifications Indexes
 CREATE NONCLUSTERED INDEX IX_Notifications_UserId_IsRead ON Notifications(UserId, IsRead);
 CREATE NONCLUSTERED INDEX IX_Notifications_CreatedAt ON Notifications(CreatedAt DESC);
@@ -726,24 +574,9 @@ CREATE NONCLUSTERED INDEX IX_Notifications_CreatedAt ON Notifications(CreatedAt 
 CREATE NONCLUSTERED INDEX IX_Messages_SenderId ON Messages(SenderId);
 CREATE NONCLUSTERED INDEX IX_Messages_ReceiverId_IsRead ON Messages(ReceiverId, IsRead);
 
--- Trending Indexes
-CREATE NONCLUSTERED INDEX IX_TrendingItems_TrendingDate ON TrendingItems(TrendingDate DESC);
-CREATE NONCLUSTERED INDEX IX_TrendingItems_ContentType ON TrendingItems(ContentType);
-
--- Tournaments Indexes
-CREATE NONCLUSTERED INDEX IX_Tournaments_Status ON Tournaments(Status);
-CREATE NONCLUSTERED INDEX IX_Tournaments_StartDate ON Tournaments(StartDate);
-
 -- Shopping Cart Indexes
 CREATE NONCLUSTERED INDEX IX_ShoppingCart_UserId ON ShoppingCart(UserId);
 CREATE NONCLUSTERED INDEX IX_ShoppingCart_ProductId ON ShoppingCart(ProductId);
-
--- Forum Indexes
-CREATE NONCLUSTERED INDEX IX_ForumTopics_CategoryId ON ForumTopics(CategoryId);
-CREATE NONCLUSTERED INDEX IX_ForumTopics_UserId ON ForumTopics(UserId);
-CREATE NONCLUSTERED INDEX IX_ForumTopics_CreatedAt ON ForumTopics(CreatedAt DESC);
-CREATE NONCLUSTERED INDEX IX_ForumReplies_TopicId ON ForumReplies(TopicId);
-CREATE NONCLUSTERED INDEX IX_ForumReplies_UserId ON ForumReplies(UserId);
 
 -- Videos Indexes
 CREATE NONCLUSTERED INDEX IX_Videos_UserId ON Videos(UserId);
@@ -760,11 +593,6 @@ CREATE NONCLUSTERED INDEX IX_UserActivityLog_CreatedAt ON UserActivityLog(Create
 -- Game Reviews Indexes
 CREATE NONCLUSTERED INDEX IX_GameReviews_GameId ON GameReviews(GameId);
 CREATE NONCLUSTERED INDEX IX_GameReviews_UserId ON GameReviews(UserId);
-
--- Trending Players Indexes
-CREATE NONCLUSTERED INDEX IX_TrendingPlayers_UserId ON TrendingPlayers(UserId);
-CREATE NONCLUSTERED INDEX IX_TrendingPlayers_GameId ON TrendingPlayers(GameId);
-CREATE NONCLUSTERED INDEX IX_TrendingPlayers_Rank ON TrendingPlayers(Rank);
 
 -- Friend Suggestions Indexes
 CREATE NONCLUSTERED INDEX IX_FriendSuggestions_UserId ON FriendSuggestions(UserId);
@@ -909,21 +737,19 @@ GO
 -- Shopping Cart
 CREATE PROCEDURE sp_AddToCart
     @UserId UNIQUEIDENTIFIER,
-    @ProductId UNIQUEIDENTIFIER = NULL,
-    @MarketplaceItemId UNIQUEIDENTIFIER = NULL,
+    @ProductId UNIQUEIDENTIFIER,
     @Quantity INT = 1
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM ShoppingCart WHERE UserId = @UserId 
-               AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId))
+    IF EXISTS (SELECT 1 FROM ShoppingCart WHERE UserId = @UserId AND ProductId = @ProductId)
     BEGIN
         UPDATE ShoppingCart SET Quantity = Quantity + @Quantity
-        WHERE UserId = @UserId AND (ProductId = @ProductId OR MarketplaceItemId = @MarketplaceItemId);
+        WHERE UserId = @UserId AND ProductId = @ProductId;
     END
     ELSE
     BEGIN
-        INSERT INTO ShoppingCart (UserId, ProductId, MarketplaceItemId, Quantity)
-        VALUES (@UserId, @ProductId, @MarketplaceItemId, @Quantity);
+        INSERT INTO ShoppingCart (UserId, ProductId, Quantity)
+        VALUES (@UserId, @ProductId, @Quantity);
     END
 END;
 GO
@@ -1048,20 +874,6 @@ CREATE TRIGGER tr_PostLikes_Delete ON PostLikes AFTER DELETE
 AS BEGIN
     UPDATE Posts SET LikesCount = LikesCount - 1
     FROM Posts p INNER JOIN deleted d ON p.Id = d.PostId WHERE p.LikesCount > 0;
-END;
-GO
-
--- Forum replies
-CREATE TRIGGER tr_ForumReplies_Insert ON ForumReplies AFTER INSERT
-AS BEGIN
-    UPDATE ForumTopics SET RepliesCount = RepliesCount + 1,
-           LastReplyAt = GETDATE(), LastReplyBy = i.UserId
-    FROM ForumTopics ft INNER JOIN inserted i ON ft.Id = i.TopicId;
-    
-    UPDATE ForumCategories SET PostsCount = PostsCount + 1
-    FROM ForumCategories fc
-    INNER JOIN ForumTopics ft ON fc.Id = ft.CategoryId
-    INNER JOIN inserted i ON ft.Id = i.TopicId;
 END;
 GO
 

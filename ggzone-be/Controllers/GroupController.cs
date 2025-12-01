@@ -20,35 +20,46 @@ namespace ggzone_be.Controllers
 
         private Guid GetCurrentUserId()
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Guid.Parse(userIdClaim ?? Guid.Empty.ToString());
+            var userIdClaim = User.FindFirst("id")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new UnauthorizedAccessException("User ID not found in token");
+            return Guid.Parse(userIdClaim);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllGroups()
         {
-            var groups = await _context.Groups
-                .OrderByDescending(g => g.MembersCount)
-                .Select(g => new
-                {
-                    g.Id,
-                    g.Name,
-                    g.Description,
-                    g.CoverImageUrl,
-                    g.IconUrl,
-                    g.Visibility,
-                    g.MembersCount,
-                    g.CreatedAt,
-                    Creator = new
+            try
+            {
+                var groups = await _context.Groups
+                    .Include(g => g.Creator)
+                    .OrderByDescending(g => g.MembersCount)
+                    .Select(g => new
                     {
-                        g.Creator!.Id,
-                        g.Creator.Username,
-                        g.Creator.AvatarUrl
-                    }
-                })
-                .ToListAsync();
+                        g.Id,
+                        g.Name,
+                        g.Description,
+                        g.CoverImageUrl,
+                        g.IconUrl,
+                        g.Visibility,
+                        g.MembersCount,
+                        g.CreatedAt,
+                        Creator = g.Creator != null ? new
+                        {
+                            g.Creator.Id,
+                            g.Creator.Username,
+                            g.Creator.AvatarUrl
+                        } : null
+                    })
+                    .ToListAsync();
 
-            return Ok(groups);
+                return Ok(groups);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] GetAllGroups: {ex.Message}");
+                return StatusCode(500, new { message = "Error loading groups", error = ex.Message });
+            }
         }
 
         [HttpGet("{id}")]
@@ -91,6 +102,35 @@ namespace ggzone_be.Controllers
             if (group == null) return NotFound();
 
             return Ok(group);
+        }
+
+        [HttpGet("my-groups/{userId}")]
+        public async Task<IActionResult> GetUserGroups(Guid userId)
+        {
+            var groups = await _context.GroupMembers
+                .Where(gm => gm.UserId == userId)
+                .Select(gm => new
+                {
+                    gm.Group.Id,
+                    gm.Group.Name,
+                    gm.Group.Description,
+                    gm.Group.CoverImageUrl,
+                    gm.Group.IconUrl,
+                    gm.Group.Visibility,
+                    gm.Group.MembersCount,
+                    gm.Group.CreatedAt,
+                    gm.Role,
+                    gm.JoinedAt,
+                    Creator = new
+                    {
+                        gm.Group.Creator!.Id,
+                        gm.Group.Creator.Username,
+                        gm.Group.Creator.AvatarUrl
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(groups);
         }
 
         [HttpGet("{id}/posts")]
@@ -137,33 +177,61 @@ namespace ggzone_be.Controllers
         [Authorize]
         public async Task<IActionResult> CreateGroup([FromBody] CreateGroupDto dto)
         {
-            var userId = GetCurrentUserId();
-
-            var group = new Group
+            try
             {
-                Name = dto.Name,
-                Description = dto.Description,
-                CoverImageUrl = dto.CoverImageUrl,
-                IconUrl = dto.IconUrl,
-                Visibility = dto.Visibility ?? "public",
-                CreatedBy = userId,
-                MembersCount = 1
-            };
+                var userId = GetCurrentUserId();
 
-            _context.Groups.Add(group);
+                // Validate user exists
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                    return Unauthorized(new { message = "User not found. Please login again." });
 
-            // Add creator as admin
-            var membership = new GroupMember
+                // Validate input
+                if (string.IsNullOrWhiteSpace(dto.Name))
+                    return BadRequest(new { message = "Group name is required" });
+
+                var group = new Group
+                {
+                    Name = dto.Name.Trim(),
+                    Description = dto.Description?.Trim(),
+                    CoverImageUrl = dto.CoverImageUrl,
+                    IconUrl = dto.IconUrl,
+                    Visibility = dto.Visibility ?? "public",
+                    CreatedBy = userId,
+                    MembersCount = 1
+                };
+
+                _context.Groups.Add(group);
+
+                // Add creator as admin
+                var membership = new GroupMember
+                {
+                    GroupId = group.Id,
+                    UserId = userId,
+                    Role = "admin"
+                };
+
+                _context.GroupMembers.Add(membership);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetGroupById), new { id = group.Id }, new
+                {
+                    group.Id,
+                    group.Name,
+                    group.Description,
+                    group.CoverImageUrl,
+                    group.IconUrl,
+                    group.Visibility,
+                    group.MembersCount,
+                    group.CreatedAt
+                });
+            }
+            catch (Exception ex)
             {
-                GroupId = group.Id,
-                UserId = userId,
-                Role = "admin"
-            };
-
-            _context.GroupMembers.Add(membership);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetGroupById), new { id = group.Id }, group);
+                Console.WriteLine($"[ERROR] CreateGroup: {ex.Message}");
+                Console.WriteLine($"[ERROR] StackTrace: {ex.StackTrace}");
+                return StatusCode(500, new { message = "Error creating group", error = ex.Message });
+            }
         }
 
         [HttpPost("{id}/join")]
@@ -172,11 +240,21 @@ namespace ggzone_be.Controllers
         {
             var userId = GetCurrentUserId();
 
+            // Kiểm tra user tồn tại
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return Unauthorized(new { message = "User not found. Please login again." });
+
+            // Kiểm tra group tồn tại
+            var group = await _context.Groups.FindAsync(id);
+            if (group == null)
+                return NotFound(new { message = "Group not found" });
+
             var existingMember = await _context.GroupMembers
                 .FirstOrDefaultAsync(gm => gm.GroupId == id && gm.UserId == userId);
 
             if (existingMember != null)
-                return BadRequest("Already a member");
+                return BadRequest(new { message = "Already a member" });
 
             var membership = new GroupMember
             {
@@ -186,12 +264,7 @@ namespace ggzone_be.Controllers
             };
 
             _context.GroupMembers.Add(membership);
-
-            var group = await _context.Groups.FindAsync(id);
-            if (group != null)
-            {
-                group.MembersCount++;
-            }
+            group.MembersCount++;
 
             await _context.SaveChangesAsync();
 
@@ -204,11 +277,16 @@ namespace ggzone_be.Controllers
         {
             var userId = GetCurrentUserId();
 
+            // Kiểm tra user tồn tại
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return Unauthorized(new { message = "User not found. Please login again." });
+
             var membership = await _context.GroupMembers
                 .FirstOrDefaultAsync(gm => gm.GroupId == id && gm.UserId == userId);
 
             if (membership == null)
-                return BadRequest("Not a member");
+                return BadRequest(new { message = "Not a member" });
 
             _context.GroupMembers.Remove(membership);
 

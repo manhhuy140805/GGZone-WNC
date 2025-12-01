@@ -1,20 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, Star, ShoppingCart, Heart, Minus, Plus } from "lucide-react";
 import { useCart } from "@/app/providers/CartContext";
-
-interface MarketplaceItem {
-  id: string;
-  title: string;
-  name?: string;
-  description: string;
-  price: number;
-  coverImageUrl: string;
-  category: string;
-  platform: string;
-  rating: number;
-  reviewsCount: number;
-  status: string;
-}
+import { storeService, StoreProduct } from "@/services/api/storeService";
 
 interface ProductDetailProps {
   productId: string;
@@ -30,36 +17,88 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState<"description" | "reviews" | "shipping">("description");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [product, setProduct] = useState<StoreProduct | null>(null);
+  const [showAddedToast, setShowAddedToast] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState<StoreProduct[]>([]);
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
 
-  // TODO: Fetch product from API
-  const product: MarketplaceItem | null = null;
+  useEffect(() => {
+    loadProduct();
+  }, [productId]);
+
+  const loadProduct = async () => {
+    setLoading(true);
+    const response = await storeService.getProductById(productId);
+    
+    if (response.success && response.data) {
+      setProduct(response.data);
+      
+      // Load related products from same category
+      if (response.data.category) {
+        const relatedRes = await storeService.getProductsByCategory(response.data.category);
+        if (relatedRes.success && relatedRes.data) {
+          setRelatedProducts(relatedRes.data.filter(p => p.id !== productId).slice(0, 4));
+        }
+      }
+    }
+    
+    setLoading(false);
+  };
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    }).format(price);
+  };
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
+        <p className="text-gray-500 mt-4">Loading product...</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">Dữ liệu sản phẩm sẽ được tải từ API</p>
+        <p className="text-gray-500 text-lg">Product not found</p>
         <button
           onClick={onBack}
           className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
         >
-          Back to Marketplace
+          Back to Store
         </button>
       </div>
     );
   }
 
-  // TODO: Fetch related products from API
-  const relatedProducts: MarketplaceItem[] = [];
-
   const handleAddToCart = () => {
-    addToCart(product, quantity);
-    alert(`Added ${quantity}x "${product.title}" to cart!`);
+    const cartItem = {
+      ...product,
+      title: product.name,
+      platform: '',
+    };
+    addToCart(cartItem, quantity);
+    setShowAddedToast(true);
+    setTimeout(() => setShowAddedToast(false), 3000);
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity);
-    alert(`Added ${quantity}x "${product.title}" to cart! Redirecting to checkout...`);
+    const cartItem = {
+      ...product,
+      title: product.name,
+      platform: '',
+    };
+    addToCart(cartItem, quantity);
+    setShowAddedToast(true);
+    setTimeout(() => {
+      setShowAddedToast(false);
+      // Redirect to cart after toast
+    }, 1500);
   };
 
   return (
@@ -70,7 +109,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition"
       >
         <ArrowLeft size={20} />
-        <span className="font-medium">Back to Marketplace</span>
+        <span className="font-medium">Back to Store</span>
       </button>
 
       {/* Product Header */}
@@ -79,8 +118,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
         <div className="relative bg-gray-100 rounded-lg overflow-hidden aspect-square">
           <img
             src={product.coverImageUrl}
-            alt={product.title}
+            alt={product.name}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              e.currentTarget.src = 'https://via.placeholder.com/800x800?text=No+Image';
+            }}
           />
         </div>
 
@@ -92,12 +134,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
               <span className="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm font-medium">
                 {product.category}
               </span>
-              <span className="text-sm text-gray-500">
-                {product.platform}
-              </span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {product.title}
+              {product.name}
             </h1>
 
             {/* Rating */}
@@ -115,7 +154,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
           {/* Price */}
           <div className="border-t border-b border-gray-200 py-4">
             <div className="text-4xl font-bold text-orange-600">
-              ${product.price}
+              {formatPrice(product.price)}
             </div>
           </div>
 
@@ -124,19 +163,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
             <p className="text-gray-700 leading-relaxed">{product.description}</p>
           </div>
 
-          {/* Platform & Status */}
+          {/* Status */}
           <div className="flex flex-wrap gap-2">
-            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-              Platform: {product.platform}
-            </span>
             <span className={`px-3 py-1 rounded-full text-sm font-medium ${
               product.status === 'online' 
                 ? 'bg-green-100 text-green-700' 
-                : product.status === 'sold'
-                ? 'bg-red-100 text-red-700'
                 : 'bg-gray-100 text-gray-700'
             }`}>
-              {product.status}
+              {product.status === 'online' ? 'Available' : 'Unavailable'}
             </span>
           </div>
 
@@ -232,7 +266,6 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
                 <h3 className="font-semibold text-gray-900 mb-2">Product Details</h3>
                 <ul className="space-y-2 text-gray-700">
                   <li><strong>Category:</strong> {product.category}</li>
-                  <li><strong>Platform:</strong> {product.platform}</li>
                   <li><strong>Rating:</strong> {product.rating} / 5</li>
                   <li><strong>Reviews:</strong> {product.reviewsCount}</li>
                   <li><strong>Status:</strong> {product.status}</li>
@@ -280,8 +313,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
                 <div className="relative h-40 bg-gray-100">
                   <img
                     src={item.coverImageUrl}
-                    alt={item.title}
+                    alt={item.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://via.placeholder.com/400x225?text=No+Image';
+                    }}
                   />
                   <div className="absolute bottom-2 left-2 px-2 py-1 bg-white rounded flex items-center gap-1 text-xs font-semibold">
                     <Star size={12} className="text-yellow-500 fill-yellow-500" />
@@ -290,11 +326,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
                 </div>
                 <div className="p-4">
                   <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 text-sm">
-                    {item.title}
+                    {item.name}
                   </h3>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-orange-600">
-                      ${item.price}
+                      {formatPrice(item.price)}
                     </span>
                     <button 
                       onClick={(e) => {
@@ -309,6 +345,19 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Toast Notification */}
+      {showAddedToast && (
+        <div className="fixed bottom-8 right-8 bg-green-600 text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-up z-50">
+          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+            <ShoppingCart size={18} className="text-green-600" />
+          </div>
+          <div>
+            <p className="font-bold">Added to cart!</p>
+            <p className="text-sm text-green-100">{quantity}x {product?.name}</p>
           </div>
         </div>
       )}

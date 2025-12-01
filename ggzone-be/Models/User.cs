@@ -59,7 +59,6 @@ namespace ggzone_be.Models
         public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
         public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public virtual ICollection<Photo> Photos { get; set; } = new List<Photo>();
-        public virtual ICollection<MarketplaceItem> MarketplaceItems { get; set; } = new List<MarketplaceItem>();
         public virtual ICollection<StoreOrder> StoreOrders { get; set; } = new List<StoreOrder>();
         public virtual ICollection<TournamentParticipant> TournamentParticipants { get; set; } = new List<TournamentParticipant>();
         public virtual ICollection<Video> Videos { get; set; } = new List<Video>();

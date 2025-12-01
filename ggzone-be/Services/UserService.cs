@@ -64,7 +64,6 @@ namespace ggzone_be.Services
                 PostsCount = 0,
                 PhotosCount = 0,
                 VideosCount = 0,
-                ForumsCount = 0,
                 GroupsCount = 0,
                 TotalPoints = 0,
                 Level = 1
@@ -204,13 +203,22 @@ namespace ggzone_be.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            var now = DateTime.UtcNow;
+            var expires = now.AddDays(7);
+            
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(7),
+                notBefore: now,
+                expires: expires,
                 signingCredentials: creds
             );
+
+            // Log token creation time for debugging
+            Console.WriteLine($"[JWT] Token created at: {now:yyyy-MM-dd HH:mm:ss} UTC");
+            Console.WriteLine($"[JWT] Token expires at: {expires:yyyy-MM-dd HH:mm:ss} UTC");
+            Console.WriteLine($"[JWT] Token lifetime: 7 days");
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

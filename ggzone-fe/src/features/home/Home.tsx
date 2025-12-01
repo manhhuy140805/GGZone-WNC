@@ -12,6 +12,7 @@ import {
   CommunityCard,
 } from "@/components/shared/cards";
 import { homeService } from "@/services/api/homeService";
+import { storeService, StoreProduct } from "@/services/api/storeService";
 import { Game, Group } from "@/types";
 
 interface HomeProps {
@@ -29,8 +30,9 @@ export const Home: React.FC<HomeProps> = ({
 }) => {
   const [trendingGames, setTrendingGames] = useState<Game[]>([]);
   const [popularGroups, setPopularGroups] = useState<Group[]>([]);
-  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<StoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [subscribeLoading, setSubscribeLoading] = useState(false);
@@ -46,54 +48,6 @@ export const Home: React.FC<HomeProps> = ({
         if (response.success && response.data) {
           setTrendingGames(response.data.trendingGames || []);
           setPopularGroups(response.data.popularGroups || []);
-          
-          // Mock featured products data
-          setFeaturedProducts([
-            {
-              id: '1',
-              title: 'Gaming Headset Pro X',
-              price: 129.99,
-              originalPrice: 159.99,
-              image: 'https://images.unsplash.com/photo-1599669454699-248893623440?w=400',
-              category: 'Audio',
-              rating: 4.8,
-              reviews: 1234,
-              discount: 19,
-            },
-            {
-              id: '2',
-              title: 'Mechanical Keyboard RGB',
-              price: 89.99,
-              originalPrice: 119.99,
-              image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400',
-              category: 'Keyboard',
-              rating: 4.9,
-              reviews: 2156,
-              discount: 25,
-            },
-            {
-              id: '3',
-              title: 'Gaming Mouse Ultra',
-              price: 59.99,
-              originalPrice: 79.99,
-              image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=400',
-              category: 'Mouse',
-              rating: 4.7,
-              reviews: 987,
-              discount: 25,
-            },
-            {
-              id: '4',
-              title: 'Gaming Chair Deluxe',
-              price: 299.99,
-              originalPrice: 399.99,
-              image: 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=400',
-              category: 'Furniture',
-              rating: 4.6,
-              reviews: 543,
-              discount: 25,
-            },
-          ]);
         } else {
           setError(response.message || 'Lỗi khi tải dữ liệu');
         }
@@ -105,7 +59,24 @@ export const Home: React.FC<HomeProps> = ({
       }
     };
 
+    const loadFeaturedProducts = async () => {
+      try {
+        setProductsLoading(true);
+        const response = await storeService.getAllProducts();
+        
+        if (response.success && response.data) {
+          // Lấy 4 sản phẩm đầu tiên để hiển thị
+          setFeaturedProducts(response.data.slice(0, 4));
+        }
+      } catch (err) {
+        console.error('Lỗi khi tải sản phẩm:', err);
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+
     loadHomeData();
+    loadFeaturedProducts();
   }, []);
 
   const handleMarketplaceClick = () => {
@@ -325,62 +296,70 @@ export const Home: React.FC<HomeProps> = ({
           </button>
         </div>
 
-        {loading ? (
+        {productsLoading ? (
           <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
             <Loader className="animate-spin text-yellow-600" size={32} />
           </div>
         ) : featuredProducts.length > 0 ? (
           <div className="grid grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <div
-                key={product.id}
-                onClick={() => handleProductClick(product.id)}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              >
-                <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  {product.discount && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                      -{product.discount}%
-                    </div>
-                  )}
-                  <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    {product.category}
-                  </div>
-                  <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    ⭐ {product.rating} ({product.reviews} reviews)
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
-                    {product.title}
-                  </h3>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-2xl font-bold text-orange-600">
-                      ${product.price}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-gray-400 line-through">
-                        ${product.originalPrice}
-                      </span>
+            {featuredProducts.map((product) => {
+              const discount = product.price > 0 ? Math.round(((product.price * 0.2) / product.price) * 100) : 0;
+              const originalPrice = product.price > 0 ? product.price * 1.25 : 0;
+              
+              return (
+                <div
+                  key={product.id}
+                  onClick={() => handleProductClick(product.id)}
+                  className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="relative overflow-hidden aspect-square">
+                    <img
+                      src={product.coverImageUrl}
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://via.placeholder.com/400x400?text=No+Image';
+                      }}
+                    />
+                    {discount > 0 && (
+                      <div className="absolute top-3 right-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                        -{discount}%
+                      </div>
                     )}
+                    <div className="absolute top-3 left-3 bg-orange-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      {product.category}
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      ⭐ {product.rating?.toFixed(1) || '0.0'} ({product.reviewsCount || 0} reviews)
+                    </div>
                   </div>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleProductClick(product.id);
-                    }}
-                    className="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
-                  >
-                    Buy Now
-                  </button>
+                  <div className="p-4">
+                    <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
+                      {product.name}
+                    </h3>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-2xl font-bold text-orange-600">
+                        ${product.price.toLocaleString()}
+                      </span>
+                      {originalPrice > 0 && (
+                        <span className="text-sm text-gray-400 line-through">
+                          ${originalPrice.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProductClick(product.id);
+                      }}
+                      className="w-full bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-lg">

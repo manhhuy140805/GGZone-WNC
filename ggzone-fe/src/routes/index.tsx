@@ -7,7 +7,6 @@ import {
   Feed,
   Groups,
   GroupDetail as GroupDetailPage,
-  Marketplace,
   ProductDetail as ProductDetailPage,
   Profile,
   Login,
@@ -55,8 +54,8 @@ const ProductDetail: React.FC = () => {
   return (
     <ProductDetailPage
       productId={productId || ""}
-      onBack={() => navigate("/marketplace")}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
+      onBack={() => navigate("/store")}
+      onViewProduct={(id) => navigate(`/store/${id}`)}
     />
   );
 };
@@ -71,9 +70,17 @@ const GroupsWrapper: React.FC = () => {
   return <Groups onViewGroup={(id) => navigate(`/groups/${id}`)} />;
 };
 
-const MarketplaceWrapper: React.FC = () => {
+const StoreWrapper: React.FC = () => {
   const navigate = useNavigate();
-  return <Marketplace onViewProduct={(id) => navigate(`/marketplace/${id}`)} />;
+  const Store = React.lazy(() => import('@/features/store').then(m => ({ default: m.Store })));
+  
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <Store 
+        onViewProduct={(id: string) => navigate(`/store/${id}`)}
+      />
+    </React.Suspense>
+  );
 };
 
 const HomeWrapper: React.FC = () => {
@@ -82,7 +89,7 @@ const HomeWrapper: React.FC = () => {
     <Home
       onNavigate={(page) => {
         const routes: { [key: string]: string } = {
-          MARKETPLACE: "/marketplace",
+          STORE: "/store",
           BROWSE: "/browse",
           GROUPS: "/groups",
         };
@@ -90,7 +97,7 @@ const HomeWrapper: React.FC = () => {
       }}
       onViewGame={(id: string) => navigate(`/browse/${id}`)}
       onViewGroup={(id: string) => navigate(`/groups/${id}`)}
-      onViewProduct={(id: string) => navigate(`/marketplace/${id}`)}
+      onViewProduct={(id: string) => navigate(`/store/${id}`)}
     />
   );
 };
@@ -99,9 +106,9 @@ const CartWrapper: React.FC = () => {
   const navigate = useNavigate();
   return (
     <Cart
-      onBack={() => navigate("/marketplace")}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
-      onCheckout={() => alert("Checkout functionality coming soon!")}
+      onBack={() => navigate("/store")}
+      onViewProduct={(id) => navigate(`/store/${id}`)}
+      onCheckout={() => navigate("/store?tab=orders")}
     />
   );
 };
@@ -163,15 +170,15 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/marketplace"
+        path="/store"
         element={
           <ProtectedRoute>
-            <MarketplaceWrapper />
+            <StoreWrapper />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/marketplace/:productId"
+        path="/store/:productId"
         element={
           <ProtectedRoute>
             <ProductDetail />

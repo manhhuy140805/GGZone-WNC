@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "@/app/providers/CartContext";
+import { useAuth } from "@/app/providers/AuthContext";
+import { orderService } from "@/services/api/orderService";
 import {
   ShoppingCart,
   Trash2,
@@ -20,6 +22,7 @@ interface CartProps {
 }
 
 export const Cart: React.FC<CartProps> = ({ onBack, onViewProduct, onCheckout }) => {
+  const { user } = useAuth();
   const { cartItems, removeFromCart, updateQuantity, clearCart, getTotalPrice, getTotalItems } =
     useCart();
   const [couponCode, setCouponCode] = useState("");
@@ -44,15 +47,24 @@ export const Cart: React.FC<CartProps> = ({ onBack, onViewProduct, onCheckout })
     }
   };
 
-  const handleCheckout = () => {
-    if (cartItems.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
-    if (onCheckout) {
-      onCheckout();
-    } else {
-      alert(`Proceeding to checkout with total: $${total.toLocaleString()}`);
+  const handleCheckout = async () => {
+    if (!user || cartItems.length === 0) return;
+
+    const orderItems = cartItems.map(item => ({
+      productId: item.product.id,
+      quantity: item.quantity,
+      price: item.product.price
+    }));
+
+    const response = await orderService.createOrder({
+      userId: user.id,
+      totalAmount: total,
+      items: orderItems
+    });
+
+    if (response.success) {
+      clearCart();
+      if (onCheckout) onCheckout();
     }
   };
 

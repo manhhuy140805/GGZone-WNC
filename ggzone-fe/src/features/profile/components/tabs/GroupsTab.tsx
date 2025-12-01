@@ -4,9 +4,10 @@ import { Group } from "@/types";
 
 interface GroupsTabProps {
   userGroups: (Group | undefined)[];
+  onViewGroup?: (groupId: string) => void;
 }
 
-export const GroupsTab: React.FC<GroupsTabProps> = ({ userGroups }) => {
+export const GroupsTab: React.FC<GroupsTabProps> = ({ userGroups, onViewGroup }) => {
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between mb-4">
@@ -19,7 +20,11 @@ export const GroupsTab: React.FC<GroupsTabProps> = ({ userGroups }) => {
           {userGroups.map((group) => {
             if (!group) return null;
             return (
-              <div key={group.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all">
+              <div 
+                key={group.id} 
+                onClick={() => onViewGroup?.(group.id)}
+                className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer"
+              >
                 <div
                   className="h-32 bg-cover bg-center"
                   style={{ backgroundImage: `url(${group.coverImageUrl})` }}

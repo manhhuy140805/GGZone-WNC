@@ -6,12 +6,14 @@ interface CommunityCardProps {
   group: Group;
   onJoin?: () => void;
   onClick?: () => void;
+  isJoined?: boolean;
 }
 
 export const CommunityCard: React.FC<CommunityCardProps> = ({
   group,
   onJoin,
   onClick,
+  isJoined = false,
 }) => {
   const handleCardClick = () => {
     if (onClick) {
@@ -72,10 +74,14 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({
             
             <button
               onClick={handleJoinClick}
-              className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium rounded-lg transition-all active:scale-95 flex items-center gap-2 shadow-sm hover:shadow-md"
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all active:scale-95 flex items-center gap-2 shadow-sm hover:shadow-md ${
+                isJoined
+                  ? 'bg-green-100 hover:bg-green-200 text-green-700'
+                  : 'bg-gray-900 hover:bg-gray-800 text-white'
+              }`}
             >
-              <Heart size={14} />
-              Join
+              <Heart size={14} className={isJoined ? 'fill-green-700' : ''} />
+              {isJoined ? 'Joined' : 'Join'}
             </button>
           </div>
         </div>

@@ -200,6 +200,22 @@ export const API_CONFIG = {
       },
       REVIEWS: (id: string) => `/api/marketplace/${id}/reviews`,
     },
+
+    // Store
+    STORE: {
+      PRODUCTS: '/api/store/products',
+      PRODUCT_BY_ID: (id: string) => `/api/store/products/${id}`,
+      CATEGORIES: '/api/store/categories',
+    },
+
+    // Shopping Cart
+    CART: {
+      BY_USER: (userId: string) => `/api/shoppingcart/${userId}`,
+      ADD: '/api/shoppingcart',
+      UPDATE: (id: string) => `/api/shoppingcart/${id}`,
+      REMOVE: (id: string) => `/api/shoppingcart/${id}`,
+      CLEAR: (userId: string) => `/api/shoppingcart/user/${userId}`,
+    },
   },
   TIMEOUT: 30000, // 30 seconds
 };
