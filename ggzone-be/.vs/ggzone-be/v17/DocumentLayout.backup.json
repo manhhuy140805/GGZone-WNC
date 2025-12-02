@@ -1,82 +1,81 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\",
+  "WorkspaceRootPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\groupcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:models\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\mappers\\usermapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\mappers\\usermapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:mappers\\usermapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\services\\cloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\services\\cloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:services\\cloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\activitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\activitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\activitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\middleware\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\middleware\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:middleware\\errorhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\storecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\storecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\storecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\forumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\forumcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\controllers\\commentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\controllers\\commentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:controllers\\commentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone\\ggzone-wnc\\ggzone-be\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|d:\\1.university\\1.hk125\\5.2.wnc\\ggzone-wnc\\ggzone-be\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07D09C38-8093-48C0-8C42-CFB440AD33F5}|ggzone-be.csproj|solutionrelative:interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -108,9 +107,9 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "UserMapper.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Mappers\\UserMapper.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Mappers\\UserMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\UserMapper.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Mappers\\UserMapper.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Mappers\\UserMapper.cs",
               "RelativeToolTip": "Mappers\\UserMapper.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAASwBcAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -120,9 +119,9 @@
               "$type": "Document",
               "DocumentIndex": 7,
               "Title": "PostController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\PostController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\PostController.cs",
               "RelativeDocumentMoniker": "Controllers\\PostController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\PostController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\PostController.cs",
               "RelativeToolTip": "Controllers\\PostController.cs",
               "ViewState": "AgIAABEBAAAAAAAAAAAhwKcBAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -132,9 +131,9 @@
               "$type": "Document",
               "DocumentIndex": 8,
               "Title": "CloudinaryService.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\CloudinaryService.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Services\\CloudinaryService.cs",
               "RelativeDocumentMoniker": "Services\\CloudinaryService.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\CloudinaryService.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Services\\CloudinaryService.cs",
               "RelativeToolTip": "Services\\CloudinaryService.cs",
               "ViewState": "AgIAAHIAAAAAAAAAAAAlwIYAAABNAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -142,11 +141,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "CommentController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\CommentController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\CommentController.cs",
               "RelativeDocumentMoniker": "Controllers\\CommentController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\CommentController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\CommentController.cs",
               "RelativeToolTip": "Controllers\\CommentController.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAASwEAAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -156,9 +155,9 @@
               "$type": "Document",
               "DocumentIndex": 11,
               "Title": "ActivityController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ActivityController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\ActivityController.cs",
               "RelativeDocumentMoniker": "Controllers\\ActivityController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ActivityController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\ActivityController.cs",
               "RelativeToolTip": "Controllers\\ActivityController.cs",
               "ViewState": "AgIAACIAAAAAAAAAAAAvwB0AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -168,9 +167,9 @@
               "$type": "Document",
               "DocumentIndex": 13,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Program.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Program.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Program.cs",
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -180,9 +179,9 @@
               "$type": "Document",
               "DocumentIndex": 9,
               "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\appsettings.json",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\appsettings.json",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\appsettings.json",
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
@@ -190,12 +189,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 18,
               "Title": "ForumController.cs",
               "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ForumController.cs",
+              "RelativeDocumentMoniker": "..\\..\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs",
               "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs",
-              "RelativeToolTip": "Controllers\\ForumController.cs",
+              "RelativeToolTip": "..\\..\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\ForumController.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAwwBgAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-19T14:09:19.139Z"
@@ -204,9 +203,9 @@
               "$type": "Document",
               "DocumentIndex": 15,
               "Title": "StoreController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\StoreController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\StoreController.cs",
               "RelativeDocumentMoniker": "Controllers\\StoreController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\StoreController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\StoreController.cs",
               "RelativeToolTip": "Controllers\\StoreController.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAwwC0AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -216,9 +215,9 @@
               "$type": "Document",
               "DocumentIndex": 14,
               "Title": "ErrorHandlingMiddleware.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Middleware\\ErrorHandlingMiddleware.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Middleware\\ErrorHandlingMiddleware.cs",
               "RelativeDocumentMoniker": "Middleware\\ErrorHandlingMiddleware.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Middleware\\ErrorHandlingMiddleware.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Middleware\\ErrorHandlingMiddleware.cs",
               "RelativeToolTip": "Middleware\\ErrorHandlingMiddleware.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAqwCUAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -228,9 +227,9 @@
               "$type": "Document",
               "DocumentIndex": 10,
               "Title": "AdminController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AdminController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\AdminController.cs",
               "RelativeDocumentMoniker": "Controllers\\AdminController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AdminController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\AdminController.cs",
               "RelativeToolTip": "Controllers\\AdminController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAI8AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -240,9 +239,9 @@
               "$type": "Document",
               "DocumentIndex": 5,
               "Title": "Game.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\Game.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Models\\Game.cs",
               "RelativeDocumentMoniker": "Models\\Game.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\Game.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Models\\Game.cs",
               "RelativeToolTip": "Models\\Game.cs",
               "ViewState": "AgIAAC4AAAAAAAAAAAAlwEIAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -252,9 +251,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "GroupController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\GroupController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\GroupController.cs",
               "RelativeDocumentMoniker": "Controllers\\GroupController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\GroupController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\GroupController.cs",
               "RelativeToolTip": "Controllers\\GroupController.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAAADUAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -265,48 +264,45 @@
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "UserController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\UserController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "Controllers\\UserController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\UserController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\UserController.cs",
               "RelativeToolTip": "Controllers\\UserController.cs",
               "ViewState": "AgIAACUAAAAAAAAAAAAlwDkAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-15T02:50:41.05Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-15T02:50:41.05Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
               "Title": "User.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\User.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Models\\User.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Models\\User.cs",
               "RelativeToolTip": "Models\\User.cs",
               "ViewState": "AgIAACwAAAAAAAAAAAAwwD0AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-15T02:41:54.695Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-15T02:41:54.695Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AuthController.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Controllers\\AuthController.cs",
               "RelativeToolTip": "Controllers\\AuthController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAACkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T15:05:02.548Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T15:05:02.548Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 17,
               "Title": "IUserService.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Interfaces\\IUserService.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Interfaces\\IUserService.cs",
               "RelativeDocumentMoniker": "Interfaces\\IUserService.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Interfaces\\IUserService.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Interfaces\\IUserService.cs",
               "RelativeToolTip": "Interfaces\\IUserService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -316,9 +312,9 @@
               "$type": "Document",
               "DocumentIndex": 12,
               "Title": "AppDbContext.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Data\\AppDbContext.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "Data\\AppDbContext.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Data\\AppDbContext.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Data\\AppDbContext.cs",
               "RelativeToolTip": "Data\\AppDbContext.cs",
               "ViewState": "AgIAAMEAAAAAAAAAAAAAAGMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -328,14 +324,13 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "UserService.cs",
-              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
+              "DocumentMoniker": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
               "RelativeDocumentMoniker": "Services\\UserService.cs",
-              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
+              "ToolTip": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\Services\\UserService.cs",
               "RelativeToolTip": "Services\\UserService.cs",
               "ViewState": "AgIAAMQAAAAAAAAAAADgv78AAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-14T15:02:27.922Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-14T15:02:27.922Z"
             }
           ]
         },
