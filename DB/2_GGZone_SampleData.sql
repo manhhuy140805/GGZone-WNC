@@ -86,6 +86,19 @@ DECLARE @Game15 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game16 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game17 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Game18 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game19 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game20 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game21 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game22 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game23 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game24 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game25 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game26 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game27 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game28 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game29 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Game30 UNIQUEIDENTIFIER = NEWID();
+
 
 DECLARE @Group1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Group2 UNIQUEIDENTIFIER = NEWID();
@@ -121,6 +134,39 @@ DECLARE @Prod9 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod10 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod11 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Prod12 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod13 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod14 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod15 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod16 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod17 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod18 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod19 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod20 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod22 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod21 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod23 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod24 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod25 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod26 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod27 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod28 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod29 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod30 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod31 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod32 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod33 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod34 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod35 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod36 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod37 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod38 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod39 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod40 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod41 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Prod42 UNIQUEIDENTIFIER = NEWID();
+
+
+
 
 
 
@@ -223,7 +269,55 @@ VALUES
 
 (@Game18, 'Rainbow Six Siege', 'rainbow-six-siege', N'Tactical 5v5 competitive shooter',
 'https://res.cloudinary.com/dkpyqplio/image/upload/v1764420446/1c0815bc9c7445a0d98b7e171811daab_hgueua.jpg',
-'https://i.imgur.com/r6-icon.png', 'FPS', 'PC', '2015-12-01', 'Ubisoft', 1);
+'https://i.imgur.com/r6-icon.png', 'FPS', 'PC', '2015-12-01', 'Ubisoft', 1),
+(@Game19, 'Hades II', 'hades-2', N'Action roguelike dungeon crawler sequel',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662720/9568f166dd798fb16a977d36948f28d6_dcokmz.jpg',
+'https://i.imgur.com/hades2-icon.png', 'Roguelike', 'PC', '2024-05-06', 'Supergiant Games', 1),
+
+(@Game20, 'Mobile Legends: Bang Bang', 'mobile-legends', N'Fast-paced 5v5 MOBA for mobile',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662720/67684fe4d45183eebf47c176451e102a_wzf5hb.jpg',
+'https://i.imgur.com/mlbb-icon.png', 'MOBA', 'Mobile', '2016-07-11', 'Moonton', 1),
+
+(@Game21, 'Stumble Guys', 'stumble-guys', N'Fun and chaotic knockout party game',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662718/64aeffcd37a5789699c48743bccce79b_pnoyew.jpg',
+'https://i.imgur.com/stumble-icon.png', 'Party', 'Mobile', '2020-02-12', 'Kitka Games', 1),
+
+(@Game22, 'Free Fire', 'free-fire', N'Fast-paced mobile battle royale',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662719/5bb3caa896c55e5c36abc6979bcbd374_hitecq.jpg',
+'https://i.imgur.com/freefire-icon.png', 'Battle Royale', 'Mobile', '2017-12-04', 'Garena', 1),
+
+(@Game23, 'Honkai: Star Rail', 'honkai-star-rail', N'Turn-based space fantasy RPG',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662720/1402d149a681cab85737e60cdc04e12b_hynbzw.jpg',
+'https://i.imgur.com/hsr-icon.png', 'RPG', 'PC', '2023-04-26', 'HoYoverse', 1),
+
+(@Game24, 'The Last of Us Part I', 'the-last-of-us', N'Survival action-adventure masterpiece',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662719/9782eb3efc023290fa40f87ede716a60_rbxnan.jpg',
+'https://i.imgur.com/tlou1-icon.png', 'Adventure', 'PC', '2022-03-28', 'Naughty Dog', 1),
+
+(@Game25, 'Red Dead Redemption 2', 'rdr2', N'Epic open-world western adventure',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662722/c52a787b7790ca66c4ae9710d3d30e31_i5p57z.jpg',
+'https://i.imgur.com/rdr2-icon.png', 'Adventure', 'PC', '2019-11-05', 'Rockstar Games', 1),
+
+(@Game26, 'Grand Theft Auto V', 'gta-5', N'Open-world action game with limitless freedom',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662719/009101a00c2d957e8d4dabb88c8cb79f_nsmtqe.jpg',
+'https://i.imgur.com/gta5-icon.png', 'Action', 'PC', '2015-04-14', 'Rockstar Games', 1),
+
+(@Game27, 'FIFA 24', 'fifa-24', N'Realistic football simulation experience',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662718/9ecd5c0fc516ca7ea8b237fe2ae9edbb_ru90dt.jpg',
+'https://i.imgur.com/fifa24-icon.png', 'Sports', 'PC', '2023-09-29', 'EA Sports', 1),
+
+(@Game28, 'Need for Speed: Heat', 'nfs-heat', N'Arcade street racing with vibrant visuals',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662721/0abc0c085f6bbc9f81108d56603022f8_g6924k.jpg',
+'https://i.imgur.com/nfsheat-icon.png', 'Racing', 'PC', '2019-11-08', 'EA', 1),
+
+(@Game29, 'Forza Horizon 5', 'forza-horizon-5', N'Open-world racing across Mexico',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662718/274e75ab20fa98751e81cb88c6203f83_gosobi.jpg',
+'https://i.imgur.com/fh5-icon.png', 'Racing', 'PC', '2021-11-09', 'Xbox Game Studios', 1),
+
+(@Game30, 'ARK: Survival Evolved', 'ark', N'Survival game in a world filled with dinosaurs',
+'https://res.cloudinary.com/dkpyqplio/image/upload/v1764662719/4cac4b5987c006a32ce12bd0168f33f0_wsiz2a.jpg',
+'https://i.imgur.com/ark-icon.png', 'Survival', 'PC', '2017-08-29', 'Studio Wildcard', 1);
+
 
 -- ================================================
 -- INSERT GROUPS
@@ -486,18 +580,213 @@ VALUES
 -- ================================================
 INSERT INTO StoreProducts (Id, Name, Description, CoverImageUrl, Price, Category, GameId, Rating, ReviewsCount, Status)
 VALUES
-(@Prod1, N'Premium Avatar Frame', N'Exclusive animated avatar frame', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 50000.00, 'Cosmetics', NULL, 4.7, 234, 'online'),
-(@Prod2, N'Level Boost Pack', N'Instant +10 levels', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 100000.00, 'Boosts', NULL, 4.5, 567, 'online'),
-(@Prod3, N'VIP Membership - 1 Month', N'Access to exclusive features', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 150000.00, 'Membership', NULL, 4.9, 1234, 'online'),
-(@Prod4, N'Custom Profile Theme', N'Personalize your profile', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 75000.00, 'Cosmetics', NULL, 4.6, 456, 'online'),
-(@Prod5, N'VIP Membership - 3 Months', N'Extended VIP access', 'https://images.unsplash.com/photo-1560253023-3ec5d502959f', 400000.00, 'Membership', NULL, 4.8, 890, 'online'),
-(@Prod6, N'Exclusive Badge Pack', N'5 rare badges for profile', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 120000.00, 'Cosmetics', NULL, 4.7, 345, 'online'),
-(@Prod7, N'Tournament Entry Pass', N'Access to premium tournaments', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 250000.00, 'Tournament', NULL, 4.9, 678, 'online'),
-(@Prod8, N'Streaming Bundle', N'Overlay + alerts + emotes', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 300000.00, 'Streaming', NULL, 4.8, 523, 'online'),
-(@Prod9, N'Valorant Points - 1000 VP', N'In-game currency for Valorant', 'https://images.unsplash.com/photo-1542751371-adc38448a05e', 200000.00, 'Game Currency', @Game1, 4.9, 1567, 'online'),
-(@Prod10, N'CS2 Prime Status', N'Unlock Prime matchmaking', 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc', 350000.00, 'Game Access', @Game3, 4.8, 892, 'online'),
-(@Prod11, N'League of Legends RP - 5000', N'Riot Points for LoL', 'https://images.unsplash.com/photo-1511512578047-dfb367046420', 500000.00, 'Game Currency', @Game2, 4.9, 2134, 'online'),
-(@Prod12, N'Dota 2 Battle Pass', N'Seasonal battle pass with rewards', 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f', 250000.00, 'Game Pass', @Game4, 4.7, 1456, 'online');
+(@Prod1,  N'Gaming Keyboard RGB', 
+          N'Mechanical keyboard with full RGB lighting', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664256/11572b8773265e2bd03f10194890734c_frcwkc.jpg',
+          1200000, 'Keyboard', NULL, 4.8, 1543, 'online'),
+
+(@Prod2,  N'Wireless Gaming Mouse', 
+          N'High precision 16,000 DPI wireless gaming mouse', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764663798/a8d1ff4d601ab408dfbbec8dd8cde10f_u0bb8v.jpg',
+          850000, 'Mouse', NULL, 4.7, 1320, 'online'),
+
+(@Prod3,  N'Gaming Headset 7.1', 
+          N'Virtual 7.1 surround sound gaming headset', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581139/tai9_ji4idp.jpg',
+          950000, 'Headset', NULL, 4.9, 2104, 'online'),
+
+(@Prod4,  N'Gaming Chair Pro', 
+          N'Ergonomic gaming chair with neck & lumbar support', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581135/game1_xzitpb.jpg',
+          3200000, 'Chair', NULL, 4.8, 987, 'online'),
+
+(@Prod5,  N'Gaming Monitor 144Hz', 
+          N'24-inch full HD 144Hz high refresh rate monitor', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581333/b4f0696c1dad73887beae50e3b4e48ae_nwbrhk.jpg',
+          3800000, 'Monitor', NULL, 4.9, 1820, 'online'),
+
+(@Prod6,  N'Custom Gaming PC', 
+          N'Ryzen 5 + RTX 3060 + 16GB RAM custom build PC', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664330/fdd2b16384b82cc7946b714f770e3850_zbkaam.jpg',
+          18500000, 'PC', NULL, 5.0, 320, 'online'),
+
+(@Prod7,  N'PS5 Console Standard Edition', 
+          N'Next-gen PlayStation 5 gaming console', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764663660/1dc81605b5c40692703b2ea2faf3e2ee_g8vnkn.jpg',
+          13500000, 'Console', NULL, 4.9, 5421, 'online'),
+
+(@Prod8,  N'Xbox Series X', 
+          N'Microsoft next-gen 4K gaming console', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764663383/5f6a5ec479b639d6281ad96e199010f6_ialhqi.jpg',
+          12500000, 'Console', NULL, 4.8, 3120, 'online'),
+
+(@Prod9,  N'Nintendo Switch OLED', 
+          N'Portable gaming console with OLED display', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581137/tai3_r0m36e.jpg',
+          8500000, 'Console', NULL, 4.9, 4876, 'online'),
+
+(@Prod10, N'Gaming Mousepad XXL', 
+          N'Extended anti-slip mousepad for gaming setups', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664060/cb122bfc4692a1800358b6b05972d909_myv3pr.jpg',
+          250000, 'Accessories', NULL, 4.7, 2543, 'online'),
+
+(@Prod11, N'PC Cooling RGB Fan Kit', 
+          N'6 RGB fans with fan controller included', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664438/6a562bb99ade0a69fe5bb915e2a6b613_u7bujc.jpg',
+          750000, 'Accessories', NULL, 4.8, 1321, 'online'),
+
+(@Prod12, N'Gaming Microphone USB', 
+          N'High-quality USB microphone for streaming & gaming', 
+          'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581132/mic4_xvzb1i.jpg',
+          950000, 'Streaming', NULL, 4.9, 2540, 'online'),
+(@Prod13, N'Gaming Desk LED', 
+         N'Sturdy gaming desk with RGB LED strips', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664729/ae72cc309d7197dfa81b7e4c15fae3e2_abus3k.jpg',
+         2900000, 'Furniture', NULL, 4.8, 932, 'online'),
+(@Prod14, N'Ergonomic Wrist Rest', 
+         N'Memory foam wrist support for typing & gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664891/e87f46ecef695cbec44fc7a50c3642a4_lbugyr.jpg',
+         120000, 'Accessories', NULL, 4.6, 540, 'online'),
+
+(@Prod15, N'RGB LED Light Strip', 
+         N'5-meter RGB strip for PC & gaming room', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764664975/bed014ff7053ffc1ad3626a67ba7721f_jlgeag.jpg',
+         180000, 'Accessories', NULL, 4.7, 870, 'online'),
+
+(@Prod16, N'Gaming Speakers 2.1', 
+         N'Powerful 2.1 sound system with RGB', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665041/3172d7f9a62d1b8893b30c75ed1cd438_g66hdg.jpg',
+         650000, 'Audio', NULL, 4.8, 1123, 'online'),
+
+(@Prod17, N'USB Capture Card 4K', 
+         N'High-quality 4K60 streaming capture card', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666552/ad53f76e3c4f1f8e32dbc8796285343f_vihmdk.jpg',
+         2100000, 'Streaming', NULL, 4.9, 690, 'online'),
+
+(@Prod18, N'Gaming Router WiFi 6', 
+         N'High speed WiFi 6 router for stable gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665146/4d2b9c1ee7c2c9fc64b985111c3fa183_xshecu.jpg',
+         2600000, 'Network', NULL, 4.8, 774, 'online'),
+
+(@Prod19, N'1080p Game Streaming Webcam', 
+         N'Full HD webcam with auto-focus', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665185/187597202bd6b9391873080cfcd4c264_dwf37z.jpg',
+         650000, 'Streaming', NULL, 4.7, 998, 'online'),
+
+(@Prod20, N'Portable SSD 1TB', 
+         N'High-speed NVMe portable SSD', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665221/8b2137add1dc21556b261b2ab424afac_pbx04m.jpg',
+         1900000, 'Storage', NULL, 4.9, 1304, 'online'),
+
+(@Prod21, N'Mechanical Keycaps Set', 
+         N'PBT double-shot keycap set', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665413/4a2b889155377e06fd8f35149af1abf5_klolmy.jpg',
+         350000, 'Keyboard', NULL, 4.8, 742, 'online'),
+
+(@Prod22, N'Wireless Earbuds Pro', 
+         N'Noise-cancelling gaming earbuds', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581138/tai8_ia8dvb.jpg',
+         890000, 'Audio', NULL, 4.7, 1540, 'online'),
+
+(@Prod23, N'RGB Desk Lamp', 
+         N'LED desk lamp with smart RGB controls', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666753/ab889007a0efc66afcc39331324d0935_peg9iz.jpg',
+         350000, 'Accessories', NULL, 4.8, 503, 'online'),
+
+(@Prod24, N'Gaming Glove Anti-sweat', 
+         N'Breathable glove for mobile gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665585/08c789e4bb59697d649c6a3f1d0642ab_wz7ei0.jpg',
+         80000, 'Accessories', NULL, 4.6, 714, 'online'),
+
+(@Prod25, N'4K Gaming Monitor 165Hz', 
+         N'27-inch 4K IPS panel with 165Hz refresh rate', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665625/6716e17535e1af11791c9c249d9c2347_zjxrct.jpg',
+         7900000, 'Monitor', NULL, 4.9, 1340, 'online'),
+
+(@Prod26, N'RTX 4060 Graphics Card', 
+         N'Powerful mid-range GPU for gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665688/7ed4383c95fb56e0556268623d42c2e7_bpm73z.jpg',
+         9500000, 'PC Hardware', NULL, 5.0, 420, 'online'),
+
+(@Prod27, N'32GB DDR5 RAM Kit', 
+         N'High performance DDR5 dual-channel RAM', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665737/1a19c5e80dd3b6e3d77397fb9b0582c5_y0sevg.jpg',
+         3200000, 'PC Hardware', NULL, 4.9, 610, 'online'),
+
+(@Prod28, N'Gaming Backpack', 
+         N'Water-resistant bag for gaming laptops', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665775/5004e16050eb8e36d55d738f0074d826_ca7fyn.jpg',
+         650000, 'Accessories', NULL, 4.7, 433, 'online'),
+
+(@Prod29, N'Laptop Cooling Pad RGB', 
+         N'High-airflow cooling pad with RGB fans', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665818/6cb987b3e2dffe9f6a8e3c92a3872b73_zy7gcd.jpg',
+         350000, 'Accessories', NULL, 4.8, 920, 'online'),
+
+(@Prod30, N'Gaming Smartphone Controller', 
+         N'Bluetooth controller for mobile gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665869/87d621f0ccd87649c89c73d89f28b9bb_wxbsyw.jpg',
+         480000, 'Mobile', NULL, 4.7, 840, 'online'),
+
+(@Prod31, N'Racing Wheel Pro', 
+         N'Steering wheel + pedals for racing games', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665909/4b1134eddd58cf3dd9914eaba9a6a6d8_rjtf0g.jpg',
+         4500000, 'Racing Gear', NULL, 4.9, 521, 'online'),
+
+(@Prod32, N'VR Headset 2K', 
+         N'2K virtual reality gaming headset', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665956/5a1540fcce47084c4f27f149421117c9_xodjia.jpg',
+         8900000, 'VR', NULL, 4.8, 640, 'online'),
+
+(@Prod33, N'4TB External HDD', 
+         N'High capacity external storage', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764665995/23485874cb9db3e83d32322212396a8e_chqcc0.jpg',
+         2200000, 'Storage', NULL, 4.7, 810, 'online'),
+
+(@Prod34, N'Portable Gaming Monitor 15.6"', 
+         N'Portable 1080p display for gaming & travel', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666040/e23a55872794f9ddf6dbe943759e91cc_spfhek.jpg',
+         3200000, 'Monitor', NULL, 4.8, 520, 'online'),
+
+(@Prod35, N'RGB GPU Support Bracket', 
+         N'Support bracket to prevent GPU sag', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666101/0931eb7298d8666bbb625b5f9a6e3781_qnm56a.jpg',
+         240000, 'PC Hardware', NULL, 4.6, 315, 'online'),
+
+(@Prod36, N'Gaming Earphones with Mic', 
+         N'Dual-driver earphones for gaming', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764581132/mic3_bxiuou.jpg',
+         290000, 'Audio', NULL, 4.7, 650, 'online'),
+
+(@Prod37, N'RGB PC Case ATX', 
+         N'ATX mid-tower case with tempered glass', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666223/e6e6fbb7759301156a16502813a55393_wesb7z.jpg',
+         1500000, 'PC Hardware', NULL, 4.8, 704, 'online'),
+
+(@Prod38, N'HDMI 2.1 Cable 8K', 
+         N'Ultra high speed 8K HDMI cable', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666262/1c44dd796f60e9d2b619799e5f3d768e_u4n6qj.jpg',
+         180000, 'Accessories', NULL, 4.9, 480, 'online'),
+
+(@Prod39, N'Wireless Charging Stand RGB', 
+         N'Fast charging stand with RGB lighting', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666303/30fa31c7d0014b283c13e92f27e89548_iy5wlv.jpg',
+         350000, 'Accessories', NULL, 4.7, 788, 'online'),
+
+(@Prod40, N'Gaming Laptop 4060', 
+         N'Powerful gaming laptop with RTX 4060', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666338/2f4d6097a1c8c8607cc8198abe72422d_z1gp53.jpg',
+         28500000, 'Laptop', NULL, 5.0, 241, 'online'),
+
+(@Prod41, N'Smart Ambient RGB Light', 
+         N'Smart ambient lamp with app control', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666401/f21c75b2df1d49ca489a5876cac25a9d_ba0e3u.jpg',
+         580000, 'Accessories', NULL, 4.8, 901, 'online'),
+
+(@Prod42, N'Gaming HDMI Capture Box', 
+         N'Portable HDMI capture device for gamers', 
+         'https://res.cloudinary.com/dkpyqplio/image/upload/v1764666436/87337e6186b8ac1004082870ee1be833_ijhgw9.jpg',
+         1200000, 'Streaming', NULL, 4.8, 350, 'online');
 
 
 
