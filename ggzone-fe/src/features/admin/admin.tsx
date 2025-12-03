@@ -233,7 +233,7 @@ const Dashboard: React.FC<{ stats: any }> = ({ stats }) => {
             <DollarSign size={32} strokeWidth={2} />
           </div>
           <div className="stat-info">
-            <h3>${(stats.totalNotifications * 100).toLocaleString()}</h3>
+            <h3>{(stats.totalNotifications * 100).toLocaleString()}đ</h3>
             <p>Doanh thu tháng này</p>
             <span className="stat-change positive">
               <TrendingUp size={14} /> +23% so với tháng trước

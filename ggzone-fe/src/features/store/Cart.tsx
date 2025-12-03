@@ -203,10 +203,10 @@ export const Cart: React.FC<CartProps> = ({ onBack, onViewProduct, onCheckout })
 
                     <div className="text-right">
                       <div className="text-sm text-gray-500">
-                        ${item.product.price.toLocaleString()} x {item.quantity}
+                        {item.product.price.toLocaleString()}đ x {item.quantity}
                       </div>
                       <div className="text-xl font-bold text-orange-600">
-                        ${(item.product.price * item.quantity).toLocaleString()}
+                        {(item.product.price * item.quantity).toLocaleString()}đ
                       </div>
                     </div>
                   </div>
@@ -262,21 +262,21 @@ export const Cart: React.FC<CartProps> = ({ onBack, onViewProduct, onCheckout })
               <div className="space-y-3 pt-4 border-t border-gray-200">
                 <div className="flex justify-between text-gray-700">
                   <span>Subtotal</span>
-                  <span className="font-semibold">${subtotal.toLocaleString()}</span>
+                  <span className="font-semibold">{subtotal.toLocaleString()}đ</span>
                 </div>
                 <div className="flex justify-between text-gray-700">
                   <span>Shipping</span>
-                  <span className="font-semibold">${shippingFee.toLocaleString()}</span>
+                  <span className="font-semibold">{shippingFee.toLocaleString()}đ</span>
                 </div>
                 {appliedCoupon && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount ({appliedCoupon.discount}%)</span>
-                    <span className="font-semibold">-${discount.toLocaleString()}</span>
+                    <span className="font-semibold">-{discount.toLocaleString()}đ</span>
                   </div>
                 )}
                 <div className="flex justify-between text-lg font-bold text-gray-900 pt-3 border-t border-gray-200">
                   <span>Total</span>
-                  <span className="text-orange-600">${total.toLocaleString()}</span>
+                  <span className="text-orange-600">{total.toLocaleString()}đ</span>
                 </div>
               </div>
 

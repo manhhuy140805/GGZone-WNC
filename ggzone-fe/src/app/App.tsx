@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { BrowserRouter, useNavigate, useLocation } from "react-router-dom";
 import { Header, Sidebar } from "@/components/layout";
 import { AppRoutes } from "@/routes";
@@ -6,9 +6,17 @@ import { useAuth } from "./providers/AuthContext";
 
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
   const { isAuthenticated, logout, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Scroll to top whenever location changes
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }, [location.pathname, location.search]);
 
   const handleLogout = () => {
     logout();
@@ -31,6 +39,11 @@ function AppContent() {
     const path = routeMap[route] || "/";
     navigate(path);
     setSidebarOpen(false);
+    
+    // Cuộn lên đầu trang
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
   };
 
   const handleViewCart = () => {
@@ -87,7 +100,7 @@ function AppContent() {
           currentPage={getCurrentPage()}
         />
 
-        <main className="flex-1 overflow-auto">
+        <main ref={mainRef} className="flex-1 overflow-auto">
           <div className="max-w-7xl bg-white mx-auto px-4 sm:px-6 lg:px-8 py-8 rounded-xs">
             <AppRoutes />
           </div>

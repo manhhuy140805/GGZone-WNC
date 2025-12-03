@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { gameService } from "@/services/api/gameService";
 import { Game } from "@/types";
+import { useScrollToTop } from "@/lib/hooks/useScrollToTop";
 
 interface BrowseProps {
   onViewGame?: (gameId: string) => void;
@@ -46,6 +47,9 @@ export const Browse: React.FC<BrowseProps> = ({ onViewGame }) => {
   useEffect(() => {
     loadGames();
   }, [currentPage, selectedGenre, selectedPlatform]);
+
+  // Scroll to top when page changes
+  useScrollToTop([currentPage]);
 
   const loadFilters = async () => {
     try {
