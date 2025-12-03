@@ -1,1 +1,3 @@
-export { default as Admin } from './admin';
+export { AdminLayout } from './AdminLayout';
+export { Dashboard } from './Dashboard';
+export { Users } from './Users';

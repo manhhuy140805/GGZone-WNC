@@ -66,7 +66,7 @@ function AppContent() {
   };
 
   // Public pages without layout (Login, Register, Admin)
-  const isPublicPage = location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/admin";
+  const isPublicPage = location.pathname === "/login" || location.pathname === "/register" || location.pathname.startsWith("/admin");
 
   // Hiển thị loading khi đang kiểm tra authentication
   if (isLoading) {

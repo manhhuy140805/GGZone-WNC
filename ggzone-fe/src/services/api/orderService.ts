@@ -1,4 +1,5 @@
 import { HttpClient, ApiError } from '@/lib/utils/httpClient';
+import { API_CONFIG } from '@/lib/constants/api';
 
 export interface OrderItem {
   productId: string;
@@ -15,8 +16,8 @@ export interface CreateOrderRequest {
 class OrderService {
   async createOrder(request: CreateOrderRequest) {
     try {
-      const response = await HttpClient.post('/api/order', request, true);
-      return { success: true, data: response.data };
+      const response = await HttpClient.post(API_CONFIG.ENDPOINTS.ORDER.BASE, request, true);
+      return { success: true, data: response.data || response };
     } catch (error) {
       const apiError = error as ApiError;
       return { success: false, message: apiError.message };
@@ -25,7 +26,7 @@ class OrderService {
 
   async getMyOrders(userId: string) {
     try {
-      const response = await HttpClient.get(`/api/order/${userId}`, true);
+      const response = await HttpClient.get(API_CONFIG.ENDPOINTS.ORDER.BY_USER(userId), true);
       return { success: true, data: response.data || response };
     } catch (error) {
       const apiError = error as ApiError;
@@ -35,7 +36,7 @@ class OrderService {
 
   async getOrderDetail(orderId: string) {
     try {
-      const response = await HttpClient.get(`/api/order/detail/${orderId}`, true);
+      const response = await HttpClient.get(API_CONFIG.ENDPOINTS.ORDER.BY_ID(orderId), true);
       return { success: true, data: response.data || response };
     } catch (error) {
       const apiError = error as ApiError;
@@ -45,7 +46,7 @@ class OrderService {
 
   async cancelOrder(orderId: string) {
     try {
-      await HttpClient.delete(`/api/order/${orderId}`, true);
+      await HttpClient.delete(API_CONFIG.ENDPOINTS.ORDER.CANCEL(orderId), true);
       return { success: true };
     } catch (error) {
       const apiError = error as ApiError;
