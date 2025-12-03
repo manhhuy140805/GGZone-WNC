@@ -360,7 +360,7 @@ const UsersManagement: React.FC = () => {
       <div className="filters-bar">
         <input
           type="text"
-          placeholder="🔍 Tìm kiếm theo tên, email..."
+          placeholder="Tìm kiếm theo tên, email..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"

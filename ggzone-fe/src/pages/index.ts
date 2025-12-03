@@ -26,3 +26,4 @@ export { Home } from '@/features/home';
 export { Settings } from './Settings';
 export { Messages } from './Messages';
 export { CloudinaryTest } from './CloudinaryTest';
+export { Unauthorized } from './Unauthorized';
