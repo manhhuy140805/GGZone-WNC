@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { cartService } from "@/services/api/cartService";
+import { useAuth } from "./AuthContext";
 
 export interface MarketplaceItem {
   id: string;
@@ -35,14 +36,26 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { user, isAuthenticated } = useAuth();
 
+  // Load cart from backend when user logs in
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    const loadCart = async () => {
+      if (isAuthenticated && user?.id) {
+        try {
+          await syncWithBackend(user.id);
+        } catch (error) {
+          console.error('Lỗi khi load cart:', error);
+        }
+      } else {
+        // Clear cart when user logs out
+        setCartItems([]);
+      }
+    };
+
+    loadCart();
+  }, [isAuthenticated, user?.id]);
 
   // Sync cart với backend
   const syncWithBackend = async (userId: string) => {
@@ -76,47 +89,43 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const addToCart = async (product: MarketplaceItem, quantity: number = 1) => {
-    // Update local state immediately
-    setCartItems((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      return [...prev, { product, quantity }];
-    });
+    if (!isAuthenticated || !user?.id) {
+      console.error('User chưa đăng nhập');
+      return;
+    }
 
-    // Sync with backend if user is logged in
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        await cartService.addToCart({
-          userId: user.id,
-          productId: product.id,
-          quantity,
-        });
-      } catch (error) {
-        console.error('Lỗi khi thêm vào cart backend:', error);
+    try {
+      const result = await cartService.addToCart({
+        userId: user.id,
+        productId: product.id,
+        quantity,
+      });
+
+      if (result.success) {
+        // Reload cart from backend
+        await syncWithBackend(user.id);
       }
+    } catch (error) {
+      console.error('Lỗi khi thêm vào cart:', error);
     }
   };
 
   const removeFromCart = async (productId: string) => {
     const item = cartItems.find((i) => i.product.id === productId);
     
-    setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
+    if (!item?.cartItemId) {
+      console.error('Không tìm thấy cart item');
+      return;
+    }
 
-    // Sync with backend
-    if (item?.cartItemId) {
-      try {
-        await cartService.removeFromCart(item.cartItemId);
-      } catch (error) {
-        console.error('Lỗi khi xóa khỏi cart backend:', error);
+    try {
+      const result = await cartService.removeFromCart(item.cartItemId);
+      if (result.success) {
+        // Update local state
+        setCartItems((prev) => prev.filter((item) => item.product.id !== productId));
       }
+    } catch (error) {
+      console.error('Lỗi khi xóa khỏi cart:', error);
     }
   };
 
@@ -128,34 +137,39 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const item = cartItems.find((i) => i.product.id === productId);
     
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
+    if (!item?.cartItemId) {
+      console.error('Không tìm thấy cart item');
+      return;
+    }
 
-    // Sync with backend
-    if (item?.cartItemId) {
-      try {
-        await cartService.updateQuantity(item.cartItemId, quantity);
-      } catch (error) {
-        console.error('Lỗi khi cập nhật quantity backend:', error);
+    try {
+      const result = await cartService.updateQuantity(item.cartItemId, quantity);
+      if (result.success) {
+        // Update local state
+        setCartItems((prev) =>
+          prev.map((item) =>
+            item.product.id === productId ? { ...item, quantity } : item
+          )
+        );
       }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật quantity:', error);
     }
   };
 
   const clearCart = async () => {
-    setCartItems([]);
+    if (!isAuthenticated || !user?.id) {
+      setCartItems([]);
+      return;
+    }
 
-    // Sync with backend
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        await cartService.clearCart(user.id);
-      } catch (error) {
-        console.error('Lỗi khi xóa cart backend:', error);
+    try {
+      const result = await cartService.clearCart(user.id);
+      if (result.success) {
+        setCartItems([]);
       }
+    } catch (error) {
+      console.error('Lỗi khi xóa cart:', error);
     }
   };
 

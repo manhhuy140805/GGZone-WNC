@@ -339,11 +339,11 @@ export const Home: React.FC<HomeProps> = ({
                     </h3>
                     <div className="flex items-center gap-2 mb-3">
                       <span className="text-2xl font-bold text-orange-600">
-                        ${product.price.toLocaleString()}
+                        {product.price.toLocaleString()}đ
                       </span>
                       {originalPrice > 0 && (
                         <span className="text-sm text-gray-400 line-through">
-                          ${originalPrice.toLocaleString()}
+                          {originalPrice.toLocaleString()}đ
                         </span>
                       )}
                     </div>

@@ -136,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({
                                   Qty: {item.quantity}
                                 </p>
                                 <p className="text-sm font-bold text-orange-600 mt-1">
-                                  ${(item.product.price * item.quantity).toLocaleString()}
+                                  {(item.product.price * item.quantity).toLocaleString()}đ
                                 </p>
                               </div>
                               <button
@@ -157,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <div className="flex items-center justify-between mb-3">
                           <span className="font-semibold text-gray-700">Total:</span>
                           <span className="text-2xl font-bold text-orange-600">
-                            ${cartTotal.toLocaleString()}
+                            {cartTotal.toLocaleString()}đ
                           </span>
                         </div>
                         <button 

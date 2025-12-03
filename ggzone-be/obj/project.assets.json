@@ -5946,11 +5946,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
+      "projectUniqueName": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
       "projectName": "ggzone-be",
-      "projectPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
+      "projectPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\ggzone-be.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone\\GGZone-WNC\\ggzone-be\\obj\\",
+      "outputPath": "D:\\1.University\\1.HK125\\5.2.WNC\\GGZone-WNC\\ggzone-be\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

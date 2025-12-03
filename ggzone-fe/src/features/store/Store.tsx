@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Search, Grid3x3, List, SlidersHorizontal, ShoppingBag, Package } from "lucide-react";
 import { storeService, StoreProduct } from "@/services/api/storeService";
 import { MyOrders } from "./MyOrders";
+import { useScrollToTop } from "@/lib/hooks/useScrollToTop";
 
 interface StoreProps {
   onViewProduct: (id: string) => void;
@@ -23,6 +24,8 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000000]);
   const [maxPrice, setMaxPrice] = useState(5000000);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   useEffect(() => {
     loadData();
@@ -72,8 +75,22 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, priceRange, sortBy]);
+
+  // Scroll to top when page changes
+  useScrollToTop([currentPage]);
+
   const formatPrice = (price: number) => {
-    return `$${price.toLocaleString()}`;
+    return `${price.toLocaleString()}đ`;
   };
 
   return (
@@ -130,11 +147,28 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
           <div className="bg-white rounded-lg p-4 border border-gray-200 shadow-sm">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <p className="text-gray-600">
-                Showing <span className="text-gray-900 font-semibold">1-{filteredProducts.length}</span> of{" "}
+                Showing <span className="text-gray-900 font-semibold">{startIndex + 1}-{Math.min(endIndex, filteredProducts.length)}</span> of{" "}
                 <span className="text-gray-900 font-semibold">{filteredProducts.length}</span> results
               </p>
 
               <div className="flex items-center gap-4">
+                {/* Items per page */}
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-600 text-sm">Show:</span>
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => {
+                      setItemsPerPage(parseInt(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="px-3 py-1.5 bg-white border border-gray-300 rounded text-gray-900 text-sm focus:outline-none focus:border-orange-500 cursor-pointer"
+                  >
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+                    <option value="12">12</option>
+                    <option value="24">24</option>
+                  </select>
+                </div>
                 {/* Sort By */}
                 <div className="flex items-center gap-2">
                   <span className="text-gray-600 text-sm">Sort by:</span>
@@ -187,7 +221,7 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
                     : "space-y-4"
                 }
               >
-                {filteredProducts.map((product) => (
+                {currentProducts.map((product) => (
                   <div
                     key={product.id}
                     onClick={() => onViewProduct(product.id)}
@@ -230,12 +264,75 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
                 ))}
               </div>
 
-              {/* Load More Button */}
-              <div className="flex justify-center pt-4">
-                <button className="px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition shadow-md">
-                  Load More
-                </button>
-              </div>
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 pt-6">
+                  {/* Previous Button */}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-lg font-medium transition ${
+                      currentPage === 1
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    Previous
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      // Show first page, last page, current page, and pages around current
+                      const showPage = 
+                        page === 1 || 
+                        page === totalPages || 
+                        (page >= currentPage - 1 && page <= currentPage + 1);
+                      
+                      const showEllipsis = 
+                        (page === currentPage - 2 && currentPage > 3) ||
+                        (page === currentPage + 2 && currentPage < totalPages - 2);
+
+                      if (showEllipsis) {
+                        return (
+                          <span key={page} className="px-2 text-gray-400">
+                            ...
+                          </span>
+                        );
+                      }
+
+                      if (!showPage) return null;
+
+                      return (
+                        <button
+                          key={page}
+                          onClick={() => setCurrentPage(page)}
+                          className={`min-w-[40px] h-10 rounded-lg font-medium transition ${
+                            currentPage === page
+                              ? "bg-orange-600 text-white"
+                              : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 rounded-lg font-medium transition ${
+                      currentPage === totalPages
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200 shadow-sm">
