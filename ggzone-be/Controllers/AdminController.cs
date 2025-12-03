@@ -8,7 +8,7 @@ namespace ggzone_be.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Should add role-based auth for admin
+    [Authorize(Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -141,6 +141,7 @@ namespace ggzone_be.Controllers
                     u.Username,
                     u.Email,
                     u.FullName,
+                    u.AvatarUrl,
                     u.Status,
                     Level = u.UserStats != null ? u.UserStats.Level : 1,
                     u.CreatedAt,
@@ -149,6 +150,28 @@ namespace ggzone_be.Controllers
                 .ToListAsync();
 
             return Ok(users);
+        }
+
+        // PUT: api/admin/users/{userId}
+        [HttpPut("users/{userId}")]
+        public async Task<ActionResult> UpdateUser(Guid userId, [FromBody] UpdateUserRequest request)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return NotFound(new { message = "User not found" });
+
+            // Update only provided fields
+            if (!string.IsNullOrEmpty(request.Email))
+                user.Email = request.Email;
+
+            if (request.FullName != null)
+                user.FullName = request.FullName;
+
+            user.UpdatedAt = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "User updated successfully" });
         }
 
         // POST: api/admin/users/{userId}/ban
@@ -262,12 +285,148 @@ namespace ggzone_be.Controllers
 
             return Ok(content);
         }
+
+        // DELETE: api/admin/posts/{postId}
+        [HttpDelete("posts/{postId}")]
+        public async Task<ActionResult> DeletePost(Guid postId)
+        {
+            var post = await _context.Posts.FindAsync(postId);
+            if (post == null)
+                return NotFound(new { message = "Post not found" });
+
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Post deleted successfully" });
+        }
+
+        // GET: api/admin/orders
+        [HttpGet("orders")]
+        public async Task<ActionResult<IEnumerable<object>>> GetOrders(
+            [FromQuery] string? status = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 20)
+        {
+            var query = _context.StoreOrders.AsQueryable();
+
+            if (!string.IsNullOrEmpty(status))
+                query = query.Where(o => o.Status == status);
+
+            var orders = await query
+                .Include(o => o.User)
+                .OrderByDescending(o => o.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(o => new
+                {
+                    o.Id,
+                    o.UserId,
+                    o.TotalAmount,
+                    o.Status,
+                    o.CreatedAt,
+                    User = new
+                    {
+                        o.User!.Id,
+                        o.User.Username,
+                        o.User.Email
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(orders);
+        }
+
+        // GET: api/admin/orders/{orderId}
+        [HttpGet("orders/{orderId}")]
+        public async Task<ActionResult<object>> GetOrderDetail(Guid orderId)
+        {
+            var order = await _context.StoreOrders
+                .Include(o => o.User)
+                .Where(o => o.Id == orderId)
+                .Select(o => new
+                {
+                    o.Id,
+                    o.UserId,
+                    o.TotalAmount,
+                    o.Status,
+                    o.CreatedAt,
+                    User = new
+                    {
+                        o.User!.Id,
+                        o.User.Username,
+                        o.User.Email
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+                return NotFound(new { message = "Order not found" });
+
+            var items = await _context.OrderItems
+                .Where(oi => oi.OrderId == orderId)
+                .Include(oi => oi.Product)
+                .Select(oi => new
+                {
+                    oi.Id,
+                    oi.Quantity,
+                    oi.UnitPrice,
+                    oi.TotalPrice,
+                    Product = new
+                    {
+                        oi.Product!.Id,
+                        oi.Product.Name,
+                        oi.Product.CoverImageUrl
+                    }
+                })
+                .ToListAsync();
+
+            return Ok(new { order, items });
+        }
+
+        // PUT: api/admin/orders/{orderId}/status
+        [HttpPut("orders/{orderId}/status")]
+        public async Task<ActionResult> UpdateOrderStatus(Guid orderId, [FromBody] UpdateOrderStatusRequest request)
+        {
+            var order = await _context.StoreOrders.FindAsync(orderId);
+            if (order == null)
+                return NotFound(new { message = "Order not found" });
+
+            order.Status = request.Status;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Order status updated successfully" });
+        }
+
+        // DELETE: api/admin/groups/{groupId}
+        [HttpDelete("groups/{groupId}")]
+        public async Task<ActionResult> DeleteGroup(Guid groupId)
+        {
+            var group = await _context.Groups.FindAsync(groupId);
+            if (group == null)
+                return NotFound(new { message = "Group not found" });
+
+            _context.Groups.Remove(group);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Group deleted successfully" });
+        }
+    }
+
+    public class UpdateOrderStatusRequest
+    {
+        public string Status { get; set; } = string.Empty;
     }
 
     public class ReviewRequest
     {
         public string Status { get; set; } = string.Empty;
         public Guid ReviewerId { get; set; }
+    }
+
+    public class UpdateUserRequest
+    {
+        public string? Email { get; set; }
+        public string? FullName { get; set; }
     }
 
     public class BanRequest

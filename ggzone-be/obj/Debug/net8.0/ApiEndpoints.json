@@ -290,6 +290,22 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "DeleteGroup",
+    "RelativePath": "api/Admin/groups/{groupId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "groupId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
     "Method": "GetModerationQueue",
     "RelativePath": "api/Admin/moderation-queue",
     "HttpMethod": "GET",
@@ -330,6 +346,95 @@
       {
         "Name": "request",
         "Type": "ggzone_be.Controllers.ReviewRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "GetOrders",
+    "RelativePath": "api/Admin/orders",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.Object, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "GetOrderDetail",
+    "RelativePath": "api/Admin/orders/{orderId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "UpdateOrderStatus",
+    "RelativePath": "api/Admin/orders/{orderId}/status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ggzone_be.Controllers.UpdateOrderStatusRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "DeletePost",
+    "RelativePath": "api/Admin/posts/{postId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "postId",
+        "Type": "System.Guid",
         "IsRequired": true
       }
     ],
@@ -380,6 +485,27 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.AdminController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/Admin/users/{userId}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "ggzone_be.Controllers.UpdateUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "ggzone_be.Controllers.AdminController",

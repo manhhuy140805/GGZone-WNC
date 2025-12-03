@@ -16,8 +16,9 @@ import {
   Cart,
   Settings,
   CloudinaryTest,
+  Unauthorized,
 } from "@/pages";
-import { AdminLayout, Dashboard, Users as AdminUsers } from "@/features/admin";
+import { AdminLayout, Dashboard, Users as AdminUsers, Posts as AdminPosts, Products as AdminProducts, Orders as AdminOrders, Groups as AdminGroups } from "@/features/admin";
 import { useAuth } from "@/app/providers/AuthContext";
 
 interface ProtectedRouteProps {
@@ -27,6 +28,25 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
+};
+
+interface AdminRouteProps {
+  children: React.ReactNode;
+}
+
+const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
+  const { isAuthenticated, user } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  // Check if user has admin role
+  if (user?.role !== 'admin') {
+    return <Navigate to="/unauthorized" replace />;
+  }
+  
+  return <>{children}</>;
 };
 
 // Wrapper components to handle URL params
@@ -119,6 +139,7 @@ export const AppRoutes: React.FC = () => {
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Protected Routes */}
       <Route
@@ -226,13 +247,13 @@ export const AppRoutes: React.FC = () => {
         }
       />
       {/* Admin Routes */}
-      <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+      <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
         <Route index element={<Dashboard />} />
         <Route path="users" element={<AdminUsers />} />
-        <Route path="posts" element={<div className="text-2xl font-bold">Posts Management - Coming Soon</div>} />
-        <Route path="products" element={<div className="text-2xl font-bold">Products Management - Coming Soon</div>} />
-        <Route path="orders" element={<div className="text-2xl font-bold">Orders Management - Coming Soon</div>} />
-        <Route path="groups" element={<div className="text-2xl font-bold">Groups Management - Coming Soon</div>} />
+        <Route path="posts" element={<AdminPosts />} />
+        <Route path="products" element={<AdminProducts />} />
+        <Route path="orders" element={<AdminOrders />} />
+        <Route path="groups" element={<AdminGroups />} />
       </Route>
       <Route
         path="/test/cloudinary"
