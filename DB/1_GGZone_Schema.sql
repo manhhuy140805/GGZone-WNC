@@ -312,7 +312,7 @@ CREATE TABLE StoreOrders (
     ProductId UNIQUEIDENTIFIER,
     Quantity INT DEFAULT 1,
     TotalAmount DECIMAL(10, 2) NOT NULL,
-    Status NVARCHAR(20) DEFAULT 'pending' CHECK (Status IN ('pending', 'completed', 'cancelled')),
+    Status NVARCHAR(20) DEFAULT 'pending' CHECK (Status IN ('pending', 'completed', 'cancelled', 'Confirmed', 'Shipping')),
     CreatedAt DATETIME2 DEFAULT GETDATE(),
     FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
     FOREIGN KEY (ProductId) REFERENCES StoreProducts(Id)

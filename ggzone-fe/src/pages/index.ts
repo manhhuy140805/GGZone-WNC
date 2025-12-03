@@ -22,9 +22,6 @@ export { Browse, GameDetail } from '@/features/games';
 // Home
 export { Home } from '@/features/home';
 
-// Admin
-export { Admin } from '@/features/admin';
-
 // Other pages that remain in pages folder
 export { Settings } from './Settings';
 export { Messages } from './Messages';

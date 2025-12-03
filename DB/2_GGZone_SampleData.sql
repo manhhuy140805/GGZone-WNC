@@ -187,6 +187,11 @@ DECLARE @Order2 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Order3 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Order4 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Order5 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order6 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order7 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order8 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order9 UNIQUEIDENTIFIER = NEWID();
+DECLARE @Order10 UNIQUEIDENTIFIER = NEWID();
 
 -- ================================================
 -- INSERT USERS
@@ -938,11 +943,16 @@ VALUES
 -- ================================================
 INSERT INTO StoreOrders (Id, UserId, ProductId, Quantity, TotalAmount, Status)
 VALUES
-(@Order1, @User1, @Prod1, 1, 50000.00, 'completed'),
+(@Order1, @User1, @Prod1, 1, 50000.00, 'Confirmed'),
 (@Order2, @User2, @Prod3, 1, 150000.00, 'completed'),
 (@Order3, @User3, @Prod2, 1, 100000.00, 'pending'),
 (@Order4, @User4, @Prod5, 1, 400000.00, 'completed'),
-(@Order5, @User6, @Prod7, 2, 500000.00, 'completed');
+(@Order5, @User6, @Prod7, 2, 500000.00, 'completed'),
+(@Order6, @User1, @Prod3, 1, 50000.00, 'Shipping'),
+(@Order7, @User2, @Prod1, 1, 150000.00, 'completed'),
+(@Order8, @User3, @Prod12, 1, 100000.00, 'pending'),
+(@Order9, @User4, @Prod15, 1, 400000.00, 'completed'),
+(@Order10, @User6, @Prod17, 2, 500000.00, 'completed');
 
 -- ================================================
 -- INSERT ORDER ITEMS

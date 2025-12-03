@@ -216,6 +216,14 @@ export const API_CONFIG = {
       REMOVE: (id: string) => `/api/shoppingcart/${id}`,
       CLEAR: (userId: string) => `/api/shoppingcart/user/${userId}`,
     },
+
+    // Orders
+    ORDER: {
+      BASE: '/api/order',
+      BY_USER: (userId: string) => `/api/order/${userId}`,
+      BY_ID: (orderId: string) => `/api/order/detail/${orderId}`,
+      CANCEL: (orderId: string) => `/api/order/${orderId}`,
+    },
   },
   TIMEOUT: 30000, // 30 seconds
 };

@@ -16,8 +16,8 @@ import {
   Cart,
   Settings,
   CloudinaryTest,
-  Admin as AdminPage,
 } from "@/pages";
+import { AdminLayout, Dashboard, Users as AdminUsers } from "@/features/admin";
 import { useAuth } from "@/app/providers/AuthContext";
 
 interface ProtectedRouteProps {
@@ -225,14 +225,15 @@ export const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute>
-            <AdminPage />
-          </ProtectedRoute>
-        }
-      />
+      {/* Admin Routes */}
+      <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+        <Route index element={<Dashboard />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="posts" element={<div className="text-2xl font-bold">Posts Management - Coming Soon</div>} />
+        <Route path="products" element={<div className="text-2xl font-bold">Products Management - Coming Soon</div>} />
+        <Route path="orders" element={<div className="text-2xl font-bold">Orders Management - Coming Soon</div>} />
+        <Route path="groups" element={<div className="text-2xl font-bold">Groups Management - Coming Soon</div>} />
+      </Route>
       <Route
         path="/test/cloudinary"
         element={
