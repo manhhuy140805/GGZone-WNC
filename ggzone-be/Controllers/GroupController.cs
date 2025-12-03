@@ -9,21 +9,23 @@ namespace ggzone_be.Controllers
 {
     [ApiController]
     [Route("api/groups")]
-    public class GroupController : ControllerBase
+    public class GroupController : BaseApiController
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<GroupController> _logger;
 
-        public GroupController(AppDbContext context)
+        public GroupController(AppDbContext context, ILogger<GroupController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        private Guid GetCurrentUserId()
+        private Guid GetCurrentUserIdOrThrow()
         {
-            var userIdClaim = User.FindFirst("id")?.Value ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim))
+            var userId = GetCurrentUserId();
+            if (userId == null)
                 throw new UnauthorizedAccessException("User ID not found in token");
-            return Guid.Parse(userIdClaim);
+            return userId.Value;
         }
 
         [HttpGet]
@@ -57,7 +59,7 @@ namespace ggzone_be.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] GetAllGroups: {ex.Message}");
+                _logger.LogError(ex, "Error loading groups");
                 return StatusCode(500, new { message = "Error loading groups", error = ex.Message });
             }
         }
@@ -179,7 +181,7 @@ namespace ggzone_be.Controllers
         {
             try
             {
-                var userId = GetCurrentUserId();
+                var userId = GetCurrentUserIdOrThrow();
 
                 // Validate user exists
                 var user = await _context.Users.FindAsync(userId);
@@ -228,8 +230,7 @@ namespace ggzone_be.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] CreateGroup: {ex.Message}");
-                Console.WriteLine($"[ERROR] StackTrace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error creating group");
                 return StatusCode(500, new { message = "Error creating group", error = ex.Message });
             }
         }
@@ -238,7 +239,7 @@ namespace ggzone_be.Controllers
         [Authorize]
         public async Task<IActionResult> JoinGroup(Guid id)
         {
-            var userId = GetCurrentUserId();
+            var userId = GetCurrentUserIdOrThrow();
 
             // Kiểm tra user tồn tại
             var user = await _context.Users.FindAsync(userId);
@@ -275,7 +276,7 @@ namespace ggzone_be.Controllers
         [Authorize]
         public async Task<IActionResult> LeaveGroup(Guid id)
         {
-            var userId = GetCurrentUserId();
+            var userId = GetCurrentUserIdOrThrow();
 
             // Kiểm tra user tồn tại
             var user = await _context.Users.FindAsync(userId);

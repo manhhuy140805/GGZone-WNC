@@ -11,13 +11,15 @@ namespace ggzone_be.Controllers
 {
     [ApiController]
     [Route("api/posts")]
-    public class PostController : ControllerBase
+    public class PostController : BaseApiController
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<PostController> _logger;
 
-        public PostController(AppDbContext context)
+        public PostController(AppDbContext context, ILogger<PostController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         private object MapPostToDto(Post? p, Guid? currentUserId = null)
@@ -278,7 +280,7 @@ namespace ggzone_be.Controllers
                     return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
                 var utcNow = DateTime.Now;
-                Console.WriteLine($"Creating post at UTC: {utcNow:O}"); // ISO 8601 format
+                _logger.LogDebug("Creating post at UTC: {Time}", utcNow);
                 
                 var post = new Post
                 {
@@ -294,7 +296,7 @@ namespace ggzone_be.Controllers
                 _context.Posts.Add(post);
                 await _context.SaveChangesAsync();
                 
-                Console.WriteLine($"Post saved with CreatedAt: {post.CreatedAt:O}");
+                _logger.LogDebug("Post saved with CreatedAt: {Time}", post.CreatedAt);
 
                 // Add media if provided
                 if (dto.MediaUrls != null && dto.MediaUrls.Count > 0)
@@ -434,7 +436,7 @@ namespace ggzone_be.Controllers
                 await _context.Entry(post).ReloadAsync();
                 var newCount = post.LikesCount;
                 
-                Console.WriteLine($"Like: Old count = {oldCount}, New count = {newCount}");
+                _logger.LogDebug("Like: Old count = {OldCount}, New count = {NewCount}", oldCount, newCount);
 
                 return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post liked"));
             }
@@ -478,7 +480,7 @@ namespace ggzone_be.Controllers
                 await _context.Entry(post).ReloadAsync();
                 var newCount = post.LikesCount;
                 
-                Console.WriteLine($"Unlike: Old count = {oldCount}, New count = {newCount}");
+                _logger.LogDebug("Unlike: Old count = {OldCount}, New count = {NewCount}", oldCount, newCount);
 
                 return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post unliked"));
             }

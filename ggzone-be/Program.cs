@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<ILoggerService, LoggerService>();
 
 // Register Repositories
 builder.Services.AddScoped<IPostRepository, ggzone_be.Repositorys.PostRepository>();
@@ -43,16 +44,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             OnAuthenticationFailed = context =>
             {
-                Console.WriteLine($"[JWT] Authentication failed: {context.Exception.Message}");
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogWarning("JWT Authentication failed: {Message}", context.Exception.Message);
                 if (context.Exception is SecurityTokenExpiredException)
                 {
-                    Console.WriteLine($"[JWT] Token expired at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                    logger.LogWarning("JWT Token expired at: {Time} UTC", DateTime.UtcNow);
                 }
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
-                Console.WriteLine($"[JWT] Token validated successfully at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+                logger.LogInformation("JWT Token validated successfully at: {Time} UTC", DateTime.UtcNow);
                 return Task.CompletedTask;
             }
         };

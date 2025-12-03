@@ -17,12 +17,14 @@ namespace ggzone_be.Services
         private readonly AppDbContext _context;
         private readonly IConfiguration _config;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(AppDbContext context, IConfiguration config, IUserRepository userRepository)
+        public UserService(AppDbContext context, IConfiguration config, IUserRepository userRepository, ILogger<UserService> logger)
         {
             _context = context;
             _config = config;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         public async Task<User> RegisterAsync(RegisterDto dto)
@@ -216,9 +218,7 @@ namespace ggzone_be.Services
             );
 
             // Log token creation time for debugging
-            Console.WriteLine($"[JWT] Token created at: {now:yyyy-MM-dd HH:mm:ss} UTC");
-            Console.WriteLine($"[JWT] Token expires at: {expires:yyyy-MM-dd HH:mm:ss} UTC");
-            Console.WriteLine($"[JWT] Token lifetime: 7 days");
+            _logger.LogDebug("JWT Token created at: {CreatedAt} UTC, expires at: {ExpiresAt} UTC (7 days)", now, expires);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
