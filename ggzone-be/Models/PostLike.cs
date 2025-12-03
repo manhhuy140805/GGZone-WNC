@@ -17,7 +17,7 @@ namespace ggzone_be.Models
         [Required]
         public Guid UserId { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("PostId")]

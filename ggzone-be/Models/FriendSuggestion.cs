@@ -23,7 +23,7 @@ namespace ggzone_be.Models
 
         public bool IsShown { get; set; } = false;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("UserId")]

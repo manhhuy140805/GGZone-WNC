@@ -127,7 +127,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Message>> SendMessage([FromBody] Message message)
         {
             message.Id = Guid.NewGuid();
-            message.CreatedAt = DateTime.UtcNow;
+            message.CreatedAt = DateTime.Now;
             message.IsRead = false;
 
             _context.Messages.Add(message);
@@ -147,7 +147,7 @@ namespace ggzone_be.Controllers
                     RelatedId = message.Id,
                     RelatedType = "message",
                     IsRead = false,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.Notifications.Add(notification);

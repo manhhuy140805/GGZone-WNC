@@ -24,8 +24,6 @@ namespace ggzone_be.Models
 
         public int VideosCount { get; set; } = 0;
 
-        public int ForumsCount { get; set; } = 0;
-
         public int GroupsCount { get; set; } = 0;
 
         public int TotalPoints { get; set; } = 0;

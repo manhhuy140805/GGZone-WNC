@@ -4,10 +4,27 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  fullName: string;
+  fullName?: string;
   avatarUrl?: string;
-  role: string;
+  coverImageUrl?: string;
   bio?: string;
+  location?: string;
+  role?: string;
+  isVerified?: boolean;
+  status?: string;
+  createdAt?: string;
+  stats?: {
+    friendsCount: number;
+    winningCount: number;
+    tournamentsCount: number;
+    postsCount: number;
+    photosCount: number;
+    videosCount: number;
+    forumsCount: number;
+    groupsCount: number;
+    totalPoints: number;
+    level: number;
+  };
 }
 
 export interface Game {
@@ -59,6 +76,7 @@ export interface Post {
   videoUrl?: string;
   isPinned?: boolean;
   groupId?: string;
+  isLiked?: boolean;
 }
 
 export interface Photo {

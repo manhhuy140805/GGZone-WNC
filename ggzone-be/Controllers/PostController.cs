@@ -1,8 +1,10 @@
+using ggzone_be.Data;
 using ggzone_be.Dtos.Post;
-using ggzone_be.Interfaces;
+using ggzone_be.Helpers;
 using ggzone_be.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace ggzone_be.Controllers
@@ -11,179 +13,479 @@ namespace ggzone_be.Controllers
     [Route("api/posts")]
     public class PostController : ControllerBase
     {
-        private readonly IPostRepository _postRepo;
+        private readonly AppDbContext _context;
 
-        public PostController(IPostRepository postRepo)
+        public PostController(AppDbContext context)
         {
-            _postRepo = postRepo;
+            _context = context;
         }
 
-        private Guid GetCurrentUserId()
+        private object MapPostToDto(Post? p, Guid? currentUserId = null)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Guid.Parse(userIdClaim ?? Guid.Empty.ToString());
-        }
+            if (p == null)
+                throw new ArgumentNullException(nameof(p));
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllPosts()
-        {
-            var posts = await _postRepo.GetAllPostsAsync();
-            var currentUserId = User.Identity?.IsAuthenticated == true ? GetCurrentUserId() : Guid.Empty;
-
-            var response = posts.Select(p => new PostResponseDto
+            bool isLiked = false;
+            if (currentUserId.HasValue)
             {
-                Id = p.Id,
-                UserId = p.UserId,
-                Username = p.User.Username,
-                FullName = p.User.FullName,
-                AvatarUrl = p.User.AvatarUrl,
-                GroupId = p.GroupId,
-                GroupName = p.Group?.Name,
-                Content = p.Content,
-                PostType = p.PostType,
-                VideoUrl = p.VideoUrl,
-                LikesCount = p.LikesCount,
-                CommentsCount = p.CommentsCount,
-                SharesCount = p.SharesCount,
-                IsPinned = p.IsPinned,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                MediaUrls = p.Media?.Select(pm => pm.MediaUrl).ToList(),
-                IsLikedByCurrentUser = currentUserId != Guid.Empty && _postRepo.IsPostLikedByUserAsync(p.Id, currentUserId).Result
-            }).ToList();
+                isLiked = _context.PostLikes.Any(pl => pl.PostId == p.Id && pl.UserId == currentUserId.Value);
+            }
 
-            return Ok(response);
+            return new
+            {
+                id = p.Id,
+                content = p.Content,
+                createdAt = p.CreatedAt,
+                likesCount = p.LikesCount,
+                commentsCount = p.CommentsCount,
+                author = new
+                {
+                    id = p.User!.Id,
+                    username = p.User.Username,
+                    avatarUrl = p.User.AvatarUrl
+                },
+                media = p.Media.OrderBy(m => m.OrderIndex).Select(m => new
+                {
+                    id = m.Id,
+                    mediaUrl = m.MediaUrl,
+                    mediaType = m.MediaType
+                }).ToList(),
+                groupId = p.GroupId,
+                isLiked = isLiked
+            };
         }
 
+        // GET: api/posts/debug-user - Debug current user
+        [HttpGet("debug-user")]
+        [Authorize]
+        public IActionResult DebugUser()
+        {
+            var userId = User.FindFirst("id")?.Value;
+            var username = User.FindFirst("username")?.Value;
+            var email = User.FindFirst("email")?.Value;
+            
+            return Ok(new
+            {
+                userId,
+                username,
+                email,
+                claims = User.Claims.Select(c => new { c.Type, c.Value }).ToList()
+            });
+        }
+
+        // GET: api/posts/feed - Lấy feed posts (có phân trang)
         [HttpGet("feed")]
         [Authorize]
-        public async Task<IActionResult> GetUserFeed([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
+        public async Task<IActionResult> GetFeed(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = "latest",
+            [FromQuery] string? groupId = null)
         {
-            var userId = GetCurrentUserId();
-            var posts = await _postRepo.GetUserFeedAsync(userId, page, pageSize);
-
-            var response = posts.Select(p => new PostResponseDto
+            try
             {
-                Id = p.Id,
-                UserId = p.UserId,
-                Username = p.User.Username,
-                FullName = p.User.FullName,
-                AvatarUrl = p.User.AvatarUrl,
-                GroupId = p.GroupId,
-                GroupName = p.Group?.Name,
-                Content = p.Content,
-                PostType = p.PostType,
-                VideoUrl = p.VideoUrl,
-                LikesCount = p.LikesCount,
-                CommentsCount = p.CommentsCount,
-                SharesCount = p.SharesCount,
-                IsPinned = p.IsPinned,
-                CreatedAt = p.CreatedAt,
-                UpdatedAt = p.UpdatedAt,
-                MediaUrls = p.Media?.Select(pm => pm.MediaUrl).ToList(),
-                IsLikedByCurrentUser = _postRepo.IsPostLikedByUserAsync(p.Id, userId).Result
-            }).ToList();
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
-            return Ok(response);
+                var query = _context.Posts.AsQueryable();
+
+                // Filter by group
+                if (!string.IsNullOrWhiteSpace(groupId) && Guid.TryParse(groupId, out var groupParsed))
+                {
+                    query = query.Where(p => p.GroupId == groupParsed);
+                }
+
+                // Sort - Always use Id as tiebreaker for consistent ordering
+                query = sortBy?.ToLower() switch
+                {
+                    "trending" => query.OrderByDescending(p => p.LikesCount)
+                                      .ThenByDescending(p => p.CreatedAt)
+                                      .ThenByDescending(p => p.Id),
+                    "oldest" => query.OrderBy(p => p.CreatedAt)
+                                    .ThenBy(p => p.Id),
+                    _ => query.OrderByDescending(p => p.CreatedAt)
+                              .ThenByDescending(p => p.Id) // latest - newest first
+                };
+
+                var total = await query.CountAsync();
+                var posts = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Include(p => p.User)
+                    .Include(p => p.Media)
+                    .ToListAsync();
+
+                var currentUserId = Guid.Parse(userId);
+                var postsDto = posts.Select(p => MapPostToDto(p, currentUserId)).ToList();
+
+                return Ok(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        posts = postsDto,
+                        total,
+                        page,
+                        pageSize,
+                        totalPages = (int)Math.Ceiling((double)total / pageSize)
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
         }
 
+        // GET: api/posts/filter - Lọc posts theo group, user
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterPosts(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? groupId = null,
+            [FromQuery] string? userId = null,
+            [FromQuery] string? sortBy = "latest")
+        {
+            try
+            {
+                var query = _context.Posts.AsQueryable();
+
+                // Filter by group
+                if (!string.IsNullOrWhiteSpace(groupId) && Guid.TryParse(groupId, out var groupParsed))
+                {
+                    query = query.Where(p => p.GroupId == groupParsed);
+                }
+
+                // Filter by user
+                if (!string.IsNullOrWhiteSpace(userId) && Guid.TryParse(userId, out var userParsed))
+                {
+                    query = query.Where(p => p.UserId == userParsed);
+                }
+
+                // Sort
+                query = sortBy?.ToLower() switch
+                {
+                    "trending" => query.OrderByDescending(p => p.LikesCount).ThenByDescending(p => p.CreatedAt),
+                    "oldest" => query.OrderBy(p => p.CreatedAt),
+                    _ => query.OrderByDescending(p => p.CreatedAt) // latest
+                };
+
+                var total = await query.CountAsync();
+                var posts = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Include(p => p.User)
+                    .Include(p => p.Media)
+                    .ToListAsync();
+
+                var postsDto = posts.Select(p => MapPostToDto(p)).ToList();
+
+                return Ok(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        posts = postsDto,
+                        total,
+                        page,
+                        pageSize,
+                        totalPages = (int)Math.Ceiling((double)total / pageSize)
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
+        }
+
+        // GET: api/posts/search - Tìm kiếm posts
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchPosts(
+            [FromQuery] string q,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(q))
+                    return BadRequest(ApiResponse.ErrorResponse("Search query is required"));
+
+                var query = _context.Posts
+                    .Where(p => p.Content.Contains(q))
+                    .OrderByDescending(p => p.CreatedAt);
+
+                var total = await query.CountAsync();
+                var posts = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Include(p => p.User)
+                    .Include(p => p.Media)
+                    .ToListAsync();
+
+                var postsDto = posts.Select(p => MapPostToDto(p)).ToList();
+
+                return Ok(new
+                {
+                    success = true,
+                    data = new
+                    {
+                        posts = postsDto,
+                        total,
+                        page,
+                        pageSize,
+                        totalPages = (int)Math.Ceiling((double)total / pageSize)
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
+        }
+
+        // GET: api/posts/{id} - Lấy post theo ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetPostById(Guid id)
         {
-            var post = await _postRepo.GetPostByIdAsync(id);
-            if (post == null) return NotFound();
-
-            var currentUserId = User.Identity?.IsAuthenticated == true ? GetCurrentUserId() : Guid.Empty;
-
-            var response = new PostResponseDto
+            try
             {
-                Id = post.Id,
-                UserId = post.UserId,
-                Username = post.User.Username,
-                FullName = post.User.FullName,
-                AvatarUrl = post.User.AvatarUrl,
-                GroupId = post.GroupId,
-                GroupName = post.Group?.Name,
-                Content = post.Content,
-                PostType = post.PostType,
-                VideoUrl = post.VideoUrl,
-                LikesCount = post.LikesCount,
-                CommentsCount = post.CommentsCount,
-                SharesCount = post.SharesCount,
-                IsPinned = post.IsPinned,
-                CreatedAt = post.CreatedAt,
-                UpdatedAt = post.UpdatedAt,
-                MediaUrls = post.Media?.Select(pm => pm.MediaUrl).ToList(),
-                IsLikedByCurrentUser = currentUserId != Guid.Empty && await _postRepo.IsPostLikedByUserAsync(post.Id, currentUserId)
-            };
+                var post = await _context.Posts
+                    .Include(p => p.User)
+                    .FirstOrDefaultAsync(p => p.Id == id);
 
-            return Ok(response);
+                if (post == null)
+                    return NotFound(ApiResponse.ErrorResponse("Post not found"));
+
+                return Ok(ApiResponse<Post>.SuccessResponse(post));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
         }
 
+        // POST: api/posts - Tạo post mới
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreatePost([FromBody] CreatePostDto dto)
         {
-            var userId = GetCurrentUserId();
-
-            var post = new Post
+            try
             {
-                UserId = userId,
-                GroupId = dto.GroupId,
-                Content = dto.Content,
-                PostType = dto.PostType,
-                VideoUrl = dto.VideoUrl
-            };
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
-            var createdPost = await _postRepo.CreatePostAsync(post);
+                var utcNow = DateTime.Now;
+                Console.WriteLine($"Creating post at UTC: {utcNow:O}"); // ISO 8601 format
+                
+                var post = new Post
+                {
+                    Id = Guid.NewGuid(),
+                    Content = dto.Content,
+                    UserId = Guid.Parse(userId),
+                    GroupId = dto.GroupId,
+                    CreatedAt = utcNow,
+                    LikesCount = 0,
+                    CommentsCount = 0
+                };
 
-            // Add media if gallery type
-            if (dto.PostType == "gallery" && dto.MediaUrls != null && dto.MediaUrls.Any())
-            {
-                // You would add PostMedia here
+                _context.Posts.Add(post);
+                await _context.SaveChangesAsync();
+                
+                Console.WriteLine($"Post saved with CreatedAt: {post.CreatedAt:O}");
+
+                // Add media if provided
+                if (dto.MediaUrls != null && dto.MediaUrls.Count > 0)
+                {
+                    var mediaList = new List<PostMedia>();
+                    for (int i = 0; i < dto.MediaUrls.Count; i++)
+                    {
+                        var media = new PostMedia
+                        {
+                            Id = Guid.NewGuid(),
+                            PostId = post.Id,
+                            MediaUrl = dto.MediaUrls[i].Url,
+                            MediaType = dto.MediaUrls[i].Type,
+                            OrderIndex = i,
+                            CreatedAt = DateTime.Now
+                        };
+                        mediaList.Add(media);
+                    }
+                    _context.PostMedia.AddRange(mediaList);
+                    await _context.SaveChangesAsync();
+                }
+
+                // Reload post with media
+                var createdPost = await _context.Posts
+                    .Include(p => p.User)
+                    .Include(p => p.Media)
+                    .FirstOrDefaultAsync(p => p.Id == post.Id);
+
+                return Ok(ApiResponse<object>.SuccessResponse(MapPostToDto(createdPost), "Post created successfully"));
             }
-
-            return CreatedAtAction(nameof(GetPostById), new { id = createdPost.Id }, createdPost);
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
         }
 
-        [HttpPost("{id}/like")]
+        // PUT: api/posts/{id} - Cập nhật post
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> LikePost(Guid id)
+        public async Task<IActionResult> UpdatePost(Guid id, [FromBody] UpdatePostDto dto)
         {
-            var userId = GetCurrentUserId();
-            var result = await _postRepo.LikePostAsync(id, userId);
+            try
+            {
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
-            if (!result) return BadRequest("Already liked or post not found");
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                if (post == null)
+                    return NotFound(ApiResponse.ErrorResponse("Post not found"));
 
-            return Ok(new { message = "Post liked successfully" });
+                if (post.UserId != Guid.Parse(userId))
+                    return Forbid();
+
+                post.Content = dto.Content;
+                post.UpdatedAt = DateTime.Now;
+
+                _context.Posts.Update(post);
+                await _context.SaveChangesAsync();
+
+                return Ok(ApiResponse<Post>.SuccessResponse(post, "Post updated successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
         }
 
-        [HttpDelete("{id}/like")]
-        [Authorize]
-        public async Task<IActionResult> UnlikePost(Guid id)
-        {
-            var userId = GetCurrentUserId();
-            var result = await _postRepo.UnlikePostAsync(id, userId);
-
-            if (!result) return BadRequest("Not liked or post not found");
-
-            return Ok(new { message = "Post unliked successfully" });
-        }
-
+        // DELETE: api/posts/{id} - Xóa post
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeletePost(Guid id)
         {
-            var userId = GetCurrentUserId();
-            var post = await _postRepo.GetPostByIdAsync(id);
+            try
+            {
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
 
-            if (post == null) return NotFound();
-            if (post.UserId != userId) return Forbid();
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                if (post == null)
+                    return NotFound(ApiResponse.ErrorResponse("Post not found"));
 
-            var result = await _postRepo.DeletePostAsync(id);
-            if (!result) return BadRequest("Failed to delete post");
+                if (post.UserId != Guid.Parse(userId))
+                    return Forbid();
 
-            return Ok(new { message = "Post deleted successfully" });
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+
+                return Ok(ApiResponse.SuccessResponse("Post deleted successfully"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse(ex.Message));
+            }
+        }
+
+        // POST: api/posts/{id}/like - Like post
+        [HttpPost("{id}/like")]
+        [Authorize]
+        public async Task<IActionResult> LikePost(Guid id)
+        {
+            try
+            {
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
+
+                var userGuid = Guid.Parse(userId);
+                
+                // Verify user exists
+                var userExists = await _context.Users.AnyAsync(u => u.Id == userGuid);
+                if (!userExists)
+                    return Unauthorized(ApiResponse.ErrorResponse("User not found"));
+
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                if (post == null)
+                    return NotFound(ApiResponse.ErrorResponse("Post not found"));
+
+                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == userGuid);
+                if (like != null)
+                    return BadRequest(ApiResponse.ErrorResponse("Already liked"));
+
+                var newLike = new PostLike
+                {
+                    Id = Guid.NewGuid(),
+                    PostId = id,
+                    UserId = userGuid,
+                    CreatedAt = DateTime.Now
+                };
+
+                var oldCount = post.LikesCount;
+                _context.PostLikes.Add(newLike);
+                await _context.SaveChangesAsync();
+
+                // Reload post to get updated LikesCount from trigger
+                await _context.Entry(post).ReloadAsync();
+                var newCount = post.LikesCount;
+                
+                Console.WriteLine($"Like: Old count = {oldCount}, New count = {newCount}");
+
+                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post liked"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse($"Error: {ex.Message}. Inner: {ex.InnerException?.Message}"));
+            }
+        }
+
+        // DELETE: api/posts/{id}/like - Unlike post
+        [HttpDelete("{id}/like")]
+        [Authorize]
+        public async Task<IActionResult> UnlikePost(Guid id)
+        {
+            try
+            {
+                var userId = User.FindFirst("id")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(ApiResponse.ErrorResponse("Unauthorized"));
+
+                var userGuid = Guid.Parse(userId);
+                
+                // Verify user exists
+                var userExists = await _context.Users.AnyAsync(u => u.Id == userGuid);
+                if (!userExists)
+                    return Unauthorized(ApiResponse.ErrorResponse("User not found"));
+
+                var post = await _context.Posts.FirstOrDefaultAsync(p => p.Id == id);
+                if (post == null)
+                    return NotFound(ApiResponse.ErrorResponse("Post not found"));
+
+                var like = await _context.PostLikes.FirstOrDefaultAsync(l => l.PostId == id && l.UserId == userGuid);
+                if (like == null)
+                    return BadRequest(ApiResponse.ErrorResponse("Not liked yet"));
+
+                var oldCount = post.LikesCount;
+                _context.PostLikes.Remove(like);
+                await _context.SaveChangesAsync();
+
+                // Reload post to get updated LikesCount from trigger
+                await _context.Entry(post).ReloadAsync();
+                var newCount = post.LikesCount;
+                
+                Console.WriteLine($"Unlike: Old count = {oldCount}, New count = {newCount}");
+
+                return Ok(ApiResponse<object>.SuccessResponse(new { likeCount = newCount }, "Post unliked"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ApiResponse.ErrorResponse($"Error: {ex.Message}. Inner: {ex.InnerException?.Message}"));
+            }
         }
     }
 }

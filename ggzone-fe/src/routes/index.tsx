@@ -7,7 +7,6 @@ import {
   Feed,
   Groups,
   GroupDetail as GroupDetailPage,
-  Marketplace,
   ProductDetail as ProductDetailPage,
   Profile,
   Login,
@@ -15,9 +14,11 @@ import {
   Friends,
   Messages,
   Cart,
-} from "../pages";
-import { useAuth } from "../context/AuthContext";
-import AdminPage from "../admin/admin";
+  Settings,
+  CloudinaryTest,
+} from "@/pages";
+import { AdminLayout, Dashboard, Users as AdminUsers } from "@/features/admin";
+import { useAuth } from "@/app/providers/AuthContext";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -42,7 +43,7 @@ const GroupDetail: React.FC = () => {
     <GroupDetailPage
       groupId={groupId || ""}
       onBack={() => navigate("/groups")}
-      onOpenChat={(id) => navigate("/messages")}
+      onOpenChat={() => navigate("/messages")}
     />
   );
 };
@@ -53,8 +54,8 @@ const ProductDetail: React.FC = () => {
   return (
     <ProductDetailPage
       productId={productId || ""}
-      onBack={() => navigate("/marketplace")}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
+      onBack={() => navigate("/store")}
+      onViewProduct={(id) => navigate(`/store/${id}`)}
     />
   );
 };
@@ -69,9 +70,17 @@ const GroupsWrapper: React.FC = () => {
   return <Groups onViewGroup={(id) => navigate(`/groups/${id}`)} />;
 };
 
-const MarketplaceWrapper: React.FC = () => {
+const StoreWrapper: React.FC = () => {
   const navigate = useNavigate();
-  return <Marketplace onViewProduct={(id) => navigate(`/marketplace/${id}`)} />;
+  const Store = React.lazy(() => import('@/features/store').then(m => ({ default: m.Store })));
+  
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <Store 
+        onViewProduct={(id: string) => navigate(`/store/${id}`)}
+      />
+    </React.Suspense>
+  );
 };
 
 const HomeWrapper: React.FC = () => {
@@ -80,15 +89,15 @@ const HomeWrapper: React.FC = () => {
     <Home
       onNavigate={(page) => {
         const routes: { [key: string]: string } = {
-          MARKETPLACE: "/marketplace",
+          STORE: "/store",
           BROWSE: "/browse",
           GROUPS: "/groups",
         };
         navigate(routes[page] || "/");
       }}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
-      onViewGame={(id) => navigate(`/browse/${id}`)}
-      onViewGroup={(id) => navigate(`/groups/${id}`)}
+      onViewGame={(id: string) => navigate(`/browse/${id}`)}
+      onViewGroup={(id: string) => navigate(`/groups/${id}`)}
+      onViewProduct={(id: string) => navigate(`/store/${id}`)}
     />
   );
 };
@@ -97,9 +106,9 @@ const CartWrapper: React.FC = () => {
   const navigate = useNavigate();
   return (
     <Cart
-      onBack={() => navigate("/marketplace")}
-      onViewProduct={(id) => navigate(`/marketplace/${id}`)}
-      onCheckout={() => alert("Checkout functionality coming soon!")}
+      onBack={() => navigate("/store")}
+      onViewProduct={(id) => navigate(`/store/${id}`)}
+      onCheckout={() => navigate("/store?tab=orders")}
     />
   );
 };
@@ -161,15 +170,15 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/marketplace"
+        path="/store"
         element={
           <ProtectedRoute>
-            <MarketplaceWrapper />
+            <StoreWrapper />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/marketplace/:productId"
+        path="/store/:productId"
         element={
           <ProtectedRoute>
             <ProductDetail />
@@ -209,10 +218,27 @@ export const AppRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/admin"
+        path="/settings"
         element={
           <ProtectedRoute>
-            <AdminPage />
+            <Settings />
+          </ProtectedRoute>
+        }
+      />
+      {/* Admin Routes */}
+      <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+        <Route index element={<Dashboard />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="posts" element={<div className="text-2xl font-bold">Posts Management - Coming Soon</div>} />
+        <Route path="products" element={<div className="text-2xl font-bold">Products Management - Coming Soon</div>} />
+        <Route path="orders" element={<div className="text-2xl font-bold">Orders Management - Coming Soon</div>} />
+        <Route path="groups" element={<div className="text-2xl font-bold">Groups Management - Coming Soon</div>} />
+      </Route>
+      <Route
+        path="/test/cloudinary"
+        element={
+          <ProtectedRoute>
+            <CloudinaryTest />
           </ProtectedRoute>
         }
       />

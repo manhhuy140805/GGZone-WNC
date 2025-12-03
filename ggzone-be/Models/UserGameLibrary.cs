@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ggzone_be.Models
 {
+    [Table("UserGameLibrary")]
     public class UserGameLibrary
     {
         [Key]
@@ -26,7 +27,7 @@ namespace ggzone_be.Models
 
         public bool IsFavorite { get; set; } = false;
 
-        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AddedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("UserId")]

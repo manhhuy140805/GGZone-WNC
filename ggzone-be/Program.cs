@@ -14,9 +14,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register Services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 // Register Repositories
 builder.Services.AddScoped<IPostRepository, ggzone_be.Repositorys.PostRepository>();
+builder.Services.AddScoped<IUserRepository, ggzone_be.Repositorys.UserRepository>();
 
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -32,7 +34,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
-            )
+            ),
+            ClockSkew = TimeSpan.Zero // Loại bỏ clock skew mặc định 5 phút
+        };
+        
+        // Log authentication failures for debugging
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine($"[JWT] Authentication failed: {context.Exception.Message}");
+                if (context.Exception is SecurityTokenExpiredException)
+                {
+                    Console.WriteLine($"[JWT] Token expired at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                }
+                return Task.CompletedTask;
+            },
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine($"[JWT] Token validated successfully at: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC");
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -41,15 +63,24 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:7009", "https://localhost:7009")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowCredentials()
+              .WithExposedHeaders("Authorization");
     });
 });
 
 // Add services
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Convert PascalCase to camelCase for JSON responses
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        
+        // Ensure DateTime is serialized in UTC with 'Z' suffix
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

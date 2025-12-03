@@ -35,7 +35,7 @@ namespace ggzone_be.Models
 
         public string? ReviewNotes { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("UserId")]

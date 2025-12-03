@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import { useCart } from "../../context/CartContext";
+import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings, User, Lock, Heart } from "lucide-react";
+import { useAuth } from "@/app/providers/AuthContext";
+import { useCart } from "@/app/providers/CartContext";
 import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onMenuToggle?: () => void;
   onLogout?: () => void;
   onViewCart?: () => void;
+  onEditProfile?: () => void;
+  onChangePassword?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCart }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+  onMenuToggle, 
+  onLogout, 
+  onViewCart,
+  onEditProfile,
+  onChangePassword
+}) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const { user, logout } = useAuth();
@@ -53,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
               />
               <input
                 type="text"
-                placeholder="Search games, users..."
+                placeholder="Search games, users, posts..."
                 className="w-full pl-10 pr-4 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition"
               />
             </div>
@@ -93,7 +101,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
                       <div className="flex items-center justify-between">
                         <h3 className="font-bold text-gray-900 flex items-center gap-2">
                           <ShoppingCart size={20} className="text-orange-600" />
-                          Shopping Cart
+                          My Cart
                         </h3>
                         <span className="text-sm text-gray-600">
                           {cartCount} {cartCount === 1 ? "item" : "items"}
@@ -128,7 +136,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
                                   Qty: {item.quantity}
                                 </p>
                                 <p className="text-sm font-bold text-orange-600 mt-1">
-                                  ${(item.product.price * item.quantity).toLocaleString()}
+                                  {(item.product.price * item.quantity).toLocaleString()}đ
                                 </p>
                               </div>
                               <button
@@ -149,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
                         <div className="flex items-center justify-between mb-3">
                           <span className="font-semibold text-gray-700">Total:</span>
                           <span className="text-2xl font-bold text-orange-600">
-                            ${cartTotal.toLocaleString()}
+                            {cartTotal.toLocaleString()}đ
                           </span>
                         </div>
                         <button 
@@ -215,13 +223,35 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
                       </div>
                     </div>
 
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        navigate('/profile');
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition border-t border-gray-200"
+                    >
+                      <User size={16} />
+                      View Profile
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        onChangePassword?.();
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition"
+                    >
+                      <Lock size={16} />
+                      Change Password
+                    </button>
+
                     {user?.role === 'admin' && (
                       <button
                         onClick={() => {
                           setShowUserMenu(false);
                           navigate('/admin');
                         }}
-                        className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2 transition"
+                        className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-2 transition border-t border-gray-200"
                       >
                         <Settings size={16} />
                         Admin Panel
@@ -230,10 +260,10 @@ export const Header: React.FC<HeaderProps> = ({ onMenuToggle, onLogout, onViewCa
 
                     <button
                       onClick={handleLogout}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition"
+                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 transition border-t border-gray-200"
                     >
                       <LogOut size={16} />
-                      Đăng xuất
+                      Logout
                     </button>
                   </div>
                 </>

@@ -131,8 +131,8 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Video>> CreateVideo([FromBody] Video video)
         {
             video.Id = Guid.NewGuid();
-            video.CreatedAt = DateTime.UtcNow;
-            video.UpdatedAt = DateTime.UtcNow;
+            video.CreatedAt = DateTime.Now;
+            video.UpdatedAt = DateTime.Now;
 
             _context.Videos.Add(video);
             await _context.SaveChangesAsync();
@@ -173,7 +173,7 @@ namespace ggzone_be.Controllers
         {
             comment.Id = Guid.NewGuid();
             comment.VideoId = id;
-            comment.CreatedAt = DateTime.UtcNow;
+            comment.CreatedAt = DateTime.Now;
 
             _context.VideoComments.Add(comment);
             await _context.SaveChangesAsync();
@@ -194,7 +194,7 @@ namespace ggzone_be.Controllers
 
             like.Id = Guid.NewGuid();
             like.VideoId = id;
-            like.CreatedAt = DateTime.UtcNow;
+            like.CreatedAt = DateTime.Now;
 
             _context.VideoLikes.Add(like);
             await _context.SaveChangesAsync();

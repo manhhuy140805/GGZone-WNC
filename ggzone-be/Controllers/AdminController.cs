@@ -111,7 +111,7 @@ namespace ggzone_be.Controllers
 
             item.Status = request.Status;
             item.ReviewedBy = request.ReviewerId;
-            item.ReviewedAt = DateTime.UtcNow;
+            item.ReviewedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -144,7 +144,7 @@ namespace ggzone_be.Controllers
                     u.Status,
                     Level = u.UserStats != null ? u.UserStats.Level : 1,
                     u.CreatedAt,
-                    IsBanned = _context.UserBans.Any(ub => ub.UserId == u.Id && ub.ExpiresAt > DateTime.UtcNow)
+                    IsBanned = _context.UserBans.Any(ub => ub.UserId == u.Id && ub.IsActive && (ub.EndDate == null || ub.EndDate > DateTime.Now))
                 })
                 .ToListAsync();
 
@@ -161,8 +161,9 @@ namespace ggzone_be.Controllers
                 UserId = userId,
                 Reason = request.Reason,
                 BannedBy = request.BannedBy,
-                BannedAt = DateTime.UtcNow,
-                ExpiresAt = request.ExpiresAt
+                StartDate = DateTime.Now,
+                EndDate = request.EndDate,
+                BanType = request.BanType
             };
 
             _context.UserBans.Add(ban);
@@ -176,7 +177,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult> UnbanUser(Guid userId)
         {
             var bans = await _context.UserBans
-                .Where(ub => ub.UserId == userId && ub.ExpiresAt > DateTime.UtcNow)
+                .Where(ub => ub.UserId == userId && ub.IsActive && (ub.EndDate == null || ub.EndDate > DateTime.Now))
                 .ToListAsync();
 
             _context.UserBans.RemoveRange(bans);
@@ -192,7 +193,7 @@ namespace ggzone_be.Controllers
             [FromQuery] int pageSize = 50)
         {
             var logs = await _context.AdminAuditLogs
-                .OrderByDescending(l => l.Timestamp)
+                .OrderByDescending(l => l.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -205,7 +206,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult> CreateAuditLog([FromBody] AdminAuditLog log)
         {
             log.Id = Guid.NewGuid();
-            log.Timestamp = DateTime.UtcNow;
+            log.CreatedAt = DateTime.Now;
 
             _context.AdminAuditLogs.Add(log);
             await _context.SaveChangesAsync();
@@ -229,7 +230,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Announcement>> CreateAnnouncement([FromBody] Announcement announcement)
         {
             announcement.Id = Guid.NewGuid();
-            announcement.CreatedAt = DateTime.UtcNow;
+            announcement.CreatedAt = DateTime.Now;
 
             _context.Announcements.Add(announcement);
             await _context.SaveChangesAsync();
@@ -254,7 +255,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<FeaturedContent>> CreateFeaturedContent([FromBody] FeaturedContent content)
         {
             content.Id = Guid.NewGuid();
-            content.CreatedAt = DateTime.UtcNow;
+            content.CreatedAt = DateTime.Now;
 
             _context.FeaturedContents.Add(content);
             await _context.SaveChangesAsync();
@@ -273,6 +274,7 @@ namespace ggzone_be.Controllers
     {
         public string Reason { get; set; } = string.Empty;
         public Guid BannedBy { get; set; }
-        public DateTime? ExpiresAt { get; set; }
+        public string? BanType { get; set; } // temporary, permanent
+        public DateTime? EndDate { get; set; }
     }
 }

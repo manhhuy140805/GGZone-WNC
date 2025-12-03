@@ -1,6 +1,28 @@
-@ggzone_be_HostAddress = http://localhost:5229
+@ggzone_be_HostAddress = http://localhost:7009
+@token = YOUR_TOKEN_HERE
 
-GET {{ggzone_be_HostAddress}}/weatherforecast/
+### Debug User Token
+GET {{ggzone_be_HostAddress}}/api/posts/debug-user
 Accept: application/json
+Authorization: Bearer {{token}}
+
+### Login
+POST {{ggzone_be_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "alice@ggzone.com",
+  "password": "password123"
+}
+
+### Like Post
+POST {{ggzone_be_HostAddress}}/api/posts/bd8cccee-1635-4ccf-b8f0-836ab8e00155/like
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Unlike Post
+DELETE {{ggzone_be_HostAddress}}/api/posts/bd8cccee-1635-4ccf-b8f0-836ab8e00155/like
+Accept: application/json
+Authorization: Bearer {{token}}
 
 ###

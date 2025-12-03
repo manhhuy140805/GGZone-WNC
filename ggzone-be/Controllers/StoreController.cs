@@ -43,10 +43,9 @@ namespace ggzone_be.Controllers
                     p.Name,
                     p.Description,
                     p.Price,
-                    p.ImageUrl,
+                    p.CoverImageUrl,
                     p.Category,
-                    p.Stock,
-                    p.IsAvailable,
+                    p.Status,
                     p.CreatedAt
                 })
                 .ToListAsync();
@@ -85,7 +84,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<StoreProduct>> CreateProduct([FromBody] StoreProduct product)
         {
             product.Id = Guid.NewGuid();
-            product.CreatedAt = DateTime.UtcNow;
+            product.CreatedAt = DateTime.Now;
 
             _context.StoreProducts.Add(product);
             await _context.SaveChangesAsync();

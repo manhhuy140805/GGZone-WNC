@@ -1,14 +1,28 @@
-export { Home } from "./Home";
-export { Browse } from "./Browse";
-export { GameDetail } from "./GameDetail";
-export { Feed } from "./Feed";
-export { Groups } from "./Groups";
-export { GroupDetail } from "./GroupDetail";
-export { Marketplace } from "./Marketplace";
-export { ProductDetail } from "./ProductDetail";
-export { Profile } from "./Profile";
-export { Login } from "./Login";
-export { Register } from "./Register";
-export { Friends } from "./Friends";
-export { Messages } from "./Messages";
-export { Cart } from "./Cart";
+// Auth
+export { Login, Register } from '@/features/auth';
+
+// Feed
+export { Feed } from '@/features/feed';
+
+// Profile
+export { Profile } from '@/features/profile';
+
+// Friends
+export { Friends } from '@/features/friends';
+
+// Store
+export { ProductDetail, Cart, MyOrders } from '@/features/store';
+
+// Groups
+export { Groups, GroupDetail } from '@/features/groups';
+
+// Games
+export { Browse, GameDetail } from '@/features/games';
+
+// Home
+export { Home } from '@/features/home';
+
+// Other pages that remain in pages folder
+export { Settings } from './Settings';
+export { Messages } from './Messages';
+export { CloudinaryTest } from './CloudinaryTest';

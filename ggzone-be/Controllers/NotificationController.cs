@@ -99,7 +99,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Notification>> CreateNotification([FromBody] Notification notification)
         {
             notification.Id = Guid.NewGuid();
-            notification.CreatedAt = DateTime.UtcNow;
+            notification.CreatedAt = DateTime.Now;
             notification.IsRead = false;
 
             _context.Notifications.Add(notification);

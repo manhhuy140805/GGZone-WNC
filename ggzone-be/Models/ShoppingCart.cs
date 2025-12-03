@@ -12,13 +12,12 @@ namespace ggzone_be.Models
         [Required]
         public Guid UserId { get; set; }
 
-        public Guid? ProductId { get; set; }
-
-        public Guid? MarketplaceItemId { get; set; }
+        [Required]
+        public Guid ProductId { get; set; }
 
         public int Quantity { get; set; } = 1;
 
-        public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+        public DateTime AddedAt { get; set; } = DateTime.Now;
 
         // Navigation properties
         [ForeignKey("UserId")]
@@ -26,8 +25,5 @@ namespace ggzone_be.Models
 
         [ForeignKey("ProductId")]
         public StoreProduct? Product { get; set; }
-
-        [ForeignKey("MarketplaceItemId")]
-        public MarketplaceItem? MarketplaceItem { get; set; }
     }
 }

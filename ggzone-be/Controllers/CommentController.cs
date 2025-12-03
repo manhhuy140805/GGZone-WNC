@@ -54,7 +54,7 @@ namespace ggzone_be.Controllers
         public async Task<ActionResult<Comment>> CreateComment([FromBody] Comment comment)
         {
             comment.Id = Guid.NewGuid();
-            comment.CreatedAt = DateTime.UtcNow;
+            comment.CreatedAt = DateTime.Now;
 
             _context.Comments.Add(comment);
 
@@ -62,7 +62,7 @@ namespace ggzone_be.Controllers
             var post = await _context.Posts.FindAsync(comment.PostId);
             if (post != null)
             {
-                post.CommentCount++;
+                post.CommentsCount++;
             }
 
             await _context.SaveChangesAsync();
@@ -80,7 +80,7 @@ namespace ggzone_be.Controllers
                     IsRead = false,
                     RelatedEntityId = comment.Id,
                     RelatedEntityType = "Comment",
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 _context.Notifications.Add(notification);
@@ -116,9 +116,9 @@ namespace ggzone_be.Controllers
 
             // Update post comment count
             var post = await _context.Posts.FindAsync(comment.PostId);
-            if (post != null && post.CommentCount > 0)
+            if (post != null && post.CommentsCount > 0)
             {
-                post.CommentCount--;
+                post.CommentsCount--;
             }
 
             _context.Comments.Remove(comment);

@@ -23,16 +23,13 @@ namespace ggzone_be.Data
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
-        public DbSet<PostMedia> PostMedias { get; set; }
+        public DbSet<PostMedia> PostMedia { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<Photo> Photos { get; set; }
 
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<TournamentParticipant> TournamentParticipants { get; set; }
-
-        public DbSet<MarketplaceItem> MarketplaceItems { get; set; }
-        public DbSet<MarketplaceReview> MarketplaceReviews { get; set; }
 
         public DbSet<StoreProduct> StoreProducts { get; set; }
         public DbSet<StoreOrder> StoreOrders { get; set; }
@@ -46,10 +43,6 @@ namespace ggzone_be.Data
         public DbSet<Video> Videos { get; set; }
         public DbSet<VideoComment> VideoComments { get; set; }
         public DbSet<VideoLike> VideoLikes { get; set; }
-
-        public DbSet<ForumCategory> ForumCategories { get; set; }
-        public DbSet<ForumTopic> ForumTopics { get; set; }
-        public DbSet<ForumReply> ForumReplies { get; set; }
 
         // New models
         public DbSet<GameReview> GameReviews { get; set; }
@@ -77,6 +70,14 @@ namespace ggzone_be.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Disable OUTPUT clause for tables with triggers
+            // This fixes: "Could not save changes because the target table has database triggers"
+            modelBuilder.Entity<Post>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<PostLike>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<PostMedia>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Comment>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<GroupMember>().ToTable(tb => tb.UseSqlOutputClause(false));
 
             // Friendship (User → Friend)
             modelBuilder.Entity<Friendship>()
@@ -117,19 +118,6 @@ namespace ggzone_be.Data
                 .HasOne(u => u.UserStats)
                 .WithOne(us => us.User)
                 .HasForeignKey<UserStats>(us => us.UserId);
-
-            // ForumTopic relationships
-            modelBuilder.Entity<ForumTopic>()
-                .HasOne(ft => ft.User)
-                .WithMany()
-                .HasForeignKey(ft => ft.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<ForumTopic>()
-                .HasOne(ft => ft.LastReplyUser)
-                .WithMany()
-                .HasForeignKey(ft => ft.LastReplyBy)
-                .OnDelete(DeleteBehavior.NoAction);
 
             // UserBan relationships
             modelBuilder.Entity<UserBan>()

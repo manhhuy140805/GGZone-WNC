@@ -20,7 +20,7 @@ namespace ggzone_be.Models
 
         public int Score { get; set; } = 0;
 
-        public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
+        public DateTime JoinedAt { get; set; } = DateTime.Now;
 
         // Navigation Properties
         [ForeignKey("TournamentId")]
