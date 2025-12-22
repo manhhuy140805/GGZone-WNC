@@ -44,7 +44,7 @@ namespace ggzone_be.Controllers
                         g.CoverImageUrl,
                         g.IconUrl,
                         g.Visibility,
-                        g.MembersCount,
+                        MembersCount = g.MembersCount > 0 ? g.MembersCount - 1 : 0, // Fix: subtract 1 due to trigger double-counting
                         g.CreatedAt,
                         Creator = g.Creator != null ? new
                         {
@@ -77,7 +77,7 @@ namespace ggzone_be.Controllers
                     g.CoverImageUrl,
                     g.IconUrl,
                     g.Visibility,
-                    g.MembersCount,
+                    MembersCount = g.MembersCount > 0 ? g.MembersCount - 1 : 0, // Fix: subtract 1 due to trigger double-counting
                     g.CreatedAt,
                     g.UpdatedAt,
                     Creator = new
@@ -119,7 +119,7 @@ namespace ggzone_be.Controllers
                     gm.Group.CoverImageUrl,
                     gm.Group.IconUrl,
                     gm.Group.Visibility,
-                    gm.Group.MembersCount,
+                    MembersCount = gm.Group.MembersCount > 0 ? gm.Group.MembersCount - 1 : 0, // Fix: subtract 1 due to trigger double-counting
                     gm.Group.CreatedAt,
                     gm.Role,
                     gm.JoinedAt,
@@ -200,7 +200,7 @@ namespace ggzone_be.Controllers
                     IconUrl = dto.IconUrl,
                     Visibility = dto.Visibility ?? "public",
                     CreatedBy = userId,
-                    MembersCount = 1
+                    MembersCount = 0  // Trigger will auto-increment when adding creator to GroupMembers
                 };
 
                 _context.Groups.Add(group);
@@ -265,7 +265,7 @@ namespace ggzone_be.Controllers
             };
 
             _context.GroupMembers.Add(membership);
-            group.MembersCount++;
+            // MembersCount will be auto-incremented by trigger tr_GroupMembers_Insert
 
             await _context.SaveChangesAsync();
 
@@ -290,16 +290,43 @@ namespace ggzone_be.Controllers
                 return BadRequest(new { message = "Not a member" });
 
             _context.GroupMembers.Remove(membership);
-
-            var group = await _context.Groups.FindAsync(id);
-            if (group != null && group.MembersCount > 0)
-            {
-                group.MembersCount--;
-            }
+            // MembersCount will be auto-decremented by trigger tr_GroupMembers_Delete
 
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Left group successfully" });
+        }
+
+        // Fix MembersCount for all groups
+        [HttpPost("fix-member-counts")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> FixMemberCounts()
+        {
+            try
+            {
+                var groups = await _context.Groups.ToListAsync();
+                
+                foreach (var group in groups)
+                {
+                    var actualCount = await _context.GroupMembers
+                        .Where(gm => gm.GroupId == group.Id)
+                        .CountAsync();
+                    
+                    group.MembersCount = actualCount;
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new { 
+                    message = "Member counts fixed successfully",
+                    groupsUpdated = groups.Count
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fixing member counts");
+                return StatusCode(500, new { message = "Error fixing member counts", error = ex.Message });
+            }
         }
     }
 

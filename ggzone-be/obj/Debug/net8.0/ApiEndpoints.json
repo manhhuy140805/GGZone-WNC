@@ -1288,6 +1288,16 @@
   },
   {
     "ContainingType": "ggzone_be.Controllers.GroupController",
+    "Method": "FixMemberCounts",
+    "RelativePath": "api/groups/fix-member-counts",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ggzone_be.Controllers.GroupController",
     "Method": "GetUserGroups",
     "RelativePath": "api/groups/my-groups/{userId}",
     "HttpMethod": "GET",

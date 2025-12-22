@@ -2154,6 +2154,18 @@
         }
       }
     },
+    "/api/groups/fix-member-counts": {
+      "post": {
+        "tags": [
+          "Group"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Message/{userId}/conversations": {
       "get": {
         "tags": [
