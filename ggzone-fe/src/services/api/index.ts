@@ -8,6 +8,5 @@ export * from './groupService';
 export * from './homeService';
 export * from './postService';
 export * from './storeService';
-export * from './trendingService';
 export * from './uploadService';
 export * from './userService';

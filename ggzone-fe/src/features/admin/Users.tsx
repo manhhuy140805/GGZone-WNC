@@ -13,6 +13,7 @@ interface User {
   level: number;
   createdAt: string;
   isBanned: boolean;
+  role: string;
 }
 
 interface Toast {
@@ -38,10 +39,12 @@ export const Users: React.FC = () => {
     password: "",
     confirmPassword: "",
     fullName: "",
+    role: "user",
   });
   const [editUser, setEditUser] = useState({
     email: "",
     fullName: "",
+    role: "user",
   });
   const [showBanDialog, setShowBanDialog] = useState(false);
   const [userToBan, setUserToBan] = useState<User | null>(null);
@@ -61,6 +64,7 @@ export const Users: React.FC = () => {
       const response = await adminService.getUsers(searchTerm || undefined, currentPage, pageSize);
       
       if (response.success && response.data) {
+        console.log('Users data:', response.data); // Debug: check if role is in response
         setUsers(response.data);
       }
     } catch (error) {
@@ -87,7 +91,7 @@ export const Users: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+      const response = await fetch(`${(import.meta as any).env?.VITE_API_URL || ''}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,6 +101,7 @@ export const Users: React.FC = () => {
           email: newUser.email,
           password: newUser.password,
           fullName: newUser.fullName || undefined,
+          role: newUser.role,
         }),
       });
 
@@ -112,7 +117,7 @@ export const Users: React.FC = () => {
       if (response.ok) {
         showToast('User created successfully', 'success');
         setShowAddModal(false);
-        setNewUser({ username: "", email: "", password: "", confirmPassword: "", fullName: "" });
+        setNewUser({ username: "", email: "", password: "", confirmPassword: "", fullName: "", role: "user" });
         await loadUsers(); // Reload users list
       } else {
         showToast(result.message || result.title || 'Failed to create user', 'error');
@@ -128,6 +133,7 @@ export const Users: React.FC = () => {
     setEditUser({
       email: user.email,
       fullName: user.fullName || "",
+      role: user.role || "user",
     });
     setShowEditModal(true);
   };
@@ -138,11 +144,21 @@ export const Users: React.FC = () => {
       return;
     }
 
+    const updateData = {
+      email: editUser.email,
+      fullName: editUser.fullName || undefined,
+      role: editUser.role.toLowerCase(), // Ensure lowercase
+    };
+
+    console.log('Updating user with data:', {
+      userId: selectedUser.id,
+      ...updateData,
+    });
+
     try {
-      const response = await adminService.updateUser(selectedUser.id, {
-        email: editUser.email,
-        fullName: editUser.fullName || undefined,
-      });
+      const response = await adminService.updateUser(selectedUser.id, updateData);
+
+      console.log('Update response:', response);
 
       if (response.success) {
         showToast('User updated successfully', 'success');
@@ -294,6 +310,7 @@ export const Users: React.FC = () => {
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">User</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Join Date</th>
                   <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -324,6 +341,15 @@ export const Users: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 
+                        user.role === 'moderator' ? 'bg-blue-100 text-blue-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {user.role}
+                      </span>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -485,6 +511,26 @@ export const Users: React.FC = () => {
                   placeholder="Enter full name (optional)"
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Role <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={editUser.role}
+                  onChange={(e) => setEditUser({ ...editUser, role: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 bg-white"
+                >
+                  <option value="user">User</option>
+                  <option value="moderator">Moderator</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  {editUser.role === 'admin' && 'Full access to all features'}
+                  {editUser.role === 'moderator' && 'Can moderate content and users'}
+                  {editUser.role === 'user' && 'Standard user access'}
+                </p>
+              </div>
             </div>
 
             <div className="flex gap-3 mt-6">
@@ -492,7 +538,7 @@ export const Users: React.FC = () => {
                 onClick={() => {
                   setShowEditModal(false);
                   setSelectedUser(null);
-                  setEditUser({ email: "", fullName: "" });
+                  setEditUser({ email: "", fullName: "", role: "user" });
                 }}
                 className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
               >
@@ -588,13 +634,33 @@ export const Users: React.FC = () => {
                   placeholder="Enter full name (optional)"
                 />
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Role <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-orange-500 bg-white"
+                >
+                  <option value="user">User</option>
+                  <option value="moderator">Moderator</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  {newUser.role === 'admin' && 'Full access to all features'}
+                  {newUser.role === 'moderator' && 'Can moderate content and users'}
+                  {newUser.role === 'user' && 'Standard user access'}
+                </p>
+              </div>
             </div>
 
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => {
                   setShowAddModal(false);
-                  setNewUser({ username: "", email: "", password: "", confirmPassword: "", fullName: "" });
+                  setNewUser({ username: "", email: "", password: "", confirmPassword: "", fullName: "", role: "user" });
                 }}
                 className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
               >

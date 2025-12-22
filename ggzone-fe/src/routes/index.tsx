@@ -15,7 +15,6 @@ import {
   Messages,
   Cart,
   Settings,
-  CloudinaryTest,
   Unauthorized,
 } from "@/pages";
 import { AdminLayout, Dashboard, Users as AdminUsers, Posts as AdminPosts, Products as AdminProducts, Orders as AdminOrders, Groups as AdminGroups } from "@/features/admin";
@@ -255,14 +254,6 @@ export const AppRoutes: React.FC = () => {
         <Route path="orders" element={<AdminOrders />} />
         <Route path="groups" element={<AdminGroups />} />
       </Route>
-      <Route
-        path="/test/cloudinary"
-        element={
-          <ProtectedRoute>
-            <CloudinaryTest />
-          </ProtectedRoute>
-        }
-      />
 
       {/* Catch all - redirect to home */}
       <Route path="*" element={<Navigate to="/" replace />} />

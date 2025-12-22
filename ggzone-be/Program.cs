@@ -48,14 +48,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 logger.LogWarning("JWT Authentication failed: {Message}", context.Exception.Message);
                 if (context.Exception is SecurityTokenExpiredException)
                 {
-                    logger.LogWarning("JWT Token expired at: {Time} UTC", DateTime.UtcNow);
+                    logger.LogWarning("JWT Token expired at: {Time} UTC", DateTime.Now);
                 }
                 return Task.CompletedTask;
             },
             OnTokenValidated = context =>
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
-                logger.LogInformation("JWT Token validated successfully at: {Time} UTC", DateTime.UtcNow);
+                logger.LogInformation("JWT Token validated successfully at: {Time} UTC", DateTime.Now);
                 return Task.CompletedTask;
             }
         };
@@ -66,11 +66,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:7009", "https://localhost:7009")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
-              .WithExposedHeaders("Authorization");
+        policy
+            .SetIsOriginAllowed(_ => true)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 

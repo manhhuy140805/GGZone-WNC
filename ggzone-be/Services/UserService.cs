@@ -48,7 +48,7 @@ namespace ggzone_be.Services
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 FullName = dto.FullName,
                 Status = "offline",
-                Role = "user",
+                Role = !string.IsNullOrEmpty(dto.Role) ? dto.Role : "user",
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
             };

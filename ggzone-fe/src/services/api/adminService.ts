@@ -1,5 +1,4 @@
 import { HttpClient, ApiError } from '@/lib/utils/httpClient';
-import { API_CONFIG } from '@/lib/constants/api';
 
 export interface DashboardStats {
   totalUsers: number;
@@ -59,10 +58,10 @@ class AdminService {
         totalPosts: response.totalPosts || 0,
         totalProducts: response.totalGames || 0, // Using games as products
         totalOrders: response.totalOrders || 0,
-        userGrowth: 12, // Mock growth data (backend doesn't provide this yet)
-        postGrowth: 8,
-        productGrowth: 5,
-        orderGrowth: 15,
+        userGrowth: response.userGrowth || 0,
+        postGrowth: response.postGrowth || 0,
+        productGrowth: response.productGrowth || 0,
+        orderGrowth: response.orderGrowth || 0,
       };
       
       return {
@@ -82,31 +81,17 @@ class AdminService {
   // Get daily statistics for revenue chart
   async getRevenueData(): Promise<{ success: boolean; data?: RevenueData[]; message?: string }> {
     try {
-      const endDate = new Date();
-      const startDate = new Date();
-      startDate.setMonth(startDate.getMonth() - 12);
+      const year = 2025;
       
       const response = await HttpClient.get<any[]>(
-        `/api/admin/daily-statistics?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
+        `/api/admin/monthly-revenue?year=${year}`,
         true
       );
       
-      // Group by month and calculate totals
-      const monthlyData: { [key: string]: number } = {};
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      
-      response.forEach((stat: any) => {
-        const date = new Date(stat.statDate);
-        const monthKey = months[date.getMonth()];
-        if (!monthlyData[monthKey]) {
-          monthlyData[monthKey] = 0;
-        }
-        monthlyData[monthKey] += (stat.newOrders || 0);
-      });
-      
-      const revenueData: RevenueData[] = months.map(month => ({
-        month,
-        value: Math.round((monthlyData[month] || 0) / 1000) // Convert to thousands
+      // Response already in correct format from backend
+      const revenueData: RevenueData[] = response.map((item: any) => ({
+        month: item.month,
+        value: item.value
       }));
       
       return {
@@ -116,41 +101,28 @@ class AdminService {
     } catch (error) {
       const apiError = error as ApiError;
       console.error('Error fetching revenue data:', apiError);
-      // Return mock data if API fails
+      
+      // Return empty data if API fails - no mock data
       return {
-        success: true,
-        data: [
-          { month: "Jan", value: 45 },
-          { month: "Feb", value: 52 },
-          { month: "Mar", value: 48 },
-          { month: "Apr", value: 61 },
-          { month: "May", value: 55 },
-          { month: "Jun", value: 67 },
-          { month: "Jul", value: 73 },
-          { month: "Aug", value: 69 },
-          { month: "Sep", value: 78 },
-          { month: "Oct", value: 85 },
-          { month: "Nov", value: 82 },
-          { month: "Dec", value: 90 },
-        ],
+        success: false,
+        data: [],
+        message: apiError.message || 'Failed to load revenue data',
       };
     }
   }
 
-  // Get top products (mock data for now)
+  // Get top products
   async getTopProducts(limit: number = 4): Promise<{ success: boolean; data?: TopProduct[]; message?: string }> {
     try {
-      // TODO: Backend doesn't have this endpoint yet, using mock data
-      const mockData: TopProduct[] = [
-        { id: "1", name: "Gaming Mouse Pro", sales: 234, revenue: 12450000, growth: 15 },
-        { id: "2", name: "Mechanical Keyboard", sales: 189, revenue: 9870000, growth: 8 },
-        { id: "3", name: "RGB Headset", sales: 156, revenue: 7340000, growth: 12 },
-        { id: "4", name: "Gaming Chair", sales: 98, revenue: 24500000, growth: 5 },
-      ];
+      // TODO: Implement backend endpoint for top products
+      const response = await HttpClient.get<TopProduct[]>(
+        `/api/admin/top-products?limit=${limit}`,
+        true
+      );
       
       return {
         success: true,
-        data: mockData.slice(0, limit),
+        data: response,
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -162,21 +134,18 @@ class AdminService {
     }
   }
 
-  // Get recent activities (mock data for now)
+  // Get recent activities
   async getRecentActivities(limit: number = 5): Promise<{ success: boolean; data?: RecentActivity[]; message?: string }> {
     try {
-      // TODO: Backend doesn't have this endpoint yet, using mock data
-      const mockData: RecentActivity[] = [
-        { id: "1", type: "order", userId: "u1", userName: "John Doe", action: "placed an order", amount: 150000, createdAt: new Date(Date.now() - 2 * 60000).toISOString() },
-        { id: "2", type: "user", userId: "u2", userName: "Jane Smith", action: "registered", createdAt: new Date(Date.now() - 5 * 60000).toISOString() },
-        { id: "3", type: "post", userId: "u3", userName: "Bob Johnson", action: "created a post", createdAt: new Date(Date.now() - 10 * 60000).toISOString() },
-        { id: "4", type: "order", userId: "u4", userName: "Alice Brown", action: "placed an order", amount: 89000, createdAt: new Date(Date.now() - 15 * 60000).toISOString() },
-        { id: "5", type: "product", userId: "admin", userName: "Admin", action: "added new product", createdAt: new Date(Date.now() - 20 * 60000).toISOString() },
-      ];
+      // TODO: Implement backend endpoint for recent activities
+      const response = await HttpClient.get<RecentActivity[]>(
+        `/api/admin/recent-activities?limit=${limit}`,
+        true
+      );
       
       return {
         success: true,
-        data: mockData.slice(0, limit),
+        data: response,
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -188,22 +157,18 @@ class AdminService {
     }
   }
 
-  // Get quick stats (mock data for now)
+  // Get quick stats
   async getQuickStats(): Promise<{ success: boolean; data?: QuickStats; message?: string }> {
     try {
-      // TODO: Backend doesn't have this endpoint yet, using mock data
-      const mockData: QuickStats = {
-        pageViews: 24567,
-        pageViewsGrowth: 18,
-        comments: 1234,
-        commentsGrowth: 12,
-        conversionRate: 3.24,
-        conversionRateGrowth: 5,
-      };
+      // TODO: Implement backend endpoint for quick stats
+      const response = await HttpClient.get<QuickStats>(
+        '/api/admin/quick-stats',
+        true
+      );
       
       return {
         success: true,
-        data: mockData,
+        data: response,
       };
     } catch (error) {
       const apiError = error as ApiError;
@@ -240,9 +205,13 @@ class AdminService {
   }
 
   // Update user
-  async updateUser(userId: string, data: { email?: string; fullName?: string }): Promise<{ success: boolean; message?: string }> {
+  async updateUser(userId: string, data: { email?: string; fullName?: string; role?: string }): Promise<{ success: boolean; message?: string }> {
     try {
-      await HttpClient.put(`/api/admin/users/${userId}`, data, true);
+      console.log('AdminService.updateUser - Sending request:', { userId, data });
+      
+      const response = await HttpClient.put(`/api/admin/users/${userId}`, data, true);
+      
+      console.log('AdminService.updateUser - Response:', response);
       
       return {
         success: true,
