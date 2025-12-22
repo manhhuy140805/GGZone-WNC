@@ -36,6 +36,32 @@ export interface Game {
   platform: string;
   releaseDate: string;
   publisher: string;
+  gameType?: string;
+  installSize?: string;
+  minimumRequirements?: string;
+  recommendedRequirements?: string;
+  photos?: Array<{
+    id: string;
+    imageUrl: string;
+    caption?: string;
+  }>;
+  videos?: Array<{
+    id: string;
+    title: string;
+    videoUrl: string;
+    thumbnailUrl: string;
+    viewsCount: number;
+  }>;
+  gameReviews?: Array<{
+    id: string;
+    userId: string;
+    rating: number;
+    title: string;
+    content: string;
+    hoursPlayed: number;
+    isRecommended: boolean;
+    createdAt: string;
+  }>;
 }
 
 export interface Group {

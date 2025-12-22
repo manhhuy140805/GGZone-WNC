@@ -1,0 +1,178 @@
+===================================================================
+ADMIN API ENDPOINTS - ĐÃ THÊM VÀ CẬP NHẬT
+===================================================================
+Date: 2025-12-22
+
+TỔNG QUAN:
+Đã fix các API endpoints bị 404 trong Admin Dashboard bằng cách thêm 
+3 endpoints mới và cập nhật 2 endpoints hiện có.
+
+-------------------------------------------------------------------
+1. GET /api/admin/statistics (ĐÃ CẬP NHẬT)
+-------------------------------------------------------------------
+Mục đích: Lấy thống kê tổng quan với growth percentages
+Location: AdminController.cs, line ~30
+
+Response Format:
+{
+  "totalUsers": 150,
+  "totalPosts": 450,
+  "totalGames": 25,
+  "totalOrders": 89,
+  "userGrowth": 12.5,      // % tăng trưởng so với tháng trước
+  "postGrowth": 8.3,
+  "productGrowth": 5.0,
+  "orderGrowth": 15.2,
+  "totalRevenue": 45678.90,
+  "activeUsers": 45,
+  "pendingModeration": 3
+}
+
+Cách tính Growth:
+- So sánh số lượng mới tạo trong tháng hiện tại vs tháng trước
+- Formula: ((current - previous) / previous) * 100
+
+-------------------------------------------------------------------
+2. GET /api/admin/monthly-revenue?year=2025 (ĐÃ CẬP NHẬT)
+-------------------------------------------------------------------
+Mục đích: Lấy doanh thu theo tháng từ đơn hàng đã hoàn thành
+Location: AdminController.cs, line ~80
+
+Query Parameters:
+- year: Năm cần lấy dữ liệu (default: năm hiện tại)
+
+Response Format:
+[
+  { "month": "Jan", "value": 12.5, "orderCount": 15 },
+  { "month": "Feb", "value": 18.3, "orderCount": 22 },
+  ...
+  { "month": "Dec", "value": 0, "orderCount": 0 }
+]
+
+Đặc điểm:
+- Chỉ tính đơn hàng có Status = "completed"
+- Value được chia cho 1000 (hiển thị theo nghìn)
+- Luôn trả về đủ 12 tháng (tháng không có data = 0)
+- Fixed property names: "month", "value" (lowercase) để match frontend
+
+-------------------------------------------------------------------
+3. GET /api/admin/top-products?limit=4 (MỚI)
+-------------------------------------------------------------------
+Mục đích: Lấy danh sách sản phẩm bán chạy nhất
+Location: AdminController.cs, line ~105
+
+Query Parameters:
+- limit: Số lượng sản phẩm cần lấy (default: 4)
+
+Response Format:
+[
+  {
+    "id": "guid-string",
+    "name": "Product Name",
+    "sales": 150,           // Tổng số lượng đã bán
+    "revenue": 4500.00,     // Tổng doanh thu
+    "growth": 0,            // TODO: Cần historical data
+    "imageUrl": "url"
+  }
+]
+
+Cách tính:
+- Group OrderItems theo ProductId
+- Sum Quantity để có sales
+- Sum TotalPrice để có revenue
+- Order by revenue descending
+
+-------------------------------------------------------------------
+4. GET /api/admin/recent-activities?limit=5 (MỚI)
+-------------------------------------------------------------------
+Mục đích: Lấy các hoạt động gần đây trong hệ thống
+Location: AdminController.cs, line ~130
+
+Query Parameters:
+- limit: Số lượng activities cần lấy (default: 5)
+
+Response Format:
+[
+  {
+    "id": "guid-string",
+    "type": "order",
+    "userId": "guid-string",
+    "userName": "username",
+    "action": "placed an order for $123.45",
+    "amount": 123.45,
+    "createdAt": "2025-12-22T10:30:00"
+  }
+]
+
+Hiện tại:
+- Chỉ lấy recent orders
+- TODO: Có thể mở rộng để include user registrations, posts, etc.
+
+-------------------------------------------------------------------
+5. GET /api/admin/quick-stats (MỚI)
+-------------------------------------------------------------------
+Mục đích: Lấy các chỉ số nhanh cho dashboard
+Location: AdminController.cs, line ~150
+
+Response Format:
+{
+  "pageViews": 890,
+  "pageViewsGrowth": 12.5,
+  "comments": 450,
+  "commentsGrowth": 8.3,
+  "conversionRate": 10.0,
+  "conversionRateGrowth": 0
+}
+
+Cách tính:
+- pageViews: Mock = currentMonthOrders * 10
+- comments: Số posts trong tháng hiện tại
+- conversionRate: (orders / pageViews) * 100
+- Growth: So sánh với tháng trước
+
+-------------------------------------------------------------------
+FRONTEND INTEGRATION
+-------------------------------------------------------------------
+File: ggzone-fe/src/services/api/adminService.ts
+
+Các methods đã được implement:
+✓ getDashboardStats() → /api/admin/statistics
+✓ getRevenueData() → /api/admin/monthly-revenue
+✓ getTopProducts(limit) → /api/admin/top-products
+✓ getRecentActivities(limit) → /api/admin/recent-activities
+✓ getQuickStats() → /api/admin/quick-stats
+
+Dashboard component: ggzone-fe/src/features/admin/Dashboard.tsx
+- Load tất cả data song song với Promise.all()
+- Hiển thị loading state
+- Handle errors gracefully
+
+-------------------------------------------------------------------
+TESTING
+-------------------------------------------------------------------
+Để test các endpoints:
+
+1. Login với admin account
+2. Navigate to /admin
+3. Check browser console - không còn 404 errors
+4. Verify data hiển thị đúng trên dashboard
+
+Hoặc test trực tiếp với curl/Postman:
+GET http://localhost:5000/api/admin/statistics
+GET http://localhost:5000/api/admin/monthly-revenue?year=2025
+GET http://localhost:5000/api/admin/top-products?limit=4
+GET http://localhost:5000/api/admin/recent-activities?limit=5
+GET http://localhost:5000/api/admin/quick-stats
+
+(Cần include JWT token trong Authorization header)
+
+-------------------------------------------------------------------
+NOTES
+-------------------------------------------------------------------
+- Tất cả endpoints yêu cầu [Authorize(Roles = "admin")]
+- Growth calculations dựa trên so sánh tháng hiện tại vs tháng trước
+- Revenue data chỉ tính đơn hàng "completed"
+- Property names đã được fix thành lowercase để match frontend expectations
+- Một số metrics vẫn là mock (growth, conversionRate) - cần historical data để tính chính xác
+
+===================================================================

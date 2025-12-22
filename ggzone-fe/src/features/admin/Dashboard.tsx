@@ -135,6 +135,10 @@ export const Dashboard: React.FC = () => {
 
   const maxValue = revenueData.length > 0 ? Math.max(...revenueData.map(d => d.value)) : 100;
 
+  // Debug: Log revenue data to check values
+  console.log('Revenue Data:', revenueData);
+  console.log('Max Value:', maxValue);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -177,7 +181,7 @@ export const Dashboard: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-xl font-bold text-gray-900">Revenue Overview</h2>
-              <p className="text-sm text-gray-600 mt-1">Monthly revenue for 2024</p>
+              <p className="text-sm text-gray-600 mt-1">Monthly revenue for 2025</p>
             </div>
             <div className="text-right">
               <p className="text-2xl font-bold text-orange-600">
@@ -192,18 +196,24 @@ export const Dashboard: React.FC = () => {
             <div className="flex items-end justify-between gap-2 h-48">
               {revenueData.map((data, index) => {
                 const heightPercent = maxValue > 0 ? (data.value / maxValue) * 100 : 0;
+                // Apply minimum height of 10% for better visibility
+                const finalHeight = data.value > 0 ? Math.max(heightPercent, 10) : 0;
                 return (
                   <div key={index} className="flex-1 flex flex-col items-center gap-2">
-                    <div 
-                      className="w-full bg-gray-100 rounded-t-lg relative group cursor-pointer hover:bg-gray-200 transition" 
-                      style={{ height: `${Math.max(heightPercent, 5)}%`, minHeight: '20px' }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg"></div>
-                      {/* Tooltip */}
-                      <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10">
-                        {data.value}k
+                    {data.value > 0 ? (
+                      <div 
+                        className="w-full bg-gray-100 rounded-t-lg relative group cursor-pointer hover:bg-gray-200 transition" 
+                        style={{ height: `${finalHeight}%`, minHeight: '30px' }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg"></div>
+                        {/* Tooltip */}
+                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap z-10">
+                          ${data.value}k
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="w-full h-1 bg-gray-200 rounded"></div>
+                    )}
                     <span className="text-xs text-gray-600 font-medium">{data.month}</span>
                   </div>
                 );

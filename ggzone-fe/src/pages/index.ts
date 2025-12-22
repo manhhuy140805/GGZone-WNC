@@ -25,5 +25,4 @@ export { Home } from '@/features/home';
 // Other pages that remain in pages folder
 export { Settings } from './Settings';
 export { Messages } from './Messages';
-export { CloudinaryTest } from './CloudinaryTest';
 export { Unauthorized } from './Unauthorized';
