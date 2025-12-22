@@ -18,28 +18,29 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      {/* Modals */}
-      <EditProfileModal
-        user={currentUser}
-        isOpen={isEditProfileOpen}
-        onClose={() => setIsEditProfileOpen(false)}
-        onSuccess={handleEditProfileSuccess}
-      />
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-2xl mx-auto py-8 px-4">
+        {/* Modals */}
+        <EditProfileModal
+          user={currentUser}
+          isOpen={isEditProfileOpen}
+          onClose={() => setIsEditProfileOpen(false)}
+          onSuccess={handleEditProfileSuccess}
+        />
 
-      <ChangePasswordModal
-        isOpen={isChangePasswordOpen}
-        onClose={() => setIsChangePasswordOpen(false)}
-      />
+        <ChangePasswordModal
+          isOpen={isChangePasswordOpen}
+          onClose={() => setIsChangePasswordOpen(false)}
+        />
 
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Cài đặt</h1>
-        <p className="text-gray-600 mt-2">Quản lý thông tin tài khoản của bạn</p>
-      </div>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Cài đặt</h1>
+          <p className="text-gray-600 mt-2">Quản lý thông tin tài khoản của bạn</p>
+        </div>
 
-      {/* Settings Sections */}
-      <div className="space-y-6">
+        {/* Settings Sections */}
+        <div className="space-y-6">
         {/* Profile Section */}
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center justify-between">
@@ -131,6 +132,7 @@ export const Settings: React.FC = () => {
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings, User, Lock, Heart } from "lucide-react";
+import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings, User, Heart } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useCart } from "@/app/providers/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -9,15 +9,13 @@ interface HeaderProps {
   onLogout?: () => void;
   onViewCart?: () => void;
   onEditProfile?: () => void;
-  onChangePassword?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
   onMenuToggle, 
   onLogout, 
   onViewCart,
-  onEditProfile,
-  onChangePassword
+  onEditProfile
 }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -237,12 +235,12 @@ export const Header: React.FC<HeaderProps> = ({
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
-                        onChangePassword?.();
+                        navigate('/settings');
                       }}
                       className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2 transition"
                     >
-                      <Lock size={16} />
-                      Change Password
+                      <Settings size={16} />
+                      Settings
                     </button>
 
                     {user?.role === 'admin' && (
