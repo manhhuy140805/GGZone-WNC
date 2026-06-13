@@ -1,6 +1,6 @@
 import React from "react";
 import { Zap } from "lucide-react";
-import { CategoryCard } from "@/components/shared/cards";
+import { CategoryCard } from "@/features/store/components/CategoryCard";
 import { Button } from "@/components/ui";
 
 export interface Category {

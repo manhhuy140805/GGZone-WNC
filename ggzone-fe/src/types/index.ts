@@ -3,7 +3,7 @@
 export interface User {
   id: string;
   username: string;
-  email: string;
+  email?: string;
   fullName?: string;
   avatarUrl?: string;
   coverImageUrl?: string;
@@ -74,6 +74,7 @@ export interface Group {
   coverImageUrl: string;
   iconUrl?: string;
   visibility: string;
+  members?: User[];
 }
 
 export interface MarketplaceItem {
@@ -116,6 +117,7 @@ export interface Photo {
 export interface Comment {
   id: string;
   postId: string;
+  userId: string;
   content: string;
   createdAt: string;
   likesCount: number;

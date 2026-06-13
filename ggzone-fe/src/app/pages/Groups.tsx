@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CommunityCard } from "@/components/shared/cards";
+import { CommunityCard } from "@/features/groups/components/CommunityCard";
 import { groupService } from "@/services/api/groupService";
 import { uploadService } from "@/services/api/uploadService";
 import { useAuth } from "@/app/providers/AuthContext";

@@ -17,7 +17,7 @@ class OrderService {
   async createOrder(request: CreateOrderRequest) {
     try {
       const response = await HttpClient.post(API_CONFIG.ENDPOINTS.ORDER.BASE, request, true);
-      return { success: true, data: response.data || response };
+      return { success: true, data: (response as any).data || response };
     } catch (error) {
       const apiError = error as ApiError;
       return { success: false, message: apiError.message };
@@ -27,7 +27,7 @@ class OrderService {
   async getMyOrders(userId: string) {
     try {
       const response = await HttpClient.get(API_CONFIG.ENDPOINTS.ORDER.BY_USER(userId), true);
-      return { success: true, data: response.data || response };
+      return { success: true, data: (response as any).data || response };
     } catch (error) {
       const apiError = error as ApiError;
       return { success: false, message: apiError.message };
@@ -37,7 +37,7 @@ class OrderService {
   async getOrderDetail(orderId: string) {
     try {
       const response = await HttpClient.get(API_CONFIG.ENDPOINTS.ORDER.BY_ID(orderId), true);
-      return { success: true, data: response.data || response };
+      return { success: true, data: (response as any).data || response };
     } catch (error) {
       const apiError = error as ApiError;
       return { success: false, message: apiError.message };

@@ -250,7 +250,7 @@ export const Store: React.FC<StoreProps> = ({ onViewProduct }) => {
                         </span>
                         <div className="flex items-center gap-1 text-sm text-gray-600">
                           <span>⭐</span>
-                          <span>{product.rating?.toFixed(1) || "0.0"}</span>
+                          <span>{Number(product.rating || 0).toFixed(1)}</span>
                           <span>({product.reviewsCount || 0})</span>
                         </div>
                       </div>

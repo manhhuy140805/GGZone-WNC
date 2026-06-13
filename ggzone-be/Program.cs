@@ -2,11 +2,19 @@
 using ggzone_be.Interfaces;
 using ggzone_be.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo(
+        Path.Combine(builder.Environment.ContentRootPath, ".aspnet", "data-protection-keys")));
 
 // Database
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -21,6 +29,13 @@ builder.Services.AddScoped<ILoggerService, LoggerService>();
 builder.Services.AddScoped<IPostRepository, ggzone_be.Repositorys.PostRepository>();
 builder.Services.AddScoped<IUserRepository, ggzone_be.Repositorys.UserRepository>();
 
+var jwtKey = builder.Configuration["Jwt:Key"]
+    ?? throw new InvalidOperationException("Jwt:Key is not configured. Check appsettings.json or environment variables.");
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+    ?? throw new InvalidOperationException("Jwt:Issuer is not configured. Check appsettings.json or environment variables.");
+var jwtAudience = builder.Configuration["Jwt:Audience"]
+    ?? throw new InvalidOperationException("Jwt:Audience is not configured. Check appsettings.json or environment variables.");
+
 // JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -31,12 +46,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])
+                Encoding.UTF8.GetBytes(jwtKey)
             ),
-            ClockSkew = TimeSpan.Zero // Loại bỏ clock skew mặc định 5 phút
+            ClockSkew = TimeSpan.Zero
         };
         
         // Log authentication failures for debugging
@@ -130,7 +145,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend"); // 👈 Enable CORS
 

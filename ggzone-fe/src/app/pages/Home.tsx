@@ -7,10 +7,8 @@ import {
   Zap,
   Loader,
 } from "lucide-react";
-import {
-  GameCard,
-  CommunityCard,
-} from "@/components/shared/cards";
+import { GameCard } from "@/features/games/components/GameCard";
+import { CommunityCard } from "@/features/groups/components/CommunityCard";
 import { homeService } from "@/services/api/homeService";
 import { storeService, StoreProduct } from "@/services/api/storeService";
 import { Game, Group } from "@/types";
@@ -223,15 +221,18 @@ export const Home: React.FC<HomeProps> = ({
           <div className="text-center py-12 bg-red-50 rounded-lg">
             <p className="text-red-500">{error}</p>
           </div>
-        ) : trendingGames.length > 0 ? (
+        ) : Array.isArray(trendingGames) && trendingGames.length > 0 ? (
           <div className="grid grid-cols-3 gap-6">
-            {trendingGames.map((game) => (
-              <GameCard
-                key={game.id}
-                game={game}
-                onViewGame={() => handleGameClick(game.id)}
-              />
-            ))}
+            {trendingGames.map((game) => {
+              if (!game) return null;
+              return (
+                <GameCard
+                  key={game.id || Math.random().toString()}
+                  game={game}
+                  onViewGame={() => handleGameClick(game.id)}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
@@ -263,16 +264,19 @@ export const Home: React.FC<HomeProps> = ({
           <div className="text-center py-12 bg-red-50 rounded-lg">
             <p className="text-red-500">{error}</p>
           </div>
-        ) : popularGroups.length > 0 ? (
+        ) : Array.isArray(popularGroups) && popularGroups.length > 0 ? (
           <div className="grid grid-cols-2 gap-6">
-            {popularGroups.map((group) => (
-              <CommunityCard
-                key={group.id}
-                group={group}
-                onClick={() => handleGroupClick(group.id)}
-                onJoin={() => handleGroupClick(group.id)}
-              />
-            ))}
+            {popularGroups.map((group) => {
+              if (!group) return null;
+              return (
+                <CommunityCard
+                  key={group.id || Math.random().toString()}
+                  group={group}
+                  onClick={() => handleGroupClick(group.id)}
+                  onJoin={() => handleGroupClick(group.id)}
+                />
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12 bg-gray-50 rounded-lg">
@@ -300,15 +304,17 @@ export const Home: React.FC<HomeProps> = ({
           <div className="flex justify-center items-center py-12 bg-gray-50 rounded-lg">
             <Loader className="animate-spin text-yellow-600" size={32} />
           </div>
-        ) : featuredProducts.length > 0 ? (
+        ) : Array.isArray(featuredProducts) && featuredProducts.length > 0 ? (
           <div className="grid grid-cols-4 gap-6">
             {featuredProducts.map((product) => {
-              const discount = product.price > 0 ? Math.round(((product.price * 0.2) / product.price) * 100) : 0;
-              const originalPrice = product.price > 0 ? product.price * 1.25 : 0;
+              if (!product) return null;
+              const price = Number(product.price) || 0;
+              const discount = price > 0 ? Math.round(((price * 0.2) / price) * 100) : 0;
+              const originalPrice = price > 0 ? price * 1.25 : 0;
               
               return (
                 <div
-                  key={product.id}
+                  key={product.id || Math.random().toString()}
                   onClick={() => handleProductClick(product.id)}
                   className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
                 >
@@ -330,7 +336,7 @@ export const Home: React.FC<HomeProps> = ({
                       {product.category}
                     </div>
                     <div className="absolute bottom-3 left-3 right-3 bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-lg text-xs flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      ⭐ {product.rating?.toFixed(1) || '0.0'} ({product.reviewsCount || 0} reviews)
+                      ⭐ {Number(product.rating || 0).toFixed(1)} ({product.reviewsCount || 0} reviews)
                     </div>
                   </div>
                   <div className="p-4">

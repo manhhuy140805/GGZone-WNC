@@ -47,7 +47,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({ user, onMessageClick }) 
             />
           ) : (
             <div className="w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-              {user.fullName.charAt(0)}
+              {user.fullName?.[0] || user.username[0]}
             </div>
           )}
           {user.isVerified && (

@@ -6,7 +6,7 @@ import {
   PostCard,
   CreatePostModal,
   FeedSidebar,
-} from "./components";
+} from "@/features/feed/components";
 import { useFeedData } from "@/lib/hooks/useFeedData";
 import { Post } from "@/services/api/postService";
 
