@@ -139,72 +139,16 @@ export const AppRoutes: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/" element={<HomeWrapper />} />
+      <Route path="/browse" element={<BrowseWrapper />} />
+      <Route path="/browse/:gameId" element={<GameDetail />} />
+      <Route path="/feed" element={<Feed />} />
+      <Route path="/groups" element={<GroupsWrapper />} />
+      <Route path="/groups/:groupId" element={<GroupDetail />} />
+      <Route path="/store" element={<StoreWrapper />} />
+      <Route path="/store/:productId" element={<ProductDetail />} />
 
       {/* Protected Routes */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <HomeWrapper />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/browse"
-        element={
-          <ProtectedRoute>
-            <BrowseWrapper />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/browse/:gameId"
-        element={
-          <ProtectedRoute>
-            <GameDetail />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/feed"
-        element={
-          <ProtectedRoute>
-            <Feed />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/groups"
-        element={
-          <ProtectedRoute>
-            <GroupsWrapper />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/groups/:groupId"
-        element={
-          <ProtectedRoute>
-            <GroupDetail />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/store"
-        element={
-          <ProtectedRoute>
-            <StoreWrapper />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/store/:productId"
-        element={
-          <ProtectedRoute>
-            <ProductDetail />
-          </ProtectedRoute>
-        }
-      />
       <Route
         path="/profile"
         element={

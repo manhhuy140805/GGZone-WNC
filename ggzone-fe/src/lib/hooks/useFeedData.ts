@@ -24,7 +24,13 @@ export const useFeedData = (sortBy: SortType, activeTab: string) => {
       try {
         setLoading(true);
         setError(null);
-        const response = await postService.getFeed(1, 20, sortBy);
+        const response = await postService.filterPosts(
+          1,
+          20,
+          undefined,
+          undefined,
+          sortBy
+        );
         if (response.success && response.data) {
           setPosts(response.data.posts);
 

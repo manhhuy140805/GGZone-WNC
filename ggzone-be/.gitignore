@@ -18,6 +18,7 @@ bld/
 .vs/
 .vscode/
 .appsettings/
+.aspnet/
 *.suo
 # User-specific files
 *.rsuser
