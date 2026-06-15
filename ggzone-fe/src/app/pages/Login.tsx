@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Home } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
-import { authService } from "@/services/api/authService";
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ export const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showDemoAccounts, setShowDemoAccounts] = useState(false);
 
-  const { login, mockLogin } = useAuth();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,9 +36,7 @@ export const Login: React.FC = () => {
 
   const handleDemoLogin = async (
     demoEmail: string,
-    demoPassword: string,
-    demoRole: string,
-    demoFullName: string,
+    demoPassword: string
   ) => {
     setEmail(demoEmail);
     setPassword(demoPassword);
@@ -47,39 +44,15 @@ export const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Try real login first
       const result = await login({ email: demoEmail, password: demoPassword });
 
       if (result.success) {
         navigate("/");
       } else {
-        // If real login fails, use mock login for demo
-        const mockUser = {
-          id: Math.random().toString(36).substr(2, 9),
-          username: demoFullName.toLowerCase().replace(/\s+/g, ""),
-          email: demoEmail,
-          fullName: demoFullName,
-          role: demoRole,
-          avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(demoFullName)}&background=random`,
-        };
-
-        // Use mockLogin from AuthContext
-        mockLogin(mockUser);
-        navigate("/");
+        setError(result.message || "Đăng nhập demo thất bại");
       }
     } catch (err) {
-      // Use mock login on error
-      const mockUser = {
-        id: Math.random().toString(36).substr(2, 9),
-        username: demoFullName.toLowerCase().replace(/\s+/g, ""),
-        email: demoEmail,
-        fullName: demoFullName,
-        role: demoRole,
-        avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(demoFullName)}&background=random`,
-      };
-
-      mockLogin(mockUser);
-      navigate("/");
+      setError("Có lỗi xảy ra khi đăng nhập demo. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -93,15 +66,9 @@ export const Login: React.FC = () => {
     role: string;
   }> = [
     {
-      email: "admin@ggzone.com",
+      email: "alice@ggzone.com",
       password: "123123",
-      fullName: "Admin User",
-      role: "admin",
-    },
-    {
-      email: "user@ggzone.com",
-      password: "user123",
-      fullName: "Regular User",
+      fullName: "Alice",
       role: "user",
     },
   ];
@@ -440,9 +407,7 @@ export const Login: React.FC = () => {
                     onClick={() => {
                       handleDemoLogin(
                         account.email,
-                        account.password,
-                        account.role,
-                        account.fullName,
+                        account.password
                       );
                       setShowDemoAccounts(false);
                     }}
