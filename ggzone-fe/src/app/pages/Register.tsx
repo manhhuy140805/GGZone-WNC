@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Home } from "lucide-react";
 import { authService } from "@/services/api/authService";
 
 export const Register: React.FC = () => {
@@ -78,6 +79,14 @@ export const Register: React.FC = () => {
       
       {/* Gradient Overlay - Fixed */}
       <div className="fixed inset-0 bg-gradient-to-br from-white/55 via-gray-50/75 to-white/75" />
+
+      <button
+        onClick={() => navigate("/")}
+        className="fixed top-4 left-4 z-20 flex items-center gap-2 px-4 py-2 bg-white/95 hover:bg-white border border-gray-200 rounded-xl shadow-lg text-gray-800 font-semibold transition"
+      >
+        <Home size={18} />
+        Trang chủ
+      </button>
       
       {/* Content Container */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4 lg:p-8">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, Search, Bell, LogOut, ShoppingCart, Trash2, Settings, User, Heart } from "lucide-react";
+import { Menu, Search, Bell, LogIn, LogOut, ShoppingCart, Trash2, Settings, User } from "lucide-react";
 import { useAuth } from "@/app/providers/AuthContext";
 import { useCart } from "@/app/providers/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -176,6 +176,16 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* User Menu */}
             <div className="relative">
+              {!user ? (
+                <button
+                  onClick={() => navigate("/login")}
+                  className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition"
+                >
+                  <LogIn size={18} />
+                  <span>Login</span>
+                </button>
+              ) : (
+                <>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center gap-2 hover:bg-gray-100 rounded-lg p-2 transition"
@@ -264,6 +274,8 @@ export const Header: React.FC<HeaderProps> = ({
                       Logout
                     </button>
                   </div>
+                </>
+              )}
                 </>
               )}
             </div>

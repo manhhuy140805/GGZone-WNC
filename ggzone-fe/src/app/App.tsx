@@ -7,7 +7,7 @@ import { useAuth } from "./providers/AuthContext";
 function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
-  const { isAuthenticated, logout, isLoading } = useAuth();
+  const { logout, isLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -65,8 +65,8 @@ function AppContent() {
     return "HOME";
   };
 
-  // Public pages without layout (Login, Register, Admin)
-  const isPublicPage = location.pathname === "/login" || location.pathname === "/register" || location.pathname.startsWith("/admin");
+  // Standalone pages without the main header/sidebar shell.
+  const isStandalonePage = location.pathname === "/login" || location.pathname === "/register" || location.pathname.startsWith("/admin");
 
   // Hiển thị loading khi đang kiểm tra authentication
   if (isLoading) {
@@ -80,7 +80,7 @@ function AppContent() {
     );
   }
 
-  if (isPublicPage || !isAuthenticated) {
+  if (isStandalonePage) {
     return <AppRoutes />;
   }
 
