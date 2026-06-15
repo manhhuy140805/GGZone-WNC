@@ -16,7 +16,7 @@ import {
   Cart,
   Settings,
   Unauthorized,
-} from "@/pages";
+} from "@/app/pages";
 import { AdminLayout, Dashboard, Users as AdminUsers, Posts as AdminPosts, Products as AdminProducts, Orders as AdminOrders, Groups as AdminGroups } from "@/features/admin";
 import { useAuth } from "@/app/providers/AuthContext";
 
@@ -74,24 +74,24 @@ const ProductDetail: React.FC = () => {
     <ProductDetailPage
       productId={productId || ""}
       onBack={() => navigate("/store")}
-      onViewProduct={(id) => navigate(`/store/${id}`)}
+      onViewProduct={(id: string) => navigate(`/store/${id}`)}
     />
   );
 };
 
 const BrowseWrapper: React.FC = () => {
   const navigate = useNavigate();
-  return <Browse onViewGame={(id) => navigate(`/browse/${id}`)} />;
+  return <Browse onViewGame={(id: string) => navigate(`/browse/${id}`)} />;
 };
 
 const GroupsWrapper: React.FC = () => {
   const navigate = useNavigate();
-  return <Groups onViewGroup={(id) => navigate(`/groups/${id}`)} />;
+  return <Groups onViewGroup={(id: string) => navigate(`/groups/${id}`)} />;
 };
 
 const StoreWrapper: React.FC = () => {
   const navigate = useNavigate();
-  const Store = React.lazy(() => import('@/features/store').then(m => ({ default: m.Store })));
+  const Store = React.lazy(() => import('@/app/pages').then(m => ({ default: m.Store })));
   
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
@@ -106,7 +106,7 @@ const HomeWrapper: React.FC = () => {
   const navigate = useNavigate();
   return (
     <Home
-      onNavigate={(page) => {
+      onNavigate={(page: string) => {
         const routes: { [key: string]: string } = {
           STORE: "/store",
           BROWSE: "/browse",
@@ -126,7 +126,7 @@ const CartWrapper: React.FC = () => {
   return (
     <Cart
       onBack={() => navigate("/store")}
-      onViewProduct={(id) => navigate(`/store/${id}`)}
+      onViewProduct={(id: string) => navigate(`/store/${id}`)}
       onCheckout={() => navigate("/store?tab=orders")}
     />
   );

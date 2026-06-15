@@ -21,13 +21,12 @@ export default defineConfig({
       "@/services": path.resolve(__dirname, "./src/services"),
       "@/types": path.resolve(__dirname, "./src/types"),
       "@/routes": path.resolve(__dirname, "./src/routes"),
-      "@/pages": path.resolve(__dirname, "./src/pages"),
     },
   },
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:7009',
+        target: 'http://localhost:5229',
         changeOrigin: true,
         secure: false,
       }

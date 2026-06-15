@@ -6,7 +6,7 @@ import {
   FriendsTabs,
   FriendsList,
   SuggestionsList,
-} from "./components";
+} from "@/features/friends/components";
 
 interface User {
   id: string;

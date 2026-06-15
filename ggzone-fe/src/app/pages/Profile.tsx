@@ -19,8 +19,8 @@ import {
   ForumsTab,
   VideoTab,
   NewsletterCTA,
-} from "./components";
-import { EditProfileModal } from "./components/EditProfileModal";
+} from "@/features/profile/components";
+import { EditProfileModal } from "@/features/profile/components/EditProfileModal";
 import { User, Post, Game, Group } from "@/types";
 
 export interface GameStats extends Game {

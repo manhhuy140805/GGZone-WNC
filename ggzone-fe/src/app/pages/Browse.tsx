@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GameCard } from "@/components/shared/cards";
+import { GameCard } from "@/features/games/components/GameCard";
 import {
   Search,
   Filter,

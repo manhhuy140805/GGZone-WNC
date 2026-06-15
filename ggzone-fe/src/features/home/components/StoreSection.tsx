@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
-import { MarketplaceCard } from "@/components/shared/cards";
+import { MarketplaceCard } from "@/features/store/components/MarketplaceCard";
 import type { MarketplaceItem } from "@/types";
 
 interface StoreSectionProps {

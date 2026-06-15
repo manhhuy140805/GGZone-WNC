@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui";
-import type { Category } from "../sections/CategoriesSection";
+import type { Category } from "@/features/home/components/CategoriesSection";
 
 interface CategoryCardProps {
   category: Category;
@@ -22,7 +22,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
           <h3 className="text-xl font-bold text-white mb-3">{category.name}</h3>
 
           <div className="flex flex-wrap gap-2 mb-4">
-            {category.tags.map((tag, index) => (
+            {category.tags.map((tag: string, index: number) => (
               <span
                 key={index}
                 className="bg-gray-700 text-gray-300 px-3 py-1 rounded-full text-xs font-semibold"

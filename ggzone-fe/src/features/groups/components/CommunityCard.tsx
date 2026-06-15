@@ -67,7 +67,7 @@ export const CommunityCard: React.FC<CommunityCardProps> = ({
                 <Users2 size={13} className="text-gray-600" />
               </div>
               <span className="text-gray-900 font-semibold">
-                {group.membersCount.toLocaleString()}
+                {group.membersCount?.toLocaleString() || '0'}
               </span>
               <span className="text-gray-500">members</span>
             </div>

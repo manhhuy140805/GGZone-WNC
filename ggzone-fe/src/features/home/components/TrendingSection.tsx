@@ -1,6 +1,6 @@
 import React from "react";
 import { TrendingUp } from "lucide-react";
-import { GameCard } from "@/components/shared/cards";
+import { GameCard } from "@/features/games/components/GameCard";
 import type { Game } from "@/types";
 
 interface TrendingSectionProps {

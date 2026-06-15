@@ -94,7 +94,7 @@ import { userService } from '../../../services/api/userService';
 - `@/lib/*` → Utilities & helpers
 - `@/services/*` → API services
 - `@/types/*` → Type definitions
-- `@/pages/*` → Page components
+- `@/app/pages/*` → Page components
 
 ## 🎨 Tech Stack
 

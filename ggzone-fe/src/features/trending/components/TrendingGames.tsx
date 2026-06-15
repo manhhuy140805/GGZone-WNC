@@ -1,5 +1,5 @@
 import React from "react";
-import { GameCard } from "@/components/shared/cards";
+import { GameCard } from "@/features/games/components/GameCard";
 import { Game } from "@/types";
 import { ChevronRight } from "lucide-react";
 
